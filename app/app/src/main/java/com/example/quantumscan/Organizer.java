@@ -1,2 +1,4 @@
-package com.example.quantumscan;public class Organizer {
+package com.example.quantumscan;
+
+public class Organizer {
 }

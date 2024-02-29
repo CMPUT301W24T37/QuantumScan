@@ -1,2 +1,4 @@
-package com.example.quantumscan;public class Attendee {
+package com.example.quantumscan;
+
+public class Attendee {
 }

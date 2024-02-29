@@ -39,11 +39,11 @@ public class Event {
      */
     private ArrayList<Attendee> attendees;
     /**
-     * ArraayList<Attendee>: an ArrayList that contains the attendees who have checked in
+     * ArrayList<Attendee>: an ArrayList that contains the attendees who have checked in
      */
     private ArrayList<Attendee> checkedInList;
     /**
-     * Organizer: the owner of organier
+     * Organizer: the owner of the event
      */
     private Organizer organizer;  // this could also be an ArrayList<Organizer>, but temporarily we assume only one Organizer per Event now
     /**
@@ -345,7 +345,7 @@ public class Event {
         this.setDescrCode(newDescrCode);
 
         // Todo: address the way we save poster in the database or do it in FireBaseConnection or in other Classes/places (to be discussed)
-        // Update the DescrCode in Firebase Databse
+        // Update the DescrCode in Firebase Database
         // Code there
     }
 

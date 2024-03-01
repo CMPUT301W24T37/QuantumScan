@@ -14,13 +14,23 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.util.ArrayList;
 
 public class AttendeeFragment extends Fragment {
 
     private ActivityResultLauncher<String> requestCameraPermissionLauncher;
     private ActivityResultLauncher<Intent> startForResult;
+
+    private RecyclerView recyclerViewEvents;
+    private EventAdapter eventAdapter;
+    private ArrayList<Event> events; // Placeholder for your events data
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,10 @@ public class AttendeeFragment extends Fragment {
                         }
                     }
                 });
+
+        // Initialize your events list here
+        events = new ArrayList<>();
+        // Example: events.add(new Event("1", "Event Title", "Event Description"));
     }
 
     @Override
@@ -56,9 +70,14 @@ public class AttendeeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_attendee, container, false);
 
         LinearLayout scanQRCodeButton = view.findViewById(R.id.buttonScanQR);
-        scanQRCodeButton.setOnClickListener(v -> {
-            startQRCodeScanner();
-        });
+        scanQRCodeButton.setOnClickListener(v -> startQRCodeScanner());
+
+        recyclerViewEvents = view.findViewById(R.id.recyclerViewEvents);
+        recyclerViewEvents.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Initialize the adapter with the events list and set it to the RecyclerView
+        eventAdapter = new EventAdapter(getContext(), events, event -> navigateToEventPage(event));
+        recyclerViewEvents.setAdapter(eventAdapter);
 
         return view;
     }
@@ -71,5 +90,14 @@ public class AttendeeFragment extends Fragment {
         } else {
             requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
+    }
+
+    /**
+    跳转到Attendee_Eventpage
+     */
+    private void navigateToEventPage(Event event) {
+        Intent intent = new Intent(getActivity(), AttendeeEventPage.class);
+        intent.putExtra("event_id", event.getId()); // Pass event ID to the activity
+        startActivity(intent);
     }
 }

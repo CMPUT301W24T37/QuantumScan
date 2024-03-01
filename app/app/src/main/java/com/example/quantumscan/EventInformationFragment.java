@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +32,7 @@ public class EventInformationFragment extends Fragment {
         buttonJoinEvent = view.findViewById(R.id.buttonJoinEvent);
         buttonReturn = view.findViewById(R.id.buttonReturn);
 
+
         // Retrieve the event ID passed from AttendeeFragment
         Bundle args = getArguments();
         if (args != null) {
@@ -50,8 +53,8 @@ public class EventInformationFragment extends Fragment {
                 // Assuming Event class has fields matching Firestore document
                 Event event = documentSnapshot.toObject(Event.class);
                 if (event != null) {
-                    textViewEventTitle.setText(event.getTitle());
-                    textViewEventDescription.setText(event.getDescription());
+                    textViewEventTitle.setText(event.getTitle());// 读取 title 显示在xml的 textViewEventTitle的位置
+                    textViewEventDescription.setText(event.getDescription());//读取 description显示在xml的 textViewEventDescription的位置
                 }
             } else {
                 // Handle the case where the event doesn't exist
@@ -68,7 +71,10 @@ public class EventInformationFragment extends Fragment {
 
     private void returnToAttendeeFragment() {
         if (getActivity() != null) {
-            getActivity().onBackPressed();
+            // Using NavController to navigate up in the fragment stack
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigateUp();
         }
-    }
+
+}
 }

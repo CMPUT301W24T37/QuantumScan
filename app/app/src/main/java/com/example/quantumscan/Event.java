@@ -4,20 +4,24 @@ public class Event {
     private String id;
     private String title;
     private String description;
+    // Simplified check-in status flag
+    private boolean isCheckedIn;
+
     // Other fields that your event might have, e.g., location, date, etc.
 
     public Event() {
-        // Default constructor required for calls to DataSnapshot.getValue(Event.class)
+        // Default constructor required for Firestore data mapping
     }
 
-    public Event(String id, String title, String description) {
+    public Event(String id, String title, String description, boolean isCheckedIn) {
         this.id = id;
         this.title = title;
         this.description = description;
-        // Initialize other fields
+        this.isCheckedIn = isCheckedIn;
+        // Initialize other fields as needed
     }
 
-    // Getters and setters for each field
+    // Getters and setters
 
     public String getId() {
         return id;
@@ -43,5 +47,15 @@ public class Event {
         this.description = description;
     }
 
-    // Getters and setters for other fields
+    public boolean isCheckedIn() {
+        return isCheckedIn;
+    }
+
+    public void setCheckedIn(boolean isCheckedIn) {
+        this.isCheckedIn = isCheckedIn;
+    }
+
+    // Getters and setters for any other fields
 }
+
+

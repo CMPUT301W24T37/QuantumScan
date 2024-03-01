@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Background ImageView should fill the entire screen -->
+    <ImageView
+        android:id="@+id/ivEventBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@android:color/black"
+        android:text="Return"
+        android:scaleType="centerCrop" />
+
+    <!-- Return button at the top left corner -->
+    <Button
+        android:id="@+id/ivReturn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/black"
+        android:text="Return" />
+
+    <!-- Event Title at the top -->
+    <TextView
+        android:id="@+id/tvEventTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivReturn"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_marginTop="16dp" />
+
+    <!-- Transparent overlay for event description, taking up the bottom half of the screen -->
+    <TextView
+        android:id="@+id/tvEventDescription"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/tvEventTitle"
+        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:background="#00000000"
+        android:padding="16dp" />
+
+</RelativeLayout>
+
+
+
+

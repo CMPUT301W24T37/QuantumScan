@@ -8,4 +8,7 @@
     <string name="Return">Return</string>
     <string name="Join_This_Event">Join This Event</string>
     <string name="event_image_description">Description of the event image</string>
+    <string name="send_notification">Send Notification</string>
+    <string name="View_Information">View Information</string>
+
 </resources>

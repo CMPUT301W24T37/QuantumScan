@@ -72,6 +72,78 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/buttonInfo"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:text="Edit Information"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <Button
+        android:id="@+id/buttonQRCode"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:text="Edit QR code"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonInfo" />
+
+    <Button
+        android:id="@+id/buttonViewAttend"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:text="View Attendees"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonQRCode" />
+
+    <Button
+        android:id="@+id/buttonSendNote"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:text="Send Notification"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonViewAttend" />
+
+    <Button
+        android:id="@+id/buttonPoster"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:text="Upload Poster"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSendNote" />
+
+    <Button
+        android:id="@+id/buttonLocation"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:text="Attended Location"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPoster" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

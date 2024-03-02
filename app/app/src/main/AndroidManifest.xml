@@ -30,6 +30,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".OrganizerCreateEvent"/>
+        <activity android:name=".OrganizerEventPage"/>
+
         <activity
             android:name=".AttendeeEventPage"
             android:exported="true"/>

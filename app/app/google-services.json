@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "149512107562",
+    "project_id": "quantumscandatabase",
+    "storage_bucket": "quantumscandatabase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149512107562:android:cb651c22ed7f8808b2f553",
+        "android_client_info": {
+          "package_name": "com.example.authtest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBo--k2dHz8lWM2EAblRqtaG92RN_dx-Z0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

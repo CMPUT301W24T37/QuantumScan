@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +42,7 @@ public class OrganizerFragment extends Fragment {
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), OrganizerCreate.class);
+                Intent intent = new Intent(getActivity(), OrganizerCreateEvent.class);
                 startActivity(intent);
             }
         });
@@ -52,7 +51,7 @@ public class OrganizerFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedEvent = dataList.get(position);
-                Intent detailIntent = new Intent(getActivity(), OrganizerEventFragment.class);
+                Intent detailIntent = new Intent(getActivity(), OrganizerEventPage.class);
                 detailIntent.putExtra("eventName", selectedEvent);
                 startActivity(detailIntent);
             }

@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class OrganizerCreate extends AppCompatActivity {
+public class OrganizerCreateEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +30,7 @@ public class OrganizerCreate extends AppCompatActivity {
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrganizerCreate.this,OrganizerFragment.class);
+                Intent intent = new Intent(OrganizerCreateEvent.this,OrganizerFragment.class);
                 startActivity(intent);
             }
         });

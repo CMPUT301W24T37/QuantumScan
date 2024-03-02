@@ -3,23 +3,20 @@ package com.example.authtest;
 import android.content.Context;
 import android.provider.Settings;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+
 public class Authentication {
-    private String userID;
-    private FireBaseConnection firebase;
+    private String userId;
+    private FireStoreBridge firebase;
     private Context context;
     private String FILENAME = "CHECK.txt";
     public Authentication(Context context){
         this.context = context;
-        this.userID = Settings.Secure.getString(this.context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        this.firebase = new FireBaseConnection("USER");
+        this.userId = Settings.Secure.getString(this.context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        this.firebase = new FireStoreBridge("USER");
     }
     private boolean saveFile(String userId){
         FileOutputStream fo = null;
@@ -45,11 +42,11 @@ public class Authentication {
         }
         return false;
     }
-    public boolean accountCreation(String userId, String name, String profilePicture){
-        User user = new User(userId, name, profilePicture);
+    public boolean accountCreation(String name, String profilePicture){
+        User user = new User(this.userId, name, profilePicture);
         // upload to Firebase
-        this.firebase.updateUser(userId, user);
-        
+        this.firebase.updateUser(this.userId, user);
+
         // local save file
         saveFile(userId);
 

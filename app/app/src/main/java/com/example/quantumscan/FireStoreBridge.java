@@ -15,6 +15,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import kotlin.jvm.JvmOverloads;
+
 public class FireStoreBridge {
     private FirebaseFirestore db;
     private CollectionReference collectionName;
@@ -26,7 +28,8 @@ public class FireStoreBridge {
 
     }
 
-    public boolean retrieveUser(String userID){
+    public User retrieveUser(String userID){
+        User user = new User(null, null, null);
         this.query.whereEqualTo(FieldPath.documentId(), userID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -39,8 +42,43 @@ public class FireStoreBridge {
                                 for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
                                     // Print the document ID and the data in the document
                                     // TODO: reformat output data
-                                    System.out.println("Document ID: " + documentSnapshot.getId());
-                                    System.out.println("Document Data: " + documentSnapshot.getData());
+                                    user.setUserId(documentSnapshot.getId());
+
+                                    user.setName(documentSnapshot.getString("Name"));
+                                    user.setProfilePicture(documentSnapshot.getString("profile pic"));
+
+                                }
+                            } else {
+                                // Handle the case where there are no documents in the QuerySnapshot
+                                System.out.println("No documents matched the query.");
+                            }
+                        } else {
+                            // The task failed, handle the error
+                            Exception e = task.getException();
+                            System.out.println("Query failed: " + e.getMessage());
+                        }
+                    }
+                });
+        return user;
+    }
+
+    public boolean retrieveUser(String userID, User user){
+        this.query.whereEqualTo(FieldPath.documentId(), userID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // The query was successful, process the QuerySnapshot
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (!querySnapshot.isEmpty()) {
+                                // Iterate through the documents in the QuerySnapshot -> this only retrieve one user
+                                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
+                                    // Print the document ID and the data in the document
+                                    // TODO: reformat output data
+                                        user.setUserId(documentSnapshot.getId());
+
+                                        user.setName(documentSnapshot.getString("Name"));
+                                        user.setProfilePicture(documentSnapshot.getString("profile pic"));
                                 }
                             } else {
                                 // Handle the case where there are no documents in the QuerySnapshot
@@ -55,7 +93,6 @@ public class FireStoreBridge {
                 });
         return false;
     }
-
     public boolean retrieveEvent(String eventID, ArrayList<Event> eventList){
        return false;
     }

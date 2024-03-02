@@ -30,6 +30,7 @@ public class FireStoreBridge {
 
     public User retrieveUser(String userID){
         User user = new User(null, null, null);
+        // 目前只能print，还不能return
         this.query.whereEqualTo(FieldPath.documentId(), userID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -42,10 +43,10 @@ public class FireStoreBridge {
                                 for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
                                     // Print the document ID and the data in the document
                                     // TODO: reformat output data
-                                    user.setUserId(documentSnapshot.getId());
+                                    System.out.println(documentSnapshot.getId());
 
-                                    user.setName(documentSnapshot.getString("Name"));
-                                    user.setProfilePicture(documentSnapshot.getString("profile pic"));
+                                    System.out.println(documentSnapshot.getString("Name"));
+                                    System.out.println(documentSnapshot.getString("profile pic"));
 
                                 }
                             } else {
@@ -63,6 +64,7 @@ public class FireStoreBridge {
     }
 
     public boolean retrieveUser(String userID, User user){
+        // 有bug
         this.query.whereEqualTo(FieldPath.documentId(), userID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

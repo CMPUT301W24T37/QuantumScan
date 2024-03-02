@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Header section with Return and Logout buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btnReturn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
+            android:text="Return" />
+
+
+        <!-- Placeholder for the event title -->
+        <TextView
+            android:id="@+id/btnEventTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+    <!-- Button for viewing information -->
+
+    <!-- Button for sending notification -->
+
+    <Button
+        android:id="@+id/btnViewInformation"
+        android:layout_width="375dp"
+        android:layout_height="91dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/information"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/View_Information"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btnReceiveNotification"
+        android:layout_width="375dp"
+        android:layout_height="91dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/notify"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/send_notification"
+        android:textColor="@android:color/black"
+        android:textAllCaps="false" />
+
+
+    <!-- Button for scanning QR code -->
+    <Button
+        android:id="@+id/btnScanQRCode"
+        android:layout_width="375dp"
+        android:layout_height="91dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/img"
+        android:gravity="center"
+        android:text="@string/scan_qr_code"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black" />
+
+
+</LinearLayout>

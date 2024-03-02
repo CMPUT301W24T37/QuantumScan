@@ -1,4 +1,4 @@
-package com.example.authtest;
+package com.example.quantumscan;
 
 import androidx.annotation.NonNull;
 
@@ -82,7 +82,6 @@ public class FireStoreBridge {
                                         user.setName(documentSnapshot.getString("Name"));
                                         user.setProfilePicture(documentSnapshot.getString("profile pic"));
                                 }
-                                return true;
                             } else {
                                 // Handle the case where there are no documents in the QuerySnapshot
                                 System.out.println("No documents matched the query.");

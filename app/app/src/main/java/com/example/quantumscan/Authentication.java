@@ -1,7 +1,9 @@
-package com.example.authtest;
-
+//package com.example.authtest;
+/*
 import android.content.Context;
 import android.provider.Settings;
+
+import com.example.quantumscan.FireStoreBridge;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,4 +63,4 @@ public class Authentication {
         return false;
     }
 
-}
+}*/

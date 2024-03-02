@@ -46,28 +46,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("USER").document("User1")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                // Convert the document snapshot to a User object
-                                myUser = document.toObject(User.class);
-                                // Now you can use the User object as needed
-                            } else {
-                                Log.d(TAG, "No such document");
-                            }
-                        } else {
-                            Log.d(TAG, "get failed with ", task.getException());
-                        }
-                    }
-                });
 
-
+        FireStoreBridge fb = new FireStoreBridge("USER");
+        myUser = fb.retrieveUser("User1");
 
     }
 

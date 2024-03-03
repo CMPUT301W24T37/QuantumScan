@@ -5,7 +5,6 @@ import java.util.ArrayList;
 /*
     Todo: 1. implement Firestore/Firebase code. (currently only local)
           2. complete other needed features of the class
-          3. current version is not working b/c missing other classes' methods or constructors
  */
 
 /**
@@ -41,7 +40,7 @@ public class User {
         this.userId = userId;
         this.attendeeRoles = new ArrayList<Attendee>();
         this.organizerRoles = new ArrayList<Organizer>();
-        this.name = "New User";
+        this.name = "New User";  // default user name
         this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
     }
 
@@ -71,34 +70,30 @@ public class User {
         this.organizerRoles = organizerRoles;
     }
 
+    //  US 03.01.03: As a user, I want to update information such as name, homepage, and contact information on my profile.
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getHomePage() {
         return homePage;
     }
-
     public void setHomePage(String homePage) {
         this.homePage = homePage;
     }
-
     public String getContactInformation() {
         return contactInformation;
     }
-
     public void setContactInformation(String contactInformation) {
         this.contactInformation = contactInformation;
     }
 
+    // US 03.01.01: As a user, I want to upload a profile picture for a more personalized experience.
     public String getProfilePicture() {
         return profilePicture;
     }
-
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
@@ -106,15 +101,17 @@ public class User {
     // Methods
 
     /**
-     * This add an Attendee object (userId + eventID)
+     * This add an Attendee object (userId + eventID) into the Event's signed up attendee list
      * Representing the user signed up for an EXISTING specific event.
      * @param event
      *  Event: one specific event which has an unique event_id
      */
     public void addAttendeeRole(Event event) {
         // create a new Attendee object by passing User object and Event object
-        Attendee attendee = new Attendee(this, event);  // Todo: implement the constructor in Attendee
+        Attendee attendee = new Attendee(this, event);
         this.attendeeRoles.add(attendee);
+        // add the Attendee in the Event object
+        event.addAttendee(attendee);
     }
 
     /**
@@ -125,7 +122,9 @@ public class User {
         // Create a new event
         Event event = new Event();
         // create a new Attendee object by passing User object and Event object
-        Organizer organizer = new Organizer(this, event);  // Todo: implement the constructor in Organizer
+        Organizer organizer = new Organizer(this, event);
         this.organizerRoles.add(organizer);
+        // set the organizer in the Event object
+        event.setOrganizer(organizer);
     }
 }

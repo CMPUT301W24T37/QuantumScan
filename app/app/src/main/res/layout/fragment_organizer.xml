@@ -18,13 +18,15 @@
             android:id="@+id/backgroundImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:radius="16dp"
             android:scaleType="centerCrop"
             android:src="@drawable/pic_office"
-            android:radius="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/buttonCreate"
@@ -32,27 +34,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:layout_marginEnd="204dp"
+            android:layout_marginBottom="120dp"
             android:color="#FFFFFF"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:radius="20dp"
             android:text="Create"
-            android:layout_margin="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/backgroundImage"
             app:layout_constraintEnd_toEndOf="@+id/backgroundImage" />
-
-        <TextView
-            android:id="@+id/textViewSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="NEW EVENT"
-            android:textColor="@android:color/white"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            android:layout_margin="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/backgroundImage" />
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -65,6 +56,19 @@
             android:layout_marginHorizontal="8dp"
             app:layout_constraintBottom_toTopOf="@+id/textViewSubtitle"
             app:layout_constraintStart_toStartOf="@+id/backgroundImage" />
+
+        <TextView
+            android:id="@+id/textViewSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="8dp"
+            android:text="NEW EVENT"
+            android:textColor="@android:color/white"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="13dp"
+            tools:layout_editor_absoluteY="147dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

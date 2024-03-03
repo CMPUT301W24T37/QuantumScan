@@ -11,17 +11,28 @@ import java.util.ArrayList;
  * Represent one single user.
  */
 public class User {
-    private String userId;  // this could be int, to be discussed. This is automatically generated from the users' phone.
     private ArrayList<Attendee> attendeeRoles;
     private ArrayList<Organizer> organizerRoles;
     private String name;
-    private String homePage;
-    private String contactInformation;
+    private String phone;
+    private String email;
+    private String university;
     private String profilePicture;  // should be the URL of the picture? Need to allow users to upload their pfp onto the Firebase database?
 
     // Constructors
+    // Todo: maybe we can default all variable to null, this way we only need one constructor? we can deal with null attribute within constructor?
+    public User( String name, String phone, String university, String profilePicture, String email) {
+        this.attendeeRoles = new ArrayList<>();
+        this.organizerRoles = new ArrayList<>();
+        this.name = name;
+        this.phone = phone;
+        this.university = university;
+        this.profilePicture = profilePicture;
+        this.email = email;
+    }
+
     public User(String userId, String name, String profilePicture) {
-        this.userId = userId;
+
         this.attendeeRoles = new ArrayList<Attendee>();
         this.organizerRoles = new ArrayList<Organizer>();
         this.name = name;
@@ -29,7 +40,7 @@ public class User {
     }
 
     public User(String userId, String name) {
-        this.userId = userId;
+
         this.attendeeRoles = new ArrayList<Attendee>();
         this.organizerRoles = new ArrayList<Organizer>();
         this.name = name;
@@ -37,7 +48,7 @@ public class User {
     }
 
     public User(String userId) {
-        this.userId = userId;
+
         this.attendeeRoles = new ArrayList<Attendee>();
         this.organizerRoles = new ArrayList<Organizer>();
         this.name = "New User";  // default user name
@@ -45,14 +56,6 @@ public class User {
     }
 
     // Getters and Setters
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public ArrayList<Attendee> getAttendeeRoles() {
         return attendeeRoles;
@@ -77,17 +80,24 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-    public String getHomePage() {
-        return homePage;
+    public String getPhone() {
+        return phone;
     }
-    public void setHomePage(String homePage) {
-        this.homePage = homePage;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
-    public String getContactInformation() {
-        return contactInformation;
+    public String getEmail() {
+        return email;
     }
-    public void setContactInformation(String contactInformation) {
-        this.contactInformation = contactInformation;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
     }
 
     // US 03.01.01: As a user, I want to upload a profile picture for a more personalized experience.

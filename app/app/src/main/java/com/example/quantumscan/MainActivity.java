@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         FireStoreBridge fb = new FireStoreBridge("USER");
         myUser = fb.retrieveUser("User1");
+        DataHolder.getInstance().setMyUser(myUser);
+
 
     }
 

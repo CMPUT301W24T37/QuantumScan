@@ -1,9 +1,9 @@
-//package com.example.authtest;
-/*
+package com.example.quantumscan;
+
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
-
-import com.example.quantumscan.FireStoreBridge;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,52 +15,52 @@ public class Authentication {
     private FireStoreBridge firebase;
     private Context context;
     private String FILENAME = "CHECK.txt";
+    @SuppressLint("HardwareIds")
     public Authentication(Context context){
         this.context = context;
         this.userId = Settings.Secure.getString(this.context.getContentResolver(), Settings.Secure.ANDROID_ID);
         this.firebase = new FireStoreBridge("USER");
     }
-    private boolean saveFile(String userId){
+
+    public User accountCreation(String name, String phone, String university, String profilePicture, String email){
+        // create a new user
+        User user = new User(name, phone, university, profilePicture, email);
+
+        // upload to Firebase
+        this.firebase.updateUser(this.userId, user);
+
+        // mark the android device
+        saveFile(userId);
+
+        return user;
+    }
+    private void saveFile(String userId){
         FileOutputStream fo = null;
 
         try{
-            fo = this.context.openFileOutput(FILENAME, this.context.MODE_PRIVATE);
+            fo = this.context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             fo.write(userId.getBytes());
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally{
             if (fo != null){
                 try {
                     fo.close();
-                    return true;
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
 
                 }
             }
         }
-        return false;
-    }
-    public boolean accountCreation(String name, String profilePicture){
-        User user = new User(this.userId, name, profilePicture);
-        // upload to Firebase
-        this.firebase.updateUser(this.userId, user);
-
-        // local save file
-        saveFile(userId);
-
-        return false;
     }
     public boolean checkAuthorization(){
         String FILEPATH = this.context.getFilesDir() + "/" + FILENAME;
         File file = new File(FILEPATH);
-        if (file.exists()){
-            return true;
-        }
-        return false;
+        return file.exists();
     }
 
-}*/
+}
+
+

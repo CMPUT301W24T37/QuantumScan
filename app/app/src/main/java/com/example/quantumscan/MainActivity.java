@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     User myUser;
+    EventAdapter events;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +48,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        FireStoreBridge fb = new FireStoreBridge("USER");
-        myUser = fb.retrieveUser("User1");
+        //FireStoreBridge fb_user = new FireStoreBridge("USER");
+        //myUser = fb_user.retrieveUser("User");
+        //DataHolder.getInstance().setMyUser(myUser);
+
+        /*
+        FireStoreBridge fb_event = new FireStoreBridge("EVENT");
+        myUser = fb_event.retrieveUser("User1");
         DataHolder.getInstance().setMyUser(myUser);
 
+         */
 
     }
 

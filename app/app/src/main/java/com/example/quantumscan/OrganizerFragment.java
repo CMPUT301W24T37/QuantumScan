@@ -20,24 +20,39 @@ import java.util.Arrays;
 
 
 public class OrganizerFragment extends Fragment {
-    ListView eventList;
+    User myUser;
+
+    ListView eventListView;
     Button buttonCreate;
     ArrayAdapter<String> eventAdapter;
+    ArrayList<Organizer> organizerRoles;
     ArrayList<String> dataList;
+
+    ArrayList<Event> eventArrayList;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_organizer, container, false);
-        eventList = view.findViewById(R.id.organizerEventList);
+        eventListView = view.findViewById(R.id.organizerEventList);
         buttonCreate = view.findViewById(R.id.buttonCreate);
 
 
         String []events ={"CMPUT 301", "Lab Team", "CMPUT 291"};
-        dataList = new ArrayList<>();
         dataList.addAll(Arrays.asList(events));
+
+
+        /*
+        myUser = DataHolder.getInstance().getUserObject();
+        organizerRoles = myUser.getOrganizerRoles();
+        for (Organizer organizer : organizerRoles) {
+            eventArrayList.add(organizer.getEvent());
+        }
+        this.convertEvent();
+         */
+
         eventAdapter = new ArrayAdapter<>(getActivity(), R.layout.event_content, dataList);
-        eventList.setAdapter(eventAdapter);
+        eventListView.setAdapter(eventAdapter);
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +62,7 @@ public class OrganizerFragment extends Fragment {
             }
         });
 
-        eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedEvent = dataList.get(position);
@@ -61,5 +76,11 @@ public class OrganizerFragment extends Fragment {
 
 
         return view;
+    }
+
+    public void convertEvent(){
+        for (Event event : eventArrayList) {
+            dataList.add(event.getTitle());
+        }
     }
 }

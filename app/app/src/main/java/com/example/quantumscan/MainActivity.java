@@ -8,6 +8,9 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.example.quantumscan.databinding.ActivityMainBinding;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +21,13 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new OrganizerFragment());
+        FireStoreBridge fb = new FireStoreBridge("USER");
+        fb.retrieveUser("1658f5315ca1a74d", new FireStoreBridge.OnUserRetrievedListener() {
+            @Override
+            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+                System.out.println(user.getName());
+            }
+        });
 
         binding.bottomNavigationView.setOnItemReselectedListener(item -> {
             if(item.getItemId() == R.id.organizer){

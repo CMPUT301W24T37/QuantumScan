@@ -29,12 +29,19 @@ public class FireStoreBridge {
         this.query = this.collectionName;
 
     }
+    private FirebaseFirestore getDb() {
+        return db;
+    }
+
+    private CollectionReference getCollectionName() {
+        return collectionName;
+    }
     public interface OnUserRetrievedListener {
         void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles);
     }
 
     public interface OnEventRetrievedListener {
-        void onEventRetrieved(User user);
+        void onEventRetrieved(ArrayList<Event> event, ArrayList<OrganizerFireBaseHolder> organizerList);
     }
 
 
@@ -74,8 +81,8 @@ public class FireStoreBridge {
             }
         });
     }
-    public void retrieveEvent(String eventID, OnEventRetrievedListener listener) {
-        this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), eventID);
+    public void retrieveAllEvent(OnEventRetrievedListener listener) {
+        this.query = this.collectionName;
 
         this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -86,13 +93,13 @@ public class FireStoreBridge {
 
                     }
                     // Notify the listener with the retrieved user object is complete
-                    listener.onEventRetrieved(null);
+
                 } else {
                     // Handle the case where the task failed
                     Exception e = task.getException();
                     System.out.println("Query failed: " + e.getMessage());
                     // Notify the listener with a null user object
-                    listener.onEventRetrieved(null);
+
                 }
             }
         });

@@ -48,7 +48,7 @@ public class FireStoreBridge {
                     User user = new User(null,null,null, null,null); // Create a new User object
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         // Retrieve user data from document and set properties of the User object
-                        user.setName(documentSnapshot.getString("Name"));
+                        user.setName(documentSnapshot.getString("name"));
                         user.setProfilePicture(documentSnapshot.getString("profilePicture"));
                         user.setPhone(documentSnapshot.getString("phone"));
                         user.setUniversity(documentSnapshot.getString("university"));

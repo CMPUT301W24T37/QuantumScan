@@ -12,6 +12,7 @@ public class Attendee {
         this.event = event;
     }
 
+    /*
     public setCheckIn( Boolean checkInStatus){
         this.checkIn = checkInStatus;
     }
@@ -22,6 +23,8 @@ public class Attendee {
 
     public Atten
 
+
+     */
     // Setters and Getters
 
     public User getUser() {

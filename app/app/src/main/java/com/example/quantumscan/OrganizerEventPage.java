@@ -17,11 +17,12 @@ public class OrganizerEventPage extends AppCompatActivity {
         TextView eventNameView = findViewById(R.id.textView_eventName);
         Button backButton = findViewById(R.id.returnButton);
         Button infoButton = findViewById(R.id.buttonInfo);
+        Button listButton = findViewById(R.id.buttonViewAttend);
         Button posterButton = findViewById(R.id.buttonPoster);
 
         // Retrieve the city name passed from MainActivity
-        String cityName = getIntent().getStringExtra("eventName");
-        eventNameView.setText(cityName);
+        String eventID = getIntent().getStringExtra("eventID");
+        eventNameView.setText(eventID);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,8 +35,18 @@ public class OrganizerEventPage extends AppCompatActivity {
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrganizerEventPage.this, OrganizerEventInfo.class);
-                startActivity(intent);
+                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerEventInfo.class);
+                detailIntent.putExtra("eventID", eventID);
+                startActivity(detailIntent);
+            }
+        });
+
+        listButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerViewAttendees.class);
+                detailIntent.putExtra("eventID", eventID);
+                startActivity(detailIntent);
             }
         });
 

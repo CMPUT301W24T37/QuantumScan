@@ -34,6 +34,7 @@
         <activity android:name=".OrganizerCreateEvent"/>
         <activity android:name=".OrganizerEventPage"/>
         <activity android:name=".OrganizerEventInfo"/>
+        <activity android:name=".OrganizerViewAttendees"/>
         <activity android:name=".OrganizerEventShare"/>
         <activity android:name=".OrganizerUpdatePoster"/>
 

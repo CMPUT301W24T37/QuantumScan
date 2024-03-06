@@ -72,7 +72,7 @@ public class OrganizerFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedEvent = dataList.get(position);
                 Intent detailIntent = new Intent(getActivity(), OrganizerEventPage.class);
-                detailIntent.putExtra("eventName", selectedEvent);
+                detailIntent.putExtra("eventID", selectedEvent);
                 startActivity(detailIntent);
             }
         });

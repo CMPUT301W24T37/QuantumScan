@@ -36,12 +36,17 @@ public class FireStoreBridge {
     private CollectionReference getCollectionName() {
         return collectionName;
     }
+
     public interface OnUserRetrievedListener {
         void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles);
     }
 
     public interface OnEventRetrievedListener {
-        void onEventRetrieved(ArrayList<Event> event, ArrayList<OrganizerFireBaseHolder> organizerList);
+        void onEventRetrieved(ArrayList<Event> event, ArrayList<String> organizerList);
+
+    }
+    private interface OnEventRetrievedListenerHelper{
+        void onAttendeeRetrieved(ArrayList<AttendeeFireBaseHolder> attendeeList);
     }
 
 
@@ -88,12 +93,31 @@ public class FireStoreBridge {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Event event = new Event();
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                    ArrayList<Event> eventList = new ArrayList<>();
+                    ArrayList<String> organizerIdList = new ArrayList<>();
 
+                    for (QueryDocumentSnapshot documentSnapshot0 : task.getResult()) {
+                        // read each event
+                        Event event = new Event();
+                        //OrganizerFireBaseHolder organizer = new OrganizerFireBaseHolder();
+                        //retrieve event information
+                        event.setId(documentSnapshot0.getString("id"));
+                        event.setAnnouncement((ArrayList<String>) documentSnapshot0.get("announcements"));
+                        event.setPosterCode(documentSnapshot0.getString("posterCode"));
+                        event.setEventCode(documentSnapshot0.getString("eventCode"));
+                        event.setTitle(documentSnapshot0.getString("title"));
+                        event.setDescription(documentSnapshot0.getString("description"));
+                       organizerIdList.add(documentSnapshot0.getString("organizer"));
+                        // TODO: for check in data retrieve
+                        //retrieve Organizer info
+                        //CollectionReference attendeeListRef = getCollectionName();
+                        //retrieve attendee belong to this event
+                        // retrieveAllEventHelper(attendeeListRef, organizer);
+                        //organizerList.add(organizer);
+                        eventList.add(event);
                     }
                     // Notify the listener with the retrieved user object is complete
-
+                    listener.onEventRetrieved(eventList, organizerIdList);
                 } else {
                     // Handle the case where the task failed
                     Exception e = task.getException();
@@ -104,6 +128,37 @@ public class FireStoreBridge {
             }
         });
     }
+    private void retrieveAllEventHelper(CollectionReference attendeeListRef, OrganizerFireBaseHolder organizer){
+        // TODO: This is for check in status retrieve
+        /*
+        retrieve attendeelist in each event documentation
+         */
+        attendeeListRef.document().collection("attendeeList").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<AttendeeFireBaseHolder> attendeeFireBaseHolders = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot documentSnapshot1 : task.getResult()) {
+                                AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
+                                attendee.setAttendeeId(documentSnapshot1.getString("id"));
+                                attendee.setCheckInStatus(documentSnapshot1.getBoolean("checkedIn"));
+                                attendeeFireBaseHolders.add(attendee);
+                            }
+
+                        }else {
+                            // Handle the case where the task failed
+                            Exception e = task.getException();
+                            System.out.println("Query failed: " + e.getMessage());
+                            // Notify the listener with a null user object
+
+                        }
+
+                    }
+                });
+    }
+
     public void updateUser(User user){
 
 

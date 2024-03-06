@@ -1,6 +1,3 @@
-package com.example.quantumscan;
-
-
 import static android.content.ContentValues.TAG;
 
 import android.util.Log;
@@ -36,7 +33,7 @@ public class FireStoreBridge {
     }
 
     public interface OnEventRetrievedListener {
-        void onUserRetrieved(User user);
+        void onEventRetrieved(User user);
     }
 
 
@@ -72,7 +69,8 @@ public class FireStoreBridge {
         return false;
     }
 
-    public void updateUser(String userID, User user){
+    public void updateUser(User user){
+        String userID = user.getId();
         this.collectionName.document(userID)
                 .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

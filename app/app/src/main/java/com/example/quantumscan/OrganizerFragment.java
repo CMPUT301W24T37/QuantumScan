@@ -39,6 +39,7 @@ public class OrganizerFragment extends Fragment {
 
 
         String []events ={"CMPUT 301", "Lab Team", "CMPUT 291"};
+        dataList = new ArrayList<>();
         dataList.addAll(Arrays.asList(events));
 
 
@@ -51,7 +52,7 @@ public class OrganizerFragment extends Fragment {
         this.convertEvent();
          */
 
-        eventAdapter = new ArrayAdapter<>(getActivity(), R.layout.event_content, dataList);
+        eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
         eventListView.setAdapter(eventAdapter);
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {

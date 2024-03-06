@@ -25,8 +25,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    User myUser;
-    EventAdapter events;
+    //User myUser;
+    //EventAdapter events;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

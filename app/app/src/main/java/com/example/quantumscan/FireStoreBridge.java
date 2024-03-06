@@ -1,5 +1,4 @@
-package com.example.quantumscan;
-import static android.content.ContentValues.TAG;
+package com.example.quantumscan;import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
@@ -31,7 +30,7 @@ public class FireStoreBridge {
 
     }
     public interface OnUserRetrievedListener {
-        void onUserRetrieved(User user);
+        void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles);
     }
 
     public interface OnEventRetrievedListener {
@@ -47,6 +46,8 @@ public class FireStoreBridge {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     User user = new User(null,null,null, null,null); // Create a new User object
+                    ArrayList<String> attendeeRoles = new ArrayList<String>();
+                    ArrayList<String> organizerRoles = new ArrayList<String>();
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         // Retrieve user data from document and set properties of the User object
                         user.setName(documentSnapshot.getString("name"));
@@ -54,18 +55,21 @@ public class FireStoreBridge {
                         user.setPhone(documentSnapshot.getString("phone"));
                         user.setUniversity(documentSnapshot.getString("university"));
                         user.setEmail(documentSnapshot.getString("email"));
-                        ArrayList<String> list = new ArrayList<String>(documentSnapshot.getData().values());
-                        user.setOrganizerRoles(list);
+                        List<String> list1 = (List<String>) documentSnapshot.get("attendeeRoles");
+                        List<String> list2 = (List<String>) documentSnapshot.get("organizerRoles");
+                        attendeeRoles = (ArrayList<String>) list1;
+                        organizerRoles = (ArrayList<String>) list2;
 
                     }
+
                     // Notify the listener with the retrieved user object is complete
-                    listener.onUserRetrieved(user);
+                    listener.onUserRetrieved(user, attendeeRoles, organizerRoles);
                 } else {
                     // Handle the case where the task failed
                     Exception e = task.getException();
                     System.out.println("Query failed: " + e.getMessage());
                     // Notify the listener with a null user object
-                    listener.onUserRetrieved(null);
+                    listener.onUserRetrieved(null,null,null);
                 }
             }
         });
@@ -120,4 +124,3 @@ public class FireStoreBridge {
 
 
 }
-

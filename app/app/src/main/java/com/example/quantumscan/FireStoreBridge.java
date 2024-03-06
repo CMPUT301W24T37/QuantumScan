@@ -30,7 +30,7 @@ public class FireStoreBridge {
 
     }
     public interface OnUserRetrievedListener {
-        void onUserRetrieved(User user);
+        void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles);
     }
 
     public interface OnEventRetrievedListener {
@@ -46,6 +46,8 @@ public class FireStoreBridge {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     User user = new User(null,null,null, null,null); // Create a new User object
+                    ArrayList<String> attendeeRoles = new ArrayList<String>();
+                    ArrayList<String> organizerRoles = new ArrayList<String>();
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         // Retrieve user data from document and set properties of the User object
                         user.setName(documentSnapshot.getString("name"));
@@ -53,10 +55,15 @@ public class FireStoreBridge {
                         user.setPhone(documentSnapshot.getString("phone"));
                         user.setUniversity(documentSnapshot.getString("university"));
                         user.setEmail(documentSnapshot.getString("email"));
+                        List<String> list1 = new ArrayList<String>(documentSnapshot.getData("organizerRoles").values());
+                        List<String> list2 = new ArrayList<String>(documentSnapshot.getData("attendeeRoles").values());
+                        attendeeRoles = list1;
+                        organizerRoles = list2
 
                     }
+                
                     // Notify the listener with the retrieved user object is complete
-                    listener.onUserRetrieved(user);
+                    listener.onUserRetrieved(user, attendeeRoles, organizerRoles);
                 } else {
                     // Handle the case where the task failed
                     Exception e = task.getException();

@@ -1,3 +1,4 @@
+
 import static android.content.ContentValues.TAG;
 
 import android.util.Log;
@@ -47,11 +48,12 @@ public class FireStoreBridge {
                     User user = new User(null,null,null, null,null); // Create a new User object
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         // Retrieve user data from document and set properties of the User object
-                        user.setName(documentSnapshot.getString("name"));
+                        user.setName(documentSnapshot.getString("Name"));
                         user.setProfilePicture(documentSnapshot.getString("profilePicture"));
                         user.setPhone(documentSnapshot.getString("phone"));
                         user.setUniversity(documentSnapshot.getString("university"));
                         user.setEmail(documentSnapshot.getString("email"));
+
                     }
                     // Notify the listener with the retrieved user object is complete
                     listener.onUserRetrieved(user);
@@ -65,11 +67,32 @@ public class FireStoreBridge {
             }
         });
     }
-    public boolean retrieveEvent(String eventID, ArrayList<Event> eventList){
-        return false;
-    }
+    public void retrieveEvent(String eventID, OnEventRetrievedListener listener) {
+        this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), eventID);
 
+        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    Event event = new Event();
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+
+                    }
+                    // Notify the listener with the retrieved user object is complete
+                    listener.onEventRetrieved(null);
+                } else {
+                    // Handle the case where the task failed
+                    Exception e = task.getException();
+                    System.out.println("Query failed: " + e.getMessage());
+                    // Notify the listener with a null user object
+                    listener.onEventRetrieved(null);
+                }
+            }
+        });
+    }
     public void updateUser(User user){
+
+
         String userID = user.getId();
         this.collectionName.document(userID)
                 .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {

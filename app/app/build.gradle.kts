@@ -51,4 +51,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.2")
     implementation("com.google.firebase:firebase-bom:32.7.3")
 
+    // QRCode dependencies
+    implementation ("com.github.androidmads:QRGenerator:1.0.1")
+    implementation("com.journeyapps:zxing-android-embedded:4.2.0")
+
 }

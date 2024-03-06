@@ -10,7 +10,11 @@ import java.util.ArrayList;
 /**
  * Represent one single user.
  */
+// Important note before you calling User()!
+// Do not call User's constructors directly if you wanna a new user, call the method in Authentication's accountCreation() to create a new User!
+// Meaning: the caller of User constructors should be responsible for generating an unique user id.
 public class User {
+    private String id;
     private ArrayList<Attendee> attendeeRoles;
     private ArrayList<Organizer> organizerRoles;
     private String name;
@@ -21,7 +25,8 @@ public class User {
 
     // Constructors
     // Todo: maybe we can default all variable to null, this way we only need one constructor? we can deal with null attribute within constructor?
-    public User( String name, String phone, String university, String profilePicture, String email) {
+    public User(String name, String phone, String university, String profilePicture, String email) {
+        this.id = "PLACE_HOLDER";  // this will be changed in somewhere else, so just level it there
         this.attendeeRoles = new ArrayList<>();
         this.organizerRoles = new ArrayList<>();
         this.name = name;
@@ -32,7 +37,7 @@ public class User {
     }
 
     public User(String userId, String name, String profilePicture) {
-
+        this.id = userId;
         this.attendeeRoles = new ArrayList<Attendee>();
         this.organizerRoles = new ArrayList<Organizer>();
         this.name = name;
@@ -40,7 +45,7 @@ public class User {
     }
 
     public User(String userId, String name) {
-
+        this.id = userId;
         this.attendeeRoles = new ArrayList<Attendee>();
         this.organizerRoles = new ArrayList<Organizer>();
         this.name = name;
@@ -48,7 +53,15 @@ public class User {
     }
 
     public User(String userId) {
+        this.id = userId;
+        this.attendeeRoles = new ArrayList<Attendee>();
+        this.organizerRoles = new ArrayList<Organizer>();
+        this.name = "New User";  // default user name
+        this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
+    }
 
+    public User() {
+        this.id = "PLACE_HOLDER";
         this.attendeeRoles = new ArrayList<Attendee>();
         this.organizerRoles = new ArrayList<Organizer>();
         this.name = "New User";  // default user name
@@ -56,6 +69,14 @@ public class User {
     }
 
     // Getters and Setters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public ArrayList<Attendee> getAttendeeRoles() {
         return attendeeRoles;

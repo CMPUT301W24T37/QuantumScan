@@ -1,5 +1,4 @@
-package com.example.quantumscan;
-import static android.content.ContentValues.TAG;
+package com.example.quantumscan;import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
@@ -17,6 +16,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FireStoreBridge {
     private FirebaseFirestore db;
@@ -55,13 +55,13 @@ public class FireStoreBridge {
                         user.setPhone(documentSnapshot.getString("phone"));
                         user.setUniversity(documentSnapshot.getString("university"));
                         user.setEmail(documentSnapshot.getString("email"));
-                        List<String> list1 = new ArrayList<String>(documentSnapshot.getData("organizerRoles").values());
-                        List<String> list2 = new ArrayList<String>(documentSnapshot.getData("attendeeRoles").values());
-                        attendeeRoles = list1;
-                        organizerRoles = list2
+                        List<String> list1 = (List<String>) documentSnapshot.get("attendeeRoles");
+                        List<String> list2 = (List<String>) documentSnapshot.get("organizerRoles");
+                        attendeeRoles = (ArrayList<String>) list1;
+                        organizerRoles = (ArrayList<String>) list2;
 
                     }
-                
+
                     // Notify the listener with the retrieved user object is complete
                     listener.onUserRetrieved(user, attendeeRoles, organizerRoles);
                 } else {
@@ -69,7 +69,7 @@ public class FireStoreBridge {
                     Exception e = task.getException();
                     System.out.println("Query failed: " + e.getMessage());
                     // Notify the listener with a null user object
-                    listener.onUserRetrieved(null);
+                    listener.onUserRetrieved(null,null,null);
                 }
             }
         });
@@ -124,4 +124,3 @@ public class FireStoreBridge {
 
 
 }
-

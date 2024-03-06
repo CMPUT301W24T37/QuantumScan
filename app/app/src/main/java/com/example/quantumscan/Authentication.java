@@ -1,7 +1,5 @@
 package com.example.quantumscan;
 
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
 
@@ -15,52 +13,57 @@ public class Authentication {
     private FireStoreBridge firebase;
     private Context context;
     private String FILENAME = "CHECK.txt";
-    @SuppressLint("HardwareIds")
     public Authentication(Context context){
         this.context = context;
         this.userId = Settings.Secure.getString(this.context.getContentResolver(), Settings.Secure.ANDROID_ID);
         this.firebase = new FireStoreBridge("USER");
     }
 
-    public User accountCreation(String name, String phone, String university, String profilePicture, String email){
+    public User accountCreation(User user){
         // create a new user
-        User user = new User(name, phone, university, profilePicture, email);
-
+        String userId = user.getId();
         // upload to Firebase
-        this.firebase.updateUser(this.userId, user);
+        this.firebase.updateUser(user);
 
         // mark the android device
         saveFile(userId);
 
         return user;
     }
-    private void saveFile(String userId){
+    private boolean saveFile(String userId){
         FileOutputStream fo = null;
 
         try{
-            fo = this.context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            fo = this.context.openFileOutput(FILENAME, this.context.MODE_PRIVATE);
             fo.write(userId.getBytes());
 
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally{
             if (fo != null){
                 try {
                     fo.close();
-
+                    return true;
                 } catch (IOException e) {
                     throw new RuntimeException(e);
 
                 }
             }
         }
+        return false;
     }
     public boolean checkAuthorization(){
         String FILEPATH = this.context.getFilesDir() + "/" + FILENAME;
         File file = new File(FILEPATH);
-        return file.exists();
+        if (file.exists()){
+            return true;
+        }
+        return false;
     }
 
 }
+
 
 

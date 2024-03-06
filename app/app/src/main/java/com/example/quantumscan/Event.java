@@ -370,4 +370,21 @@ public class Event {
     // US 01.10.01: As an organizer, I want to see who is signed up to attend my event.
     // US 01.02.01: As an organizer, I want to view the list of attendees who have checked in to my event.
     // just directly call the getter methods of the attendees and checkedInList above
+      public void EventIdGenerator(String UserId){
+        LocalDateTime now = null;
+        String formattedDateTime = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            now = LocalDateTime.now();
+        }
+
+        // Custom format
+        DateTimeFormatter formatter = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            formattedDateTime = now.format(formatter);
+        }
+        this.id = formattedDateTime + "||" + UserId;
+    }
 }

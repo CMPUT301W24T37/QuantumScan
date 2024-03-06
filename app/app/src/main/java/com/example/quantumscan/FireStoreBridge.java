@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FireStoreBridge {
     private FirebaseFirestore db;
@@ -53,6 +54,8 @@ public class FireStoreBridge {
                         user.setPhone(documentSnapshot.getString("phone"));
                         user.setUniversity(documentSnapshot.getString("university"));
                         user.setEmail(documentSnapshot.getString("email"));
+                        ArrayList<String> list = new ArrayList<String>(documentSnapshot.getData().values());
+                        user.setOrganizerRoles(list);
 
                     }
                     // Notify the listener with the retrieved user object is complete

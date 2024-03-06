@@ -49,8 +49,8 @@ public class OrganizerFragment extends Fragment {
         for (Organizer organizer : organizerRoles) {
             eventArrayList.add(organizer.getEvent());
         }
-        this.convertEvent();
-         */
+        this.convertEvent();*/
+
 
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
         eventListView.setAdapter(eventAdapter);

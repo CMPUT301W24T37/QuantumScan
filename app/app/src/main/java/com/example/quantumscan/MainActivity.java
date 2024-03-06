@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+
 import android.util.Log;
 
 import com.example.quantumscan.databinding.ActivityMainBinding;
@@ -47,10 +48,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        FireStoreBridge fb = new FireStoreBridge("USER");
+        fb.retrieveUser("1658f5315ca1a74d", new FireStoreBridge.OnUserRetrievedListener() {
+            @Override
+            public void onUserRetrieved(User user) {
+                System.out.println("2" + user.getName());
+            }
 
+        });
         //FireStoreBridge fb_user = new FireStoreBridge("USER");
         //myUser = fb_user.retrieveUser("User");
-        //DataHolder.getInstance().setMyUser(myUser);
+        //
 
         /*
         FireStoreBridge fb_event = new FireStoreBridge("EVENT");

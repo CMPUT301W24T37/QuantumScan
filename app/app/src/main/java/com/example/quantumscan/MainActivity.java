@@ -23,6 +23,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
@@ -51,9 +53,11 @@ public class MainActivity extends AppCompatActivity {
         FireStoreBridge fb = new FireStoreBridge("USER");
         fb.retrieveUser("1658f5315ca1a74d", new FireStoreBridge.OnUserRetrievedListener() {
             @Override
-            public void onUserRetrieved(User user) {
-                System.out.println("2" + user.getName());
+            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+                System.out.println("Size"+ attendeeRoles.size());
+
             }
+
 
         });
         //FireStoreBridge fb_user = new FireStoreBridge("USER");

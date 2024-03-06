@@ -25,10 +25,9 @@ public class OrganizerFragment extends Fragment {
     ListView eventListView;
     Button buttonCreate;
     ArrayAdapter<String> eventAdapter;
-    ArrayList<Organizer> organizerRoles;
+    ArrayList<String> organizerRole;
     ArrayList<String> dataList;
 
-    ArrayList<Event> eventArrayList;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,21 +37,26 @@ public class OrganizerFragment extends Fragment {
         buttonCreate = view.findViewById(R.id.buttonCreate);
 
 
-        String []events ={"CMPUT 301", "Lab Team", "CMPUT 291"};
+        //String []events ={"CMPUT 301", "Lab Team", "CMPUT 291"};
         dataList = new ArrayList<>();
-        dataList.addAll(Arrays.asList(events));
-
-
-        /*
-        myUser = DataHolder.getInstance().getUserObject();
-        organizerRoles = myUser.getOrganizerRoles();
-        for (Organizer organizer : organizerRoles) {
-            eventArrayList.add(organizer.getEvent());
-        }
-        this.convertEvent();*/
-
-
+        //dataList.addAll(Arrays.asList(events));
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
+
+
+        FireStoreBridge fb = new FireStoreBridge("USER");
+        fb.retrieveUser("1658f5315ca1a74d", new FireStoreBridge.OnUserRetrievedListener() {
+            @Override
+            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+                for(String event : organizerRoles){
+                    dataList.add(event);
+                    eventAdapter.notifyDataSetChanged();
+                    System.out.println("Size"+ event);
+                }
+
+            }
+        });
+
+
         eventListView.setAdapter(eventAdapter);
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -79,9 +83,12 @@ public class OrganizerFragment extends Fragment {
         return view;
     }
 
+    /*
     public void convertEvent(){
         for (Event event : eventArrayList) {
             dataList.add(event.getTitle());
         }
     }
+
+     */
 }

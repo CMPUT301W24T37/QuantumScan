@@ -2,6 +2,8 @@ package com.example.quantumscan;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class DataHolder {
     private static final DataHolder instance = new DataHolder();
     private User myUser;
@@ -19,14 +21,6 @@ public class DataHolder {
     public void setMyUser() {
 
 
-        FireStoreBridge fb = new FireStoreBridge("USER");
-        fb.retrieveUser("1658f5315ca1a74d", new FireStoreBridge.OnUserRetrievedListener() {
-            @Override
-            public void onUserRetrieved(User user) {
-                myUser = user;
-            }
-
-        });
 
     }
 

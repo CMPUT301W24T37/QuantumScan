@@ -3,6 +3,7 @@ package com.example.quantumscan;
 public class Attendee {
     private final User user;
     private final Event event;
+    private Boolean checkIn = false;
 
     // Constructors
 
@@ -10,6 +11,16 @@ public class Attendee {
         this.user = user;
         this.event = event;
     }
+
+    public setCheckIn( Boolean checkInStatus){
+        this.checkIn = checkInStatus;
+    }
+    
+    public getCheckIn( Boolean checkInStatus){
+        this.checkIn = checkInStatus;
+    }
+
+    public Atten
 
     // Setters and Getters
 

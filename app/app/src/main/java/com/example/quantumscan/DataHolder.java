@@ -3,12 +3,13 @@ package com.example.quantumscan;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DataHolder {
     private static final DataHolder instance = new DataHolder();
     private User myUser;
-    private EventAdapter events;
-
+    private ArrayList<Event> myEvents;
+    private FireStoreBridge fb_events = new FireStoreBridge("EVENT");
 
     public static DataHolder getInstance() {
         return instance;
@@ -24,12 +25,28 @@ public class DataHolder {
 
     }
 
-    public EventAdapter getEventAdapter() {
-        return events;
+    public Event getEvent(String eventID) {
+        /*
+        for(Event event : events){
+            if(Objects.equals(event.getId(), eventID)){
+                return myEvents;
+            }
+        }
+        return null;*/
+        return myEvents.get(0);
     }
 
-    public void setEventAdapter(EventAdapter events) {
-        this.events = events;
+    public void setEvents() {
+        /*
+
+        FireStoreBridge fb_events = new FireStoreBridge("EVENT");
+        fb_events.retrieveAllEvent(new FireStoreBridge.OnEventRetrievedListener() {
+            @Override
+            public void onEventRetrieved(ArrayList<Event> events, ArrayList<String> organizerList) {
+                myEvents.addAll(events);
+            }
+        });
+         */
     }
 
 

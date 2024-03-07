@@ -24,6 +24,12 @@ public class OrganizerEventPage extends AppCompatActivity {
         String eventID = getIntent().getStringExtra("eventID");
         eventNameView.setText(eventID);
 
+        /*
+        Event eventOBJ = DataHolder.getInstance().getEvent(eventID);
+        System.out.println("Title:"+ eventOBJ.getTitle());
+
+         */
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

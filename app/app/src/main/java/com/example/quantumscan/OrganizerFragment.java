@@ -55,8 +55,6 @@ public class OrganizerFragment extends Fragment {
 
             }
         });
-
-
         eventListView.setAdapter(eventAdapter);
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {

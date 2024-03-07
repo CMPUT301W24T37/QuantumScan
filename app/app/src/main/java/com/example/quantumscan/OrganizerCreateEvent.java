@@ -30,8 +30,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrganizerCreateEvent.this,OrganizerFragment.class);
-                startActivity(intent);
+                finish();
             }
         });
 

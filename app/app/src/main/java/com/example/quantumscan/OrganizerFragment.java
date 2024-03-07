@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 
 public class OrganizerFragment extends Fragment {
@@ -26,7 +27,9 @@ public class OrganizerFragment extends Fragment {
     Button buttonCreate;
     ArrayAdapter<String> eventAdapter;
     ArrayList<String> organizerRole;
+
     ArrayList<String> dataList;
+    ArrayList<String> eventIDList;
 
 
 
@@ -39,6 +42,7 @@ public class OrganizerFragment extends Fragment {
 
         //String []events ={"CMPUT 301", "Lab Team", "CMPUT 291"};
         dataList = new ArrayList<>();
+        eventIDList = new ArrayList<>();
         //dataList.addAll(Arrays.asList(events));
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
 
@@ -48,13 +52,34 @@ public class OrganizerFragment extends Fragment {
             @Override
             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
                 for(String event : organizerRoles){
-                    dataList.add(event);
-                    eventAdapter.notifyDataSetChanged();
-                    System.out.println("Size"+ event);
+                    eventIDList.add(event);
+                    System.out.println(event);
                 }
+
+                FireStoreBridge fb_events = new FireStoreBridge("EVENT");
+                fb_events.retrieveAllEvent(new FireStoreBridge.OnEventRetrievedListener() {
+                    @Override
+                    public void onEventRetrieved(ArrayList<Event> events, ArrayList<String> organizerList) {
+                        for(String eventID : eventIDList){
+
+                            for(Event event: events){
+                                if(Objects.equals(eventID, event.getId())){
+                                    System.out.println("Size"+ event.getTitle());
+                                    dataList.add(event.getTitle());
+                                }
+                            }
+                        }
+                        eventAdapter.notifyDataSetChanged();
+
+                    }
+                });
 
             }
         });
+
+
+
+
         eventListView.setAdapter(eventAdapter);
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -68,9 +93,11 @@ public class OrganizerFragment extends Fragment {
         eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedEvent = dataList.get(position);
+                String selectedEventName = dataList.get(position);
+                String selectedEventID = eventIDList.get(position);
                 Intent detailIntent = new Intent(getActivity(), OrganizerEventPage.class);
-                detailIntent.putExtra("eventID", selectedEvent);
+                detailIntent.putExtra("eventID", selectedEventID);
+                detailIntent.putExtra("eventName", selectedEventName);
                 startActivity(detailIntent);
             }
         });

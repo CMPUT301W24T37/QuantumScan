@@ -22,7 +22,8 @@ public class OrganizerEventPage extends AppCompatActivity {
 
         // Retrieve the city name passed from MainActivity
         String eventID = getIntent().getStringExtra("eventID");
-        eventNameView.setText(eventID);
+        String eventName = getIntent().getStringExtra("eventName");
+        eventNameView.setText(eventName);
 
         /*
         Event eventOBJ = DataHolder.getInstance().getEvent(eventID);
@@ -43,6 +44,7 @@ public class OrganizerEventPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerEventInfo.class);
                 detailIntent.putExtra("eventID", eventID);
+                detailIntent.putExtra("eventName", eventName);
                 startActivity(detailIntent);
             }
         });
@@ -52,6 +54,7 @@ public class OrganizerEventPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerViewAttendees.class);
                 detailIntent.putExtra("eventID", eventID);
+                detailIntent.putExtra("eventName", eventName);
                 startActivity(detailIntent);
             }
         });

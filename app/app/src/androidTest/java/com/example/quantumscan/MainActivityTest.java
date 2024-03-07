@@ -5,6 +5,7 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.doubleClick;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -70,13 +71,13 @@ public class MainActivityTest {
         // Type some text
         onView(withId(R.id.infoEditText)).perform(ViewActions.typeText("Information of the Event")).perform(ViewActions.closeSoftKeyboard());
         // Check the EditText is exactly the text we just typed in.
-        onView(withId(R.id.infoEditText)).check(matches(withText("Name of the Event")));
+        onView(withId(R.id.infoEditText)).check(matches(withText("Information of the Event")));
         // Scroll to id edit text
         //onView(withId(R.id.idEditText)).perform(ViewActions.scrollTo());
         // Type some text
         onView(withId(R.id.idEditText)).perform(ViewActions.typeText("user id of the Attendee")).perform(ViewActions.closeSoftKeyboard());
         // Check the EditText is exactly the text we just typed in.
-        onView(withId(R.id.idEditText)).check(matches(withText("Name of the Event")));
+        onView(withId(R.id.idEditText)).check(matches(withText("user id of the Attendee")));
         // Delete all the texts that we just inputted
         //onView(withId(R.id.nameEditText)).perform(ViewActions.scrollTo());
         onView(withId(R.id.nameEditText)).perform(ViewActions.clearText());
@@ -113,12 +114,52 @@ public class MainActivityTest {
         onView(withText("Upload Poster From Local")).check(matches(isDisplayed()));
         // hit back
         pressBack();
+        // Check if we are in the Event001 menu
+        this.checkIfEvent001Menu();
         // Press the back button of the phone
         pressBack();
         // Wait for 1500 ms
         SystemClock.sleep(1500);
         // Check if we are in the Organizer menu
         this.checkIfOrganizerPage();
+    }
+
+    @Test
+    public void testClickIntoAttendeePage() {
+        // wait for 1500 ms to let APP loads the event from firebase database
+        SystemClock.sleep(1500);
+        // Click into the page "ATTENDEE"
+        onView(withId(R.id.attendee)).perform(doubleClick());
+        // Check if it's in the ATTENDEE page
+        onView(withText("Events I Attend")).check(matches(isDisplayed()));;
+        onView(withText("Scan QR Code for Information")).check(matches(isDisplayed()));
+
+    }
+
+    @Test
+    public void testClickIntoCommunityPage() {
+        // wait for 1500 ms to let APP loads the event from firebase database
+        SystemClock.sleep(1500);
+        // Click into the page "COMMUNITY"
+        onView(withId(R.id.community)).perform(doubleClick());
+        // Check if it's in the COMMUNITY page
+        onView(withText("Community Fragment")).check(matches(isDisplayed()));;
+
+    }
+
+    @Test
+    public void testClickIntoProfilePage() {
+        // wait for 1500 ms to let APP loads the event from firebase database
+        SystemClock.sleep(1500);
+        // Click into the page "COMMUNITY"
+        onView(withId(R.id.profile)).perform(doubleClick());
+        // Check if it's in the COMMUNITY page
+        onView(withId(R.id.userNameText)).check(matches(isDisplayed()));
+        onView(withId(R.id.userPronounText)).check(matches(isDisplayed()));
+        onView(withId(R.id.userPhoneNumbText)).check(matches(isDisplayed()));
+        onView(withId(R.id.userEmailText)).check(matches(isDisplayed()));
+        onView(withId(R.id.userInfoText)).check(matches(isDisplayed()));
+
     }
 
 }

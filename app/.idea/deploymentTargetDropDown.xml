@@ -2,10 +2,22 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="MainActivityTest">
+        <State />
+      </entry>
+      <entry key="Tests in 'com.example.quantumscan'">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>
-      <entry key="testClickIntoEvent()">
+      <entry key="testClickCreateEvent()">
+        <State />
+      </entry>
+      <entry key="testClickIntoAttendeePage()">
+        <State />
+      </entry>
+      <entry key="testClickIntoProfilePage()">
         <State />
       </entry>
     </value>

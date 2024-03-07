@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Authentication {
+    /*
     private String userId;
     private FireStoreBridge firebase;
     private Context context;
@@ -62,6 +63,8 @@ public class Authentication {
         }
         return false;
     }
+
+     */
 
 }
 

@@ -35,7 +35,8 @@ android {
 }
 
 dependencies {
-
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation("com.google.firebase:firebase-firestore")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -55,5 +56,7 @@ dependencies {
     // QRCode dependencies
     implementation ("com.github.androidmads:QRGenerator:1.0.1")
     implementation("com.journeyapps:zxing-android-embedded:4.2.0")
+
+    // Image picker dependencies
 
 }

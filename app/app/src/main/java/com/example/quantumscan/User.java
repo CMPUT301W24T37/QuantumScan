@@ -152,7 +152,9 @@ public class User {
     public void addOrganizerRole() {
         // Create a new event
         Event event = new Event();
-        // create a new Attendee object by passing User object and Event object
+        // Assign an unique ID for eventID
+        event.EventIdGenerator(this.getId());
+        // create a new Organizer object by passing User object and Event object
         Organizer organizer = new Organizer(this, event);
         this.organizerRoles.add(organizer);
         // set the organizer in the Event object

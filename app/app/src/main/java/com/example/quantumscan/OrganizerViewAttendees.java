@@ -28,7 +28,8 @@ public class OrganizerViewAttendees extends AppCompatActivity {
         eventListView = findViewById(R.id.attendeeList);
 
         String eventID = getIntent().getStringExtra("eventID");
-        titleView.setText(eventID);
+        String eventName = getIntent().getStringExtra("eventName");
+        titleView.setText(eventName);
 
         String []attendees ={"Austin", "ZhiYang", "Wei","David","Karl","Kaining"};
         dataList = new ArrayList<>();

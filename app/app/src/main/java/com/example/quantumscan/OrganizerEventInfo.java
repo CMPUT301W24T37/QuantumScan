@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class OrganizerEventInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,10 +18,12 @@ public class OrganizerEventInfo extends AppCompatActivity {
         Button backButton = findViewById(R.id.returnButton);
         Button shareButton = findViewById(R.id.shareButton);
         TextView titleView = findViewById(R.id.title_textView);
-
+        TextView infoView = findViewById(R.id.info_textView);
 
         String eventID = getIntent().getStringExtra("eventID");
-        titleView.setText(eventID);
+        String eventName = getIntent().getStringExtra("eventName");
+        titleView.setText(eventName);
+        this.setInfo(eventID,infoView);
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -40,5 +45,19 @@ public class OrganizerEventInfo extends AppCompatActivity {
             }
         });
 
+    }
+    public void setInfo(String eventID,TextView infoView){
+        FireStoreBridge fb_events = new FireStoreBridge("EVENT");
+        fb_events.retrieveAllEvent(new FireStoreBridge.OnEventRetrievedListener() {
+            @Override
+            public void onEventRetrieved(ArrayList<Event> events, ArrayList<String> organizerList) {
+
+                for(Event event: events){
+                    if(Objects.equals(eventID, event.getId())){
+                        infoView.setText(event.getDescription());
+                    }
+                }
+            }
+        });
     }
 }

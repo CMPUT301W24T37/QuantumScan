@@ -234,7 +234,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     eventInfo.getAttendees().get(i).getUserName(),
                     eventInfo.getAttendees().get(i).getCheckInAccount());
             attendeeList.add(attendee);
-        }
+        }//eventInfo.getOrganizer().getUser().getId()
         EventFireBaseHolder event = new EventFireBaseHolder(
                 eventInfo.getAnnouncement(),
                 eventInfo.getDescription(),
@@ -259,6 +259,22 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 });
 
     }
+    public void updateEventDescription(String eventId, String description){
+
+        this.collectionName.document(eventId).update("description", description)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                    }
+                });
+    }
     @Override
     public void updateEventImage(String eventId, String imageURL){
         this.collectionName.document(eventId).update("posterCode", imageURL).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -275,9 +291,4 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 });
 
     }
-
-
-
-
-
 }

@@ -18,7 +18,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FireStoreBridge {
+public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListener{
     private FirebaseFirestore db;
     private CollectionReference collectionName;
     private Query query;
@@ -257,6 +257,24 @@ public class FireStoreBridge {
                 });
 
     }
+    @Override
+    public void updateEventImage(String eventId, String imageURL){
+        this.collectionName.document(eventId).update("posterCode", imageURL).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                    }
+                });
+
+    }
+
+
 
 
 

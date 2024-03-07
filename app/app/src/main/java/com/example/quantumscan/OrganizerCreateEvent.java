@@ -23,7 +23,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
         String nameText;
         String infoText;
-        String idText;
+        //String idText;
 
 
 

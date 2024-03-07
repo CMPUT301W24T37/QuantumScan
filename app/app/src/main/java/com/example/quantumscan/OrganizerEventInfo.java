@@ -73,7 +73,6 @@ public class OrganizerEventInfo extends AppCompatActivity {
                 }
             }
         });
-
     }
     public void setInfo(String eventID,TextView infoView){
         FireStoreBridge fb_events = new FireStoreBridge("EVENT");
@@ -96,8 +95,7 @@ public class OrganizerEventInfo extends AppCompatActivity {
             @Override
             public void onEventRetrieved(ArrayList<Event> event, ArrayList<String> organizerList) {
                 Event thisEvent = event.get(0);
-                thisEvent.setDescription(newInfo);
-                fb_events.updateEvent(thisEvent);
+                fb_events.updateEventDescription(thisEvent.getId(), newInfo);
             }
         });
 

@@ -19,6 +19,10 @@ public class OrganizerCreateEvent extends AppCompatActivity {
     private Uri imageUri = null;
 
     // Create an ActivityResultLauncher instance directly within the Activity
+
+    public interface imageUrlUploadListener{
+        void updateEventImage(String eventId, String imageURL);
+    }
     private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
@@ -26,6 +30,8 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                     System.out.println(imageUri);
                     // Handle the imageUri, e.g., display it or prepare it for upload
                     // Optionally, notify other parts of your app about the selected image
+                        imageUrlUploadListener listener = null;
+                        listener.updateEventImage("asdf", imageUri.toString());
                 } else {
                     Toast.makeText(OrganizerCreateEvent.this, "Please select an image", Toast.LENGTH_SHORT).show();
                 }

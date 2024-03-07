@@ -7,6 +7,10 @@ public class Attendee {
     private final String userName;
     private Boolean checkIn = false;
 
+
+
+    private int checkInAccount;
+
     // Constructors
     public Attendee(User user, Event event) {
         this.user = user;
@@ -16,6 +20,13 @@ public class Attendee {
     }
 
     // Setters and Getters
+    public int getCheckInAccount() {
+        return checkInAccount;
+    }
+
+    public void setCheckInAccount(int checkInAccount) {
+        this.checkInAccount = checkInAccount;
+    }
     public Boolean getCheckIn() {
         return checkIn;
     }

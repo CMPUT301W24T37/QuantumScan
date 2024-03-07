@@ -218,11 +218,42 @@ public class FireStoreBridge {
                         Log.w(TAG, "Please try when you are connected to the internet", e);
                     }
                 });
+
     }
 
 
-    public boolean updateEvent(String eventID, Event event){
-        return false;
+    public void updateEvent(Event eventInfo){
+        String eventId= eventInfo.getId();
+        ArrayList<AttendeeListFireBaseHolder> attendeeList = new ArrayList<>();
+        for (int i = 0; i < eventInfo.getAttendees().size(); i++){
+            AttendeeListFireBaseHolder attendee = new AttendeeListFireBaseHolder(
+                    eventInfo.getAttendees().get(i).getUserID(),
+                    eventInfo.getAttendees().get(i).getCheckIn());
+            attendeeList.add(attendee);
+        }
+        EventFireBaseHolder event = new EventFireBaseHolder(
+                eventInfo.getAnnouncement(),
+                eventInfo.getDescription(),
+                eventInfo.getEventCode(),
+                eventId,
+                eventInfo.getOrganizer().getUser().getId(),
+                eventInfo.getPosterCode(),
+                eventInfo.getTitle(),
+                attendeeList);
+        this.collectionName.document(eventId).set(eventInfo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                    }
+                });
+
     }
 
 

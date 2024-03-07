@@ -45,6 +45,7 @@ public class FireStoreBridge {
         void onEventRetrieved(ArrayList<Event> event, ArrayList<String> organizerList);
 
     }
+
     private interface OnEventRetrievedListenerHelper{
         void onAttendeeRetrieved(ArrayList<AttendeeFireBaseHolder> attendeeList);
     }
@@ -82,6 +83,47 @@ public class FireStoreBridge {
                     System.out.println("Query failed: " + e.getMessage());
                     // Notify the listener with a null user object
                     listener.onUserRetrieved(null,null,null);
+                }
+            }
+        });
+    }
+    public void retrieveEvent(String eventId, OnEventRetrievedListener listener){
+        this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), eventId);
+        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<Event> eventList = new ArrayList<>();
+                    ArrayList<String> organizerIdList = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot documentSnapshot0 : task.getResult()) {
+                        // read each event
+                        Event event = new Event();
+                        //OrganizerFireBaseHolder organizer = new OrganizerFireBaseHolder();
+                        //retrieve event information
+                        event.setId(documentSnapshot0.getString("id"));
+                        event.setAnnouncement((ArrayList<String>) documentSnapshot0.get("announcements"));
+                        event.setPosterCode(documentSnapshot0.getString("posterCode"));
+                        event.setEventCode(documentSnapshot0.getString("eventCode"));
+                        event.setTitle(documentSnapshot0.getString("title"));
+                        event.setDescription(documentSnapshot0.getString("description"));
+                        organizerIdList.add(documentSnapshot0.getString("organizer"));
+                        // TODO: for check in data retrieve
+                        //retrieve Organizer info
+                        //CollectionReference attendeeListRef = getCollectionName();
+                        //retrieve attendee belong to this event
+                        // retrieveAllEventHelper(attendeeListRef, organizer);
+                        //organizerList.add(organizer);
+                        eventList.add(event);
+                    }
+                    // Notify the listener with the retrieved user object is complete
+                    listener.onEventRetrieved(eventList, organizerIdList);
+                } else {
+                    // Handle the case where the task failed
+                    Exception e = task.getException();
+                    System.out.println("Query failed: " + e.getMessage());
+                    // Notify the listener with a null user object
+
                 }
             }
         });
@@ -176,11 +218,42 @@ public class FireStoreBridge {
                         Log.w(TAG, "Please try when you are connected to the internet", e);
                     }
                 });
+
     }
 
 
-    public boolean updateEvent(String eventID, Event event){
-        return false;
+    public void updateEvent(Event eventInfo){
+        String eventId= eventInfo.getId();
+        ArrayList<AttendeeListFireBaseHolder> attendeeList = new ArrayList<>();
+        for (int i = 0; i < eventInfo.getAttendees().size(); i++){
+            AttendeeListFireBaseHolder attendee = new AttendeeListFireBaseHolder(
+                    eventInfo.getAttendees().get(i).getUserID(),
+                    eventInfo.getAttendees().get(i).getCheckIn());
+            attendeeList.add(attendee);
+        }
+        EventFireBaseHolder event = new EventFireBaseHolder(
+                eventInfo.getAnnouncement(),
+                eventInfo.getDescription(),
+                eventInfo.getEventCode(),
+                eventId,
+                eventInfo.getOrganizer().getUser().getId(),
+                eventInfo.getPosterCode(),
+                eventInfo.getTitle(),
+                attendeeList);
+        this.collectionName.document(eventId).set(eventInfo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                    }
+                });
+
     }
 
 

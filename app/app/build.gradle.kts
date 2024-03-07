@@ -57,4 +57,6 @@ dependencies {
     implementation ("com.github.androidmads:QRGenerator:1.0.1")
     implementation("com.journeyapps:zxing-android-embedded:4.2.0")
 
+    // Image picker dependencies
+
 }

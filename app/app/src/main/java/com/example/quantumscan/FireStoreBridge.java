@@ -1,4 +1,6 @@
-package com.example.quantumscan;import static android.content.ContentValues.TAG;
+package com.example.quantumscan;
+
+import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 

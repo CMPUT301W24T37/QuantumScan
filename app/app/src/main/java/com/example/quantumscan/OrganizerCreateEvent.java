@@ -51,7 +51,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
         String nameText;
         String infoText;
-        String idText;
+        //String idText;
 
         selectImage = new SelectImage(this, activityResultLauncher);
         buttonPickImage.setOnClickListener(v -> selectImage.pickImage());

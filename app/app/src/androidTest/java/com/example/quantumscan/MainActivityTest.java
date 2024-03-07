@@ -120,5 +120,5 @@ public class MainActivityTest {
         // Check if we are in the Organizer menu
         this.checkIfOrganizerPage();
     }
-    
+
 }

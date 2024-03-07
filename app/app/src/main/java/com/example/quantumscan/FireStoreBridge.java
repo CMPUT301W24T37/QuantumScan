@@ -228,7 +228,9 @@ public class FireStoreBridge {
         for (int i = 0; i < eventInfo.getAttendees().size(); i++){
             AttendeeListFireBaseHolder attendee = new AttendeeListFireBaseHolder(
                     eventInfo.getAttendees().get(i).getUserID(),
-                    eventInfo.getAttendees().get(i).getCheckIn());
+                    eventInfo.getAttendees().get(i).getCheckIn(),
+                    eventInfo.getAttendees().get(i).getUserName(),
+                    eventInfo.getAttendees().get(i).getCheckInAccount());
             attendeeList.add(attendee);
         }
         EventFireBaseHolder event = new EventFireBaseHolder(

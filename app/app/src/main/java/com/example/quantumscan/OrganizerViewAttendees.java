@@ -31,11 +31,14 @@ public class OrganizerViewAttendees extends AppCompatActivity {
         String eventName = getIntent().getStringExtra("eventName");
         titleView.setText(eventName);
 
-        String []attendees ={"Austin", "ZhiYang", "Wei","David","Karl","Kaining"};
+        //String []attendees ={"Austin", "ZhiYang", "Wei","David","Karl","Kaining"};
         dataList = new ArrayList<>();
-        dataList.addAll(Arrays.asList(attendees));
+        //dataList.addAll(Arrays.asList(attendees));
         eventAdapter = new ArrayAdapter<>(this, R.layout.attendee_list_content, dataList);
         eventListView.setAdapter(eventAdapter);
+
+
+
 
 
 

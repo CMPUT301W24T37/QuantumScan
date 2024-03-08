@@ -32,7 +32,9 @@ public class Attendee {
     private Boolean checkIn = false;
 
 
-
+    /**
+     * int - account how many times the {@link Attendee} has checked in
+     */
     private int checkInAccount;
 
     // Constructors
@@ -50,14 +52,29 @@ public class Attendee {
     }
 
     // Setters and Getters
+
+    /**
+     * This returns how many times the {@link Attendee} has checked in the {@link Event}
+     * @return int - the times an has {@link Attendee} checked in the {@link Event}
+     */
     public int getCheckInAccount() {
         return checkInAccount;
     }
 
+    /**
+     * This takes an int and set it as the times that an {@link Attendee} has checked in the {@link Event}
+     * @param checkInAccount int - how many times the {@link Attendee} has checked in the {@link Event}
+     */
     public void setCheckInAccount(int checkInAccount) {
         this.checkInAccount = checkInAccount;
     }
-  
+
+    /**
+     * This returns whether an {@link Attendee} has checked in the {@link Event}
+     * @return {@link String} - indicate whether the {@link Attendee} has checked in<br>
+     * True - The {@link Attendee} has checked in the {@link Event}<br>
+     * False - The {@link Attendee} has not checked in the {@link Event}
+     */
     public Boolean getCheckIn() {
         return checkIn;
     }

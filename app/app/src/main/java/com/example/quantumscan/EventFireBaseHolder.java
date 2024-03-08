@@ -9,7 +9,7 @@ public class EventFireBaseHolder {
     private String organizer;
     private String posterCode;
     private String title;
-
+    private String description;
     public EventFireBaseHolder() {
         this.announcements = new ArrayList<>();
         this.description = "description";
@@ -31,7 +31,7 @@ public class EventFireBaseHolder {
 
     }
 
-    private String description;
+
 
     public ArrayList<String> getAnnouncements() {
         return announcements;

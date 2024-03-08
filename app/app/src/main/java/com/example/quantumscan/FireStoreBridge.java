@@ -31,11 +31,11 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         this.query = this.collectionName;
 
     }
-    private FirebaseFirestore getDb() {
+    public FirebaseFirestore getDb() {
         return db;
     }
 
-    private CollectionReference getCollectionName() {
+    public CollectionReference getCollectionName() {
         return collectionName;
     }
 
@@ -204,8 +204,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     }
 
     public void updateUser(User user){
-
-
         String userID = user.getId();
         this.collectionName.document(userID)
                 .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -78,6 +78,7 @@ public class ProfileFragment extends Fragment {
             info =  userUniversity.getText().toString();
 
 
+
             dialog.dismiss(); // Close the dialog
         });
 

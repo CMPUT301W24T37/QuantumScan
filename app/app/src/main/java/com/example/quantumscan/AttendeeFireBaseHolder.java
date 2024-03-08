@@ -1,7 +1,7 @@
 package com.example.quantumscan;
 
 public class AttendeeFireBaseHolder {
-    // TODO: 这是垃圾 但请不要删
+    // TODO: This is dogshit, but do not delete it
     private boolean checkInStatus;
     public AttendeeFireBaseHolder(String attendeeId, boolean checkInStatus) {
         this.attendeeId = attendeeId;

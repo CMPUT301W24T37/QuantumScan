@@ -53,8 +53,8 @@ public class EventInformationFragment extends Fragment {
                 // Assuming Event class has fields matching Firestore document
                 Event event = documentSnapshot.toObject(Event.class);
                 if (event != null) {
-                    textViewEventTitle.setText(event.getTitle());// 读取 title 显示在xml的 textViewEventTitle的位置
-                    textViewEventDescription.setText(event.getDescription());//读取 description显示在xml的 textViewEventDescription的位置
+                    textViewEventTitle.setText(event.getTitle()); // Load the display location of the title which is  in the textViewEventTitle.xml
+                    textViewEventDescription.setText(event.getDescription()); //  Load the display location of the description which is  in the textViewEventDescription.xml
                 }
             } else {
                 // Handle the case where the event doesn't exist

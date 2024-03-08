@@ -18,9 +18,10 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 /**
- * 在Attendee_Eventpage.java. Attendee_Eventpage.java你需要创建三个功能“View Information”
- * “Recive Notification”和“Scan QR-code”  点击 View Information里可以查看事件的信息
- * click Recive Notification接收通知和 click Scan QR-code for check in
+ * In Attendee_Eventpage.java. Attendee_Eventpage.java you need to create three functions "View Information", "Recive Notification "Recive Notification" and "Scan QR-code".
+ * Click View Information to view the event information.
+ * Click Recive Notification to receive notifications
+ * Click on Scan QR-code for check in.
  */
 
 public class AttendeeEventPage extends AppCompatActivity {
@@ -39,11 +40,11 @@ public class AttendeeEventPage extends AppCompatActivity {
         setContentView(R.layout.activity_attendee_eventpage);
 
         eventId = getIntent().getStringExtra("event_id");
-        View btnViewInfo = findViewById(R.id.btnViewInformation);//主界面View Information
+        View btnViewInfo = findViewById(R.id.btnViewInformation);//Main Activity??or main menu? View Information
 
-        View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);//主界面ReceiveNotification
+        View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);//Main Activity??or main menu? ReceiveNotification
 
-        View btnScanQRCode = findViewById(R.id.btnScanQRCode);//主界面ScanQRCode
+        View btnScanQRCode = findViewById(R.id.btnScanQRCode);//Main Activity??or main menu? ScanQRCode
 
 
 
@@ -53,7 +54,7 @@ public class AttendeeEventPage extends AppCompatActivity {
         btnScanQRCode.setOnClickListener(view -> switchToScanQRCode());// Set up the "btnScanQRCode" button
     }
 
-    private void switchToDetailsView() {//这个view information的界面连接到textview.xml每个组件
+    private void switchToDetailsView() { //  This view information interface?or menu connects to each component of textview.xml.
 
         setContentView(R.layout.textview);
 
@@ -68,7 +69,7 @@ public class AttendeeEventPage extends AppCompatActivity {
     }
 
 
-    private void switchToNotificationView() {//这个Receive Notification的界面.xml每个组件
+    private void switchToNotificationView() { //  This receives every component of the notification page/interface/menu? (.xml)
         // Switch to the notification view
         //setContentView(R.layout.notification_view);
 
@@ -81,14 +82,14 @@ public class AttendeeEventPage extends AppCompatActivity {
     }
 
 
-    private void switchToScanQRCode() {//这个的界面链接到ScanQRCode.xml每个组件
+    private void switchToScanQRCode() { //  The page of this connects to every component of theScanQRCode.xml
 
     }
 
     private void switchToMainView() {
         // Switch back to the main view
         setContentView(R.layout.activity_attendee_eventpage);
-        // Re-bind the button since we've switched the layout重新捆绑按钮
+        // Re-bind the button since we've switched the layout
         View btnViewInfo = findViewById(R.id.btnViewInformation);
         btnViewInfo.setOnClickListener(view -> switchToDetailsView());
         Button btnReturn = findViewById(R.id.btnReturn);

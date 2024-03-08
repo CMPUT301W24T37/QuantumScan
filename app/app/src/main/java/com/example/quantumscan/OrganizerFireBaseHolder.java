@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class OrganizerFireBaseHolder {
-    // TODO: 这是垃圾 但请不要删
+    // TODO: This is dogshit, but do not delete it
 
     private String organizerID;
     private ArrayList<AttendeeFireBaseHolder> attendeeList = new ArrayList<>();

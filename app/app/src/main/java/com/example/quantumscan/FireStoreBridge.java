@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,11 +32,11 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         this.query = this.collectionName;
 
     }
-    private FirebaseFirestore getDb() {
+    public FirebaseFirestore getDb() {
         return db;
     }
 
-    private CollectionReference getCollectionName() {
+    public CollectionReference getCollectionName() {
         return collectionName;
     }
 
@@ -204,8 +205,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     }
 
     public void updateUser(User user){
-
-
         String userID = user.getId();
         this.collectionName.document(userID)
                 .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -247,7 +246,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 organizerID,
                 eventInfo.getPosterCode(),
                 eventInfo.getTitle());
-        System.out.println("uploading");
+        this.updateEventHelper(eventId, organizerID);
         this.collectionName.document(eventId).set(event)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
 
@@ -262,12 +261,28 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         System.out.println("event upload failed");
                     }
                 });
+        
 
-        // check if this
-        System.out.println("uploading");
+
 
     }
+    private void updateEventHelper(String eventID, String organizerID){
+        CollectionReference userCollection = this.getDb().collection("USER");
+        userCollection.document(organizerID).update("organizerRoles", FieldValue.arrayUnion(eventID))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                    }
+                });;
 
+    }
     public void updateEventDescription(String eventId, String description){
 
         this.collectionName.document(eventId).update("description", description)

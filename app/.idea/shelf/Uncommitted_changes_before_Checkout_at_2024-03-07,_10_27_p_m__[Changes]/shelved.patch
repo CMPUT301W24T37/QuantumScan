@@ -1,0 +1,43 @@
+Index: app/src/main/java/com/example/quantumscan/SelectImage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.quantumscan;\n\nimport android.app.Activity;\nimport android.content.Intent;\nimport android.graphics.Bitmap;\nimport android.net.Uri;\nimport android.widget.Toast;\n\nimport androidx.activity.result.ActivityResultCallback;\nimport androidx.activity.result.ActivityResultLauncher;\nimport androidx.activity.result.contract.ActivityResultContracts;\n\npublic class SelectImage {\n    private final Activity activity;\n    private final ActivityResultLauncher<Intent> activityResultLauncher;\n\n    public SelectImage(Activity activity, ActivityResultLauncher<Intent> activityResultLauncher) {\n        this.activity = activity;\n        this.activityResultLauncher = activityResultLauncher;\n    }\n\n    public void pickImage() {\n        Intent intent = new Intent(Intent.ACTION_PICK);\n        intent.setType(\"image/*\");\n        activityResultLauncher.launch(intent);\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/quantumscan/SelectImage.java b/app/src/main/java/com/example/quantumscan/SelectImage.java
+--- a/app/src/main/java/com/example/quantumscan/SelectImage.java	(revision 23065c595ff8eed454e439e016abc7ff5a285731)
++++ b/app/src/main/java/com/example/quantumscan/SelectImage.java	(date 1709863215500)
+@@ -20,6 +20,7 @@
+     }
+ 
+     public void pickImage() {
++
+         Intent intent = new Intent(Intent.ACTION_PICK);
+         intent.setType("image/*");
+         activityResultLauncher.launch(intent);
+Index: .idea/deploymentTargetDropDown.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"deploymentTargetDropDown\">\n    <value>\n      <entry key=\"app\">\n        <State>\n          <targetSelectedWithDropDown>\n            <Target>\n              <type value=\"QUICK_BOOT_TARGET\" />\n              <deviceKey>\n                <Key>\n                  <type value=\"VIRTUAL_DEVICE_PATH\" />\n                  <value value=\"$USER_HOME$/.android/avd/Pixel_3a_API_34_extension_level_7_arm64-v8a.avd\" />\n                </Key>\n              </deviceKey>\n            </Target>\n          </targetSelectedWithDropDown>\n          <timeTargetWasSelectedWithDropDown value=\"2024-03-07T06:20:12.158644Z\" />\n        </State>\n      </entry>\n    </value>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+--- a/.idea/deploymentTargetDropDown.xml	(revision 23065c595ff8eed454e439e016abc7ff5a285731)
++++ b/.idea/deploymentTargetDropDown.xml	(date 1709861853209)
+@@ -10,12 +10,12 @@
+               <deviceKey>
+                 <Key>
+                   <type value="VIRTUAL_DEVICE_PATH" />
+-                  <value value="$USER_HOME$/.android/avd/Pixel_3a_API_34_extension_level_7_arm64-v8a.avd" />
++                  <value value="$USER_HOME$/.android/avd/Pixel_2_XL_API_34.avd" />
+                 </Key>
+               </deviceKey>
+             </Target>
+           </targetSelectedWithDropDown>
+-          <timeTargetWasSelectedWithDropDown value="2024-03-07T06:20:12.158644Z" />
++          <timeTargetWasSelectedWithDropDown value="2024-03-08T01:37:29.319537Z" />
+         </State>
+       </entry>
+     </value>

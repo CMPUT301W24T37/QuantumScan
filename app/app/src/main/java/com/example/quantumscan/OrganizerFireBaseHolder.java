@@ -18,6 +18,7 @@ public class OrganizerFireBaseHolder {
 
     }
 
+
     public String getOrganizerID() {
         return organizerID;
     }

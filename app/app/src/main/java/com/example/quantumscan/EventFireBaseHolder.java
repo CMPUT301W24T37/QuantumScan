@@ -3,33 +3,42 @@ package com.example.quantumscan;
 import java.util.ArrayList;
 
 public class EventFireBaseHolder {
-    private ArrayList<String> announcement;
+    private ArrayList<String> announcements;
     private String eventCode;
     private String id;
     private String organizer;
     private String posterCode;
     private String title;
-    private ArrayList<AttendeeListFireBaseHolder> attendeeList;
 
-    public EventFireBaseHolder(ArrayList<String> announcments, String description, String eventCode, String id, String organizer, String posterCode, String title, ArrayList<AttendeeListFireBaseHolder> attendeeList) {
-        this.announcement = announcments;
+    public EventFireBaseHolder() {
+        this.announcements = new ArrayList<>();
+        this.description = "description";
+        this.eventCode = "eventCode";
+        this.id = "id";
+        this.organizer = "organizer";
+        this.posterCode = "posterCode";
+        this.title = "title";
+
+    }
+    public EventFireBaseHolder(ArrayList<String> announcements, String description, String eventCode, String id, String organizer, String posterCode, String title) {
+        this.announcements = announcements;
         this.description = description;
         this.eventCode = eventCode;
         this.id = id;
         this.organizer = organizer;
         this.posterCode = posterCode;
         this.title = title;
-        this.attendeeList = attendeeList;
+
     }
 
     private String description;
 
-    public ArrayList<String> getAnnouncement() {
-        return announcement;
+    public ArrayList<String> getAnnouncements() {
+        return announcements;
     }
 
-    public void setAnnouncement(ArrayList<String> announcement) {
-        this.announcement = announcement;
+    public void setAnnouncements(ArrayList<String> announcements) {
+        this.announcements = announcements;
     }
 
     public String getDescription() {
@@ -80,13 +89,6 @@ public class EventFireBaseHolder {
         this.title = title;
     }
 
-    public ArrayList<AttendeeListFireBaseHolder> getAttendeeList() {
-        return attendeeList;
-    }
-
-    public void setAttendeeList(ArrayList<AttendeeListFireBaseHolder> attendeeList) {
-        this.attendeeList = attendeeList;
-    }
 
 
 

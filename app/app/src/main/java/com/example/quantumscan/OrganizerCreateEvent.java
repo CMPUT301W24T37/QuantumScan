@@ -71,20 +71,15 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // Reading text from EditText
+
                 String nameText = editTextName.getText().toString();
                 String infoText = editTextInfo.getText().toString();
-                System.out.println("-++--------------------------");
-
                 Event newEvent = new Event();
-                //String userID = Settings.Secure.getString(this.context.getContentResolver(), Settings.Secure.ANDROID_ID);
-                newEvent.EventIdGenerator("uyiuyui");
+                newEvent.EventIdGenerator("uyiuyui"); //TODO: properly get user id
                 newEvent.setDescription(infoText);
                 newEvent.setTitle(nameText);
-                fb.updateEvent(newEvent, "uyiuyui");
-                System.out.println("---------------------------");
-                //finish();
-
+                fb.updateEvent(newEvent,"uyiuyui"); //TODO: you just need to pass in newEvent and userid as parameter
+                finish();
 
             }
 

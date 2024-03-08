@@ -18,6 +18,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
     private SelectImage selectImage;
     private Uri imageUri = null;
+    private String userID = "1658f5315ca1a74d";
     private FireStoreBridge fb  = new FireStoreBridge("EVENT");;
 
     // Create an ActivityResultLauncher instance directly within the Activity
@@ -77,10 +78,10 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 String nameText = editTextName.getText().toString();
                 String infoText = editTextInfo.getText().toString();
                 Event newEvent = new Event();
-                newEvent.EventIdGenerator("uyiuyui"); //TODO: properly get user id
+                newEvent.EventIdGenerator(userID); //TODO: properly get user id
                 newEvent.setDescription(infoText);
                 newEvent.setTitle(nameText);
-                fb.updateEvent(newEvent,"uyiuyui"); //TODO: you just need to pass in newEvent and userid as parameter
+                fb.updateEvent(newEvent,userID); //TODO: you just need to pass in newEvent and userid as parameter
                 finish();
 
             }

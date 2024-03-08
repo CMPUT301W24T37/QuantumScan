@@ -82,6 +82,11 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 newEvent.setDescription(infoText);
                 newEvent.setTitle(nameText);
                 fb.updateEvent(newEvent,userID);
+
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("eventID", newEvent.getId());
+                returnIntent.putExtra("eventName", newEvent.getTitle());
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
 
             }

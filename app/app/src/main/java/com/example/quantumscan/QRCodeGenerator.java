@@ -11,12 +11,24 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.io.ByteArrayOutputStream;
 
+/**
+ * This class provides utility methods to generate a QR code
+ */
+
 // get Bitmap, this Bitmap can be used in imageView.setImageBitmap(bitmap); to display
 // Bitmap qrCodeBitmap = QRCodeHelper.generateQRCodeBitmap("sample text", 250, 250);
 // imageView.setImageBitmap(bitmap)
 
-// REFERENCE CODE LINK: https://stackoverflow.com/questions/8800919/how-to-generate-a-qr-code-for-an-android-application
 public class QRCodeGenerator {
+
+    /**
+     * Generated Bitmap format of QRCode. this Bitmap can be used in imageView.setImageBitmap(bitmap); to display
+     * @param text The text is the EventID
+     * @param width The needed width of QRCode in application
+     * @param height The needed height of QRCode in application
+     * @return A bitmap representing the QR Code for the given text.
+     */
+    // REFERENCE CODE LINK: https://stackoverflow.com/questions/8800919/how-to-generate-a-qr-code-for-an-android-application
     public static Bitmap generateQRCodeBitmap(String text, int width, int height){
         QRCodeWriter writer = new QRCodeWriter();
         BitMatrix bitMatrix = null;
@@ -34,7 +46,12 @@ public class QRCodeGenerator {
         return bitmap;
     }
 
-    // transfer bitmap to base64 format, this format can be stored in firestore
+    /**
+     * transfer bitmap to base64 format, this format can be stored in firestore
+     *
+     * @param bitmap The bitmap format to be converted to base64.
+     * @return A Base64-encoded string representation of the bitmap.
+     */
     // String base64Image = QRCodeHelper.bitmapToBase64(qrCodeBitmap);
     // REFERENCE CODE LINK: https://stackoverflow.com/questions/9224056/android-bitmap-to-base64-string
     public static String bitmapToBase64(Bitmap bitmap){
@@ -45,6 +62,11 @@ public class QRCodeGenerator {
         return base64Image;
     }
 
+    /**
+     * after take base64 string from firestore, this function transfer base64 to bitmap format, then can be displayed.
+     * @param base64Str base64 format of QRCode ready to convert to bitmap for imageView
+     * @return bitmap of QRCode
+     */
     // after take base64 string from firestore, this function transfer base64 to bitmap format, then can be displayed.
     // Bitmap decodedBitmap = QRCodeHelper.base64ToBitmap(base64Image);
     // imageView.setImageBitmap(bitmap)

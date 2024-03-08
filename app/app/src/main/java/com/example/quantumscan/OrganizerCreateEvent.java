@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
     private SelectImage selectImage;
     private Uri imageUri = null;
+    private FireStoreBridge fb  = new FireStoreBridge("EVENT");;
 
     // Create an ActivityResultLauncher instance directly within the Activity
 
@@ -63,7 +65,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                    finish();
             }
         });
 
@@ -72,7 +74,16 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 // Reading text from EditText
                 String nameText = editTextName.getText().toString();
                 String infoText = editTextInfo.getText().toString();
-                String idText = editTextID.getText().toString();
+                System.out.println("-++--------------------------");
+
+                Event newEvent = new Event();
+                //String userID = Settings.Secure.getString(this.context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                newEvent.EventIdGenerator("uyiuyui");
+                newEvent.setDescription(infoText);
+                newEvent.setTitle(nameText);
+                fb.updateEvent(newEvent, "uyiuyui");
+                System.out.println("---------------------------");
+                //finish();
 
 
             }

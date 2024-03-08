@@ -224,7 +224,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     }
 
 
-    public void updateEvent(Event eventInfo){
+    public void updateEvent(Event eventInfo, String organizerId){
         String eventId= eventInfo.getId();
         ArrayList<AttendeeListFireBaseHolder> attendeeList = new ArrayList<>();
         for (int i = 0; i < eventInfo.getAttendees().size(); i++){
@@ -234,13 +234,13 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     eventInfo.getAttendees().get(i).getUserName(),
                     eventInfo.getAttendees().get(i).getCheckInAccount());
             attendeeList.add(attendee);
-        }//eventInfo.getOrganizer().getUser().getId()
+        }//eventInfo.getOrganizer().getUser().getId() eventInfo.getOrganizer().getUser().getId()
         EventFireBaseHolder event = new EventFireBaseHolder(
                 eventInfo.getAnnouncement(),
                 eventInfo.getDescription(),
                 eventInfo.getEventCode(),
                 eventId,
-                eventInfo.getOrganizer().getUser().getId(),
+                organizerId,
                 eventInfo.getPosterCode(),
                 eventInfo.getTitle(),
                 attendeeList);

@@ -25,13 +25,15 @@ public class OrganizerCreateEvent extends AppCompatActivity {
     public interface imageUrlUploadListener{
         void updateEventImage(String eventId, String imageURL);
     }
+
+    // REFERENCE CODE LINK: https://github.com/Everyday-Programmer/Upload-Image-to-Firebase-Android/blob/main/app/src/main/java/com/example/uploadimagefirebase/MainActivity.java
     private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     imageUri = result.getData().getData();
                     System.out.println(imageUri);
                     // Handle the imageUri, e.g., display it or prepare it for upload
-                    // Optionally, notify other parts of your app about the selected image
+
                         imageUrlUploadListener listener = null;
                         listener.updateEventImage("asdf", imageUri.toString());
                 } else {

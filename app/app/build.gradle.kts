@@ -59,4 +59,7 @@ dependencies {
 
     // Image picker dependencies
 
+    // FireStore Test
+    implementation ("org.mockito:mockito-core:4.0.0")
+
 }

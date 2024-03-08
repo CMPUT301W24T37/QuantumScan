@@ -224,8 +224,12 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     }
 
 
-    public void updateEvent(Event eventInfo, String organizerId){
+    public void updateEvent(Event eventInfo, String organizerID){
+        // get event id
         String eventId= eventInfo.getId();
+        System.out.println(eventId);
+
+        // create an attendeeList that will be added to organizer <both are firebase holder>
         ArrayList<AttendeeListFireBaseHolder> attendeeList = new ArrayList<>();
         for (int i = 0; i < eventInfo.getAttendees().size(); i++){
             AttendeeListFireBaseHolder attendee = new AttendeeListFireBaseHolder(
@@ -240,25 +244,30 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 eventInfo.getDescription(),
                 eventInfo.getEventCode(),
                 eventId,
-                organizerId,
+                organizerID,
                 eventInfo.getPosterCode(),
-                eventInfo.getTitle(),
-                attendeeList);
-        this.collectionName.document(eventId).set(eventInfo)
+                eventInfo.getTitle());
+        System.out.println("uploading");
+        this.collectionName.document(eventId).set(event)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
+
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Welcome !");
+                        System.out.println("event upload successfully");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                        System.out.println("event upload failed");
                     }
                 });
 
+        // check if this
+        System.out.println("uploading");
+
     }
+
     public void updateEventDescription(String eventId, String description){
 
         this.collectionName.document(eventId).update("description", description)

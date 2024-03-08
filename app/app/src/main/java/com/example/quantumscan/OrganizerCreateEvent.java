@@ -31,7 +31,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                     imageUri = result.getData().getData();
                     System.out.println(imageUri);
                     // Handle the imageUri, e.g., display it or prepare it for upload
-                    // Optionally, notify other parts of your app about the selected image
+
                         imageUrlUploadListener listener = null;
                         listener.updateEventImage("asdf", imageUri.toString());
                 } else {

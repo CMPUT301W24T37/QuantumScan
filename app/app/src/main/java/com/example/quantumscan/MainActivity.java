@@ -15,6 +15,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         replaceFragment(new OrganizerFragment());
         DataHolder.getInstance().setEvents();
+        // auth
 
         binding.bottomNavigationView.setOnItemReselectedListener(item -> {
             if(item.getItemId() == R.id.organizer){

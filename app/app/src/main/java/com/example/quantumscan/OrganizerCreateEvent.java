@@ -78,10 +78,10 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 String nameText = editTextName.getText().toString();
                 String infoText = editTextInfo.getText().toString();
                 Event newEvent = new Event();
-                newEvent.EventIdGenerator(userID); //TODO: properly get user id
+                newEvent.EventIdGenerator(userID);
                 newEvent.setDescription(infoText);
                 newEvent.setTitle(nameText);
-                fb.updateEvent(newEvent,userID); //TODO: you just need to pass in newEvent and userid as parameter
+                fb.updateEvent(newEvent,userID);
                 finish();
 
             }

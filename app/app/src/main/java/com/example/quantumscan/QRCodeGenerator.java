@@ -52,7 +52,7 @@ public class QRCodeGenerator {
      * @param bitmap The bitmap format to be converted to base64.
      * @return A Base64-encoded string representation of the bitmap.
      */
-    // String base64Image = QRCodeHelper.bitmapToBase64(qrCodeBitmap);
+    // String base64Image = QRCodeGenerator.bitmapToBase64(qrCodeBitmap);
     // REFERENCE CODE LINK: https://stackoverflow.com/questions/9224056/android-bitmap-to-base64-string
     public static String bitmapToBase64(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -68,7 +68,7 @@ public class QRCodeGenerator {
      * @return bitmap of QRCode
      */
     // after take base64 string from firestore, this function transfer base64 to bitmap format, then can be displayed.
-    // Bitmap decodedBitmap = QRCodeHelper.base64ToBitmap(base64Image);
+    // Bitmap decodedBitmap = QRCodeGenerator.base64ToBitmap(base64Image);
     // imageView.setImageBitmap(bitmap)
     // REFERENCE CODE LINK: https://stackoverflow.com/questions/4837110/how-to-convert-a-base64-string-into-a-bitmap-image-to-show-it-in-a-imageview
     public static Bitmap base64ToBitmap(String base64Str){

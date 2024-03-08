@@ -20,6 +20,7 @@ public class SelectImage {
     }
 
     public void pickImage() {
+
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         activityResultLauncher.launch(intent);

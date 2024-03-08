@@ -254,6 +254,39 @@ public class User {
     }
 
     // Methods
+    // 6 methods below for part4
+//    public Boolean ifAlreadySignedEvent(Event event) {
+//        for (Attendee attendee : event.getAttendees()) {
+//            if (attendee.getUser() == this) {return true;}
+//        }
+//        return false;
+//    }
+//    public Boolean ifAlreadyHostingEvent(Event event) {
+//        return (event.getOrganizer().getUser() == this);
+//    }
+//
+//    public void deleteAttendeeRole(Attendee attendee) {
+//        this.attendeeRoles.remove(attendee);
+//    }
+//
+//    public void deleteOrganizerRole(Organizer organizer) {
+//        this.organizerRoles.remove(organizer);
+//    }
+//
+//    // get
+//    public Attendee getAttendeeByEvent(Event event) {
+//        for (Attendee attendee : event.getAttendees()) {
+//            if (attendee.getUser() == this) {return attendee;}
+//        }
+//        return null;
+//    }
+//
+//    public Organizer getOrganizerByEvent(Event event) {
+//        if (event.getOrganizer().getUser() == this) {
+//            return event.getOrganizer();
+//        }
+//        return null;
+//    }
 
     /**
      * This add an Attendee object (userId + eventID) into the Event's signed up attendee list

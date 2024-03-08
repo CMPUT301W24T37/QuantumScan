@@ -31,6 +31,10 @@ public class Attendee {
      */
     private Boolean checkIn = false;
 
+
+
+    private int checkInAccount;
+
     // Constructors
 
     /**
@@ -46,11 +50,14 @@ public class Attendee {
     }
 
     // Setters and Getters
+    public int getCheckInAccount() {
+        return checkInAccount;
+    }
 
-    /**
-     * This returns if {@link Attendee} has checked in the {@link Event}
-     * @return {@link Boolean}
-     */
+    public void setCheckInAccount(int checkInAccount) {
+        this.checkInAccount = checkInAccount;
+    }
+  
     public Boolean getCheckIn() {
         return checkIn;
     }

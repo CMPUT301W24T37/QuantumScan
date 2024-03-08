@@ -6,6 +6,7 @@ public class AttendeeFireBaseHolder {
     public AttendeeFireBaseHolder(String attendeeId, boolean checkInStatus) {
         this.attendeeId = attendeeId;
         this.checkInStatus = checkInStatus;
+
     }
     public AttendeeFireBaseHolder() {
 

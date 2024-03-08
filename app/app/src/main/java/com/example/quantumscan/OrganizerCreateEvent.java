@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +18,13 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
     private SelectImage selectImage;
     private Uri imageUri = null;
+    private FireStoreBridge fb  = new FireStoreBridge("EVENT");;
 
     // Create an ActivityResultLauncher instance directly within the Activity
+
+    public interface imageUrlUploadListener{
+        void updateEventImage(String eventId, String imageURL);
+    }
     private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
@@ -26,6 +32,8 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                     System.out.println(imageUri);
                     // Handle the imageUri, e.g., display it or prepare it for upload
                     // Optionally, notify other parts of your app about the selected image
+                        imageUrlUploadListener listener = null;
+                        listener.updateEventImage("asdf", imageUri.toString());
                 } else {
                     Toast.makeText(OrganizerCreateEvent.this, "Please select an image", Toast.LENGTH_SHORT).show();
                 }
@@ -45,7 +53,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
         String nameText;
         String infoText;
-        String idText;
+        //String idText;
 
         selectImage = new SelectImage(this, activityResultLauncher);
         buttonPickImage.setOnClickListener(v -> selectImage.pickImage());
@@ -57,7 +65,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                    finish();
             }
         });
 
@@ -66,7 +74,16 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 // Reading text from EditText
                 String nameText = editTextName.getText().toString();
                 String infoText = editTextInfo.getText().toString();
-                String idText = editTextID.getText().toString();
+                System.out.println("-++--------------------------");
+
+                Event newEvent = new Event();
+                //String userID = Settings.Secure.getString(this.context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                newEvent.EventIdGenerator("uyiuyui");
+                newEvent.setDescription(infoText);
+                newEvent.setTitle(nameText);
+                fb.updateEvent(newEvent, "uyiuyui");
+                System.out.println("---------------------------");
+                //finish();
 
 
             }

@@ -38,6 +38,10 @@ public class OrganizerViewAttendees extends AppCompatActivity {
         eventListView.setAdapter(eventAdapter);
 
 
+
+
+
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,4 +1,6 @@
-package com.example.quantumscan;import static android.content.ContentValues.TAG;
+package com.example.quantumscan;
+
+import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
@@ -18,7 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FireStoreBridge {
+public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListener{
     private FirebaseFirestore db;
     private CollectionReference collectionName;
     private Query query;
@@ -222,21 +224,23 @@ public class FireStoreBridge {
     }
 
 
-    public void updateEvent(Event eventInfo){
+    public void updateEvent(Event eventInfo, String organizerId){
         String eventId= eventInfo.getId();
         ArrayList<AttendeeListFireBaseHolder> attendeeList = new ArrayList<>();
         for (int i = 0; i < eventInfo.getAttendees().size(); i++){
             AttendeeListFireBaseHolder attendee = new AttendeeListFireBaseHolder(
                     eventInfo.getAttendees().get(i).getUserID(),
-                    eventInfo.getAttendees().get(i).getCheckIn());
+                    eventInfo.getAttendees().get(i).getCheckIn(),
+                    eventInfo.getAttendees().get(i).getUserName(),
+                    eventInfo.getAttendees().get(i).getCheckInAccount());
             attendeeList.add(attendee);
-        }
+        }//eventInfo.getOrganizer().getUser().getId() eventInfo.getOrganizer().getUser().getId()
         EventFireBaseHolder event = new EventFireBaseHolder(
                 eventInfo.getAnnouncement(),
                 eventInfo.getDescription(),
                 eventInfo.getEventCode(),
                 eventId,
-                eventInfo.getOrganizer().getUser().getId(),
+                organizerId,
                 eventInfo.getPosterCode(),
                 eventInfo.getTitle(),
                 attendeeList);
@@ -255,7 +259,36 @@ public class FireStoreBridge {
                 });
 
     }
+    public void updateEventDescription(String eventId, String description){
 
+        this.collectionName.document(eventId).update("description", description)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                    }
+                });
+    }
+    @Override
+    public void updateEventImage(String eventId, String imageURL){
+        this.collectionName.document(eventId).update("posterCode", imageURL).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                    }
+                });
 
-
+    }
 }

@@ -204,8 +204,9 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 });
     }
 
-    public void updateUser(User user){
+    public void updateUser(UserFireBaseHolder user){
         String userID = user.getId();
+
         this.collectionName.document(userID)
                 .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

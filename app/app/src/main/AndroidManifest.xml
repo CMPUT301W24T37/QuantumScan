@@ -2,14 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +21,10 @@
         android:theme="@style/Theme.QuantumScan"
         tools:targetApi="31">
         <activity
+            android:name=".UserProfileFileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.QuantumScan" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -30,19 +33,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".OrganizerCreateEvent"/>
-        <activity android:name=".OrganizerEventPage"/>
-        <activity android:name=".OrganizerEventInfo"/>
-        <activity android:name=".OrganizerViewAttendees"/>
-        <activity android:name=".OrganizerEventShare"/>
-        <activity android:name=".OrganizerUpdatePoster"/>
-
+        <activity android:name=".OrganizerCreateEvent" />
+        <activity android:name=".OrganizerEventPage" />
+        <activity android:name=".OrganizerEventInfo" />
+        <activity android:name=".OrganizerViewAttendees" />
+        <activity android:name=".OrganizerEventShare" />
+        <activity android:name=".OrganizerUpdatePoster" />
         <activity
             android:name=".AttendeeEventPage"
-            android:exported="true"/>
-
-
+            android:exported="true" />
     </application>
 
 </manifest>

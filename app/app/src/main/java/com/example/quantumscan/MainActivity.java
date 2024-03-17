@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         // authentication start
         String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         FireStoreBridge fb = new FireStoreBridge("USER");
-        System.out.println(userID + " ========================================================== ");
         fb.retrieveUser(userID, new FireStoreBridge.OnUserRetrievedListener() {
             @Override
             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {

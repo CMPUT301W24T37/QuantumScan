@@ -6,52 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".AttendeeFragment">
 
-    <LinearLayout
-        android:id="@+id/buttonScanQR"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="72dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/scan_qr_code"
-            android:src="@drawable/img" />
+        <LinearLayout
+            android:id="@+id/buttonScanQR"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="72dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/scan_qr_code"
+                android:src="@drawable/img" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_qr_code_for_information"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/textViewEventsAttend"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/scan_qr_code_for_information"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-    </LinearLayout>
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:text="@string/events_i_attend"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintTop_toBottomOf="@+id/buttonScanQR" />
 
-    <TextView
-        android:id="@+id/textViewEventsAttend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="152dp"
-        android:paddingStart="16dp"
-        android:gravity="start|center_vertical"
-        android:text="@string/events_i_attend"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <ListView
+            android:id="@+id/attendeeEventList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="singleChoice"
+            android:listSelector="#999999"
+            app:layout_constraintTop_toBottomOf="@+id/textViewEventsAttend">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewEvents"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="184dp"
-        android:paddingBottom="60dp"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </ListView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

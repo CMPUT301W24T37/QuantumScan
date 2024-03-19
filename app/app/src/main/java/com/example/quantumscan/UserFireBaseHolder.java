@@ -2,35 +2,17 @@ package com.example.quantumscan;
 
 import java.util.ArrayList;
 
-/*
-    Todo: 1. implement Firestore/Firebase code. (currently only local)
-          2. complete other needed features of the class
- */
-
-
-// Important note before you calling User()!
-// Do not call User's constructors directly if you wanna a new user, call the method in Authentication's accountCreation() to create a new User!
-// Meaning: the caller of User constructors should be responsible for generating an unique user id.
-/**
- * Represent one single user.
- * @author Austin, Wei
- * @see Attendee
- * @see Organizer
- * @version 0.0.00001
- */
-public class User {
+public class UserFireBaseHolder {
     /**
      * {@link String} - The user id
      */
     private String id;
     /**
-     * {@link ArrayList<Attendee>} - The ArrayList that contain Attendee objects, representing a user signed up as an Attendee of one Event
+     * {@link ArrayList <Attendee>} - The ArrayList that contain Attendee objects, representing a user signed up as an Attendee of one Event
      */
-    private ArrayList<Attendee> attendeeRoles;
-    /**
-     * {@link ArrayList<Organizer>} - The ArrayList that contain Organizer objects, representing a user host a new Event as an Organizer
-     */
-    private ArrayList<Organizer> organizerRoles;
+    private ArrayList<String> attendeeRoles;
+
+    private ArrayList<String> organizerRoles;
     /**
      * {@link String} - The user name
      */
@@ -63,7 +45,7 @@ public class User {
      * @param profilePicture {@link String} - the profile picture of the user
      * @param email {@link String} - the email of the user
      */
-    public User(String name, String phone, String university, String profilePicture, String email) {
+    public UserFireBaseHolder(String name, String phone, String university, String profilePicture, String email) {
         this.id = "PLACE_HOLDER";  // this will be changed in somewhere else, so just level it there
         this.attendeeRoles = new ArrayList<>();
         this.organizerRoles = new ArrayList<>();
@@ -74,52 +56,10 @@ public class User {
         this.email = email;
     }
 
-    /**
-     * User Constructor
-     * @param userId {@link String} - the unique id of the user
-     * @param name {@link String} - the name of the user
-     * @param profilePicture {@link String} - the profile picture of the user
-     */
-    public User(String userId, String name, String profilePicture) {
-        this.id = userId;
-        this.attendeeRoles = new ArrayList<Attendee>();
-        this.organizerRoles = new ArrayList<Organizer>();
-        this.name = name;
-        this.profilePicture = profilePicture;
-    }
-
-    /**
-     * User Constructor
-     * @param userId {@link String} - the unique id of the user
-     * @param name {@link String} - the name of the user
-     */
-    public User(String userId, String name) {
-        this.id = userId;
-        this.attendeeRoles = new ArrayList<Attendee>();
-        this.organizerRoles = new ArrayList<Organizer>();
-        this.name = name;
-        this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
-    }
-
-    /**
-     * User Constructor
-     * @param userId {@link String} - the unique id of the user
-     */
-    public User(String userId) {
-        this.id = userId;
-        this.attendeeRoles = new ArrayList<Attendee>();
-        this.organizerRoles = new ArrayList<Organizer>();
-        this.name = "New User";  // default user name
-        this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
-    }
-
-    /**
-     * User Constructor
-     */
-    public User() {
+    public UserFireBaseHolder() {
         this.id = "PLACE_HOLDER";
-        this.attendeeRoles = new ArrayList<Attendee>();
-        this.organizerRoles = new ArrayList<Organizer>();
+        this.attendeeRoles = new ArrayList<String>();
+        this.organizerRoles = new ArrayList<String>();
         this.name = "New User";  // default user name
         this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
     }
@@ -146,7 +86,7 @@ public class User {
      * This returns the {@link ArrayList<Attendee>} of the User
      * @return {@link ArrayList<Attendee>} The ArrayList of the Attendee
      */
-    public ArrayList<Attendee> getAttendeeRoles() {
+    public ArrayList<String> getAttendeeRoles() {
         return attendeeRoles;
     }
 
@@ -154,7 +94,7 @@ public class User {
      * takes a {@link ArrayList<Attendee>} and set it as the user's attendees list
      * @param attendeeRoles {@link ArrayList<Attendee>} The ArrayList of the Attendee
      */
-    public void setAttendeeRoles(ArrayList<Attendee> attendeeRoles) {
+    public void setAttendeeRoles(ArrayList<String> attendeeRoles) {
         this.attendeeRoles = attendeeRoles;
     }
 
@@ -162,7 +102,7 @@ public class User {
      * This returns the {@link ArrayList<Organizer>} of the User
      * @return {@link ArrayList<Organizer>} The ArrayList of the Organizer
      */
-    public ArrayList<Organizer> getOrganizerRoles() {
+    public ArrayList<String> getOrganizerRoles() {
         return organizerRoles;
     }
 
@@ -170,7 +110,7 @@ public class User {
      * takes a {@link ArrayList<Organizer>} and set it as the user's Organizer list
      * @param organizerRoles {@link ArrayList<Organizer>} The ArrayList of the Organizer
      */
-    public void setOrganizerRoles(ArrayList<Organizer> organizerRoles) {
+    public void setOrganizerRoles(ArrayList<String> organizerRoles) {
         this.organizerRoles = organizerRoles;
     }
 
@@ -253,68 +193,6 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    // Methods
-    // 6 methods below for part4
-//    public Boolean ifAlreadySignedEvent(Event event) {
-//        for (Attendee attendee : event.getAttendees()) {
-//            if (attendee.getUser() == this) {return true;}
-//        }
-//        return false;
-//    }
-//    public Boolean ifAlreadyHostingEvent(Event event) {
-//        return (event.getOrganizer().getUser() == this);
-//    }
-//
-//    public void deleteAttendeeRole(Attendee attendee) {
-//        this.attendeeRoles.remove(attendee);
-//    }
-//
-//    public void deleteOrganizerRole(Organizer organizer) {
-//        this.organizerRoles.remove(organizer);
-//    }
-//
-//    // get
-//    public Attendee getAttendeeByEvent(Event event) {
-//        for (Attendee attendee : event.getAttendees()) {
-//            if (attendee.getUser() == this) {return attendee;}
-//        }
-//        return null;
-//    }
-//
-//    public Organizer getOrganizerByEvent(Event event) {
-//        if (event.getOrganizer().getUser() == this) {
-//            return event.getOrganizer();
-//        }
-//        return null;
-//    }
 
-    /**
-     * This add an Attendee object (userId + eventID) into the Event's signed up attendee list
-     * Representing the user signed up for an EXISTING specific event.
-     * @param event
-     *  Event: one specific event which has an unique event_id
-     */
-    public void addAttendeeRole(Event event) {
-        // create a new Attendee object by passing User object and Event object
-        Attendee attendee = new Attendee(this, event);
-        this.attendeeRoles.add(attendee);
-        // add the Attendee in the Event object
-        event.addAttendee(attendee);
-    }
 
-    /**
-     * This add an Organizer object in organizerRoles (userId + eventID) by creating a NEW event
-     * Representing the user hosting a new event.
-     */
-    public void addOrganizerRole() {
-        // Create a new event
-        Event event = new Event();
-        // Assign an unique ID for eventID
-        event.EventIdGenerator(this.getId());
-        // create a new Organizer object by passing User object and Event object
-        Organizer organizer = new Organizer(this, event);
-        this.organizerRoles.add(organizer);
-        // set the organizer in the Event object
-        event.setOrganizer(organizer);
-    }
 }

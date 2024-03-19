@@ -12,11 +12,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +33,11 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         this.query = this.collectionName;
 
     }
-    private FirebaseFirestore getDb() {
+    public FirebaseFirestore getDb() {
         return db;
     }
 
-    private CollectionReference getCollectionName() {
+    public CollectionReference getCollectionName() {
         return collectionName;
     }
 
@@ -51,16 +53,25 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     private interface OnEventRetrievedListenerHelper{
         void onAttendeeRetrieved(ArrayList<AttendeeFireBaseHolder> attendeeList);
     }
-
-
+    private interface OnCheckedInListener{
+        void onCheckedInListener(ArrayList<AttendeeFireBaseHolder> attendeeList);
+    }
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * @param listener a interface that contain retrieved data which is stored in a firebase holder
+     * @param userID the height of the rectangle, must be non-negative
+     */
     public void retrieveUser(String userID, OnUserRetrievedListener listener) {
         this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), userID);
-
         this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    User user = new User(null,null,null, null,null); // Create a new User object
+                    User user = new User(null,null,null, null,null);
                     ArrayList<String> attendeeRoles = new ArrayList<String>();
                     ArrayList<String> organizerRoles = new ArrayList<String>();
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
@@ -70,6 +81,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         user.setPhone(documentSnapshot.getString("phone"));
                         user.setUniversity(documentSnapshot.getString("university"));
                         user.setEmail(documentSnapshot.getString("email"));
+                        user.setId(documentSnapshot.getString("id"));
                         List<String> list1 = (List<String>) documentSnapshot.get("attendeeRoles");
                         List<String> list2 = (List<String>) documentSnapshot.get("organizerRoles");
                         attendeeRoles = (ArrayList<String>) list1;
@@ -89,6 +101,17 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
             }
         });
     }
+
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * @param listener a interface that contain retrieved data which is stored in a firebase holder
+     * @param eventId the height of the rectangle, must be non-negative
+     */
+
     public void retrieveEvent(String eventId, OnEventRetrievedListener listener){
         this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), eventId);
         this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -130,6 +153,15 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
             }
         });
     }
+
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * @param listener a interface that contain retrieved data which is stored in a firebase holder
+     * */
     public void retrieveAllEvent(OnEventRetrievedListener listener) {
         this.query = this.collectionName;
 
@@ -172,6 +204,17 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
             }
         });
     }
+
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * @param attendeeListRef a interface that contain retrieved data which is stored in a firebase holder
+     * @param organizer a interface that contain retrieved data which is stored in a firebase holder
+     *
+     * */
     private void retrieveAllEventHelper(CollectionReference attendeeListRef, OrganizerFireBaseHolder organizer){
         // TODO: This is for check in status retrieve
         /*
@@ -198,15 +241,21 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                             // Notify the listener with a null user object
 
                         }
-
                     }
                 });
     }
 
-    public void updateUser(User user){
-
-
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * @param user a interface that contain retrieved data which is stored in a firebase holder*
+     * */
+    public void updateUser(UserFireBaseHolder user){
         String userID = user.getId();
+
         this.collectionName.document(userID)
                 .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -223,7 +272,13 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
     }
 
-
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * */
     public void updateEvent(Event eventInfo, String organizerID){
         // get event id
         String eventId= eventInfo.getId();
@@ -236,7 +291,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     eventInfo.getAttendees().get(i).getUserID(),
                     eventInfo.getAttendees().get(i).getCheckIn(),
                     eventInfo.getAttendees().get(i).getUserName(),
-                    eventInfo.getAttendees().get(i).getCheckInAccount());
+                    eventInfo.getAttendees().get(i).getCheckInCount());
             attendeeList.add(attendee);
         }//eventInfo.getOrganizer().getUser().getId() eventInfo.getOrganizer().getUser().getId()
         EventFireBaseHolder event = new EventFireBaseHolder(
@@ -247,7 +302,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 organizerID,
                 eventInfo.getPosterCode(),
                 eventInfo.getTitle());
-        System.out.println("uploading");
+        this.updateEventHelper(eventId, organizerID);
         this.collectionName.document(eventId).set(event)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
 
@@ -262,12 +317,44 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         System.out.println("event upload failed");
                     }
                 });
+        
 
-        // check if this
-        System.out.println("uploading");
+
 
     }
 
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * */
+    private void updateEventHelper(String eventID, String organizerID){
+        CollectionReference userCollection = this.getDb().collection("USER");
+        userCollection.document(organizerID).update("organizerRoles", FieldValue.arrayUnion(eventID))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                    }
+                });;
+
+    }
+
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * */
     public void updateEventDescription(String eventId, String description){
 
         this.collectionName.document(eventId).update("description", description)
@@ -284,6 +371,14 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     }
                 });
     }
+
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * */
     @Override
     public void updateEventImage(String eventId, String imageURL){
         this.collectionName.document(eventId).update("posterCode", imageURL).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -300,4 +395,117 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 });
 
     }
+
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * */
+    public void updateAttendeeCheckIn(String userId, String eventId){
+        this.collectionName.document(eventId).collection("attendeeList").document(userId).update("checkedIn", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("event upload successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("event upload failed");
+                    }
+                });
+
+        this.collectionName.document(eventId).collection("attendeeList").document(userId).update("checkInCount", FieldValue.increment(1))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("event upload successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("event upload failed");
+                    }
+                });
+
+    }
+
+
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * */
+    public void retrieveAttendeeCheckIn(String eventId, OnCheckedInListener listener){
+        this.query = this.collectionName.document(eventId).collection("attendeeList");
+        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ArrayList<AttendeeFireBaseHolder> attendeeList = new ArrayList<>();
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
+                        attendee.setCheckInCount(document.getLong("checkInCount"));
+                        attendee.setName(document.getString("name"));
+                        attendee.setAttendeeId(document.getId());
+                        attendee.setCheckInStatus(document.getBoolean("checkedIn"));
+                        attendeeList.add(attendee);
+                    }
+                } else {
+
+                }
+                listener.onCheckedInListener(attendeeList);
+            }
+
+        });
+
+
+
+
+    }
+
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * */
+    public void updateAttendeeSignUp(String userId, String eventId){
+        this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), eventId);
+        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            boolean signUpResult = false;
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                    long attendeeLimit = documentSnapshot.getLong("attendeeLimit");
+                    long currentTotalAttendee = documentSnapshot.getLong("currentTotalAttendee");
+                    if (currentTotalAttendee < attendeeLimit){
+                        signUpResult = true;
+
+                    }else{
+
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    /**
+     * find user in a database:
+     * <p>
+     * This method is responsible for retrieving user information given the user id.
+     * user id should be directly obtained from the database or from the device
+     * </p>
+     * */
+    public void updateAttendeeSignUpHelper(String userId, String eventId){}
+
 }

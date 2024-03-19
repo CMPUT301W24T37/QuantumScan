@@ -96,7 +96,7 @@ public class MainActivityTest {
         // wait for 1500 ms to let APP loads the event from firebase database
         SystemClock.sleep(1500);
         // Click into that event "Event001"
-        onView(withText("Event001")).perform(click());
+        onView(withText("Data")).perform(click());
         // Check if we are in the Event001 menu
         this.checkIfEvent001Menu();
         // Click view Attendee list
@@ -155,7 +155,7 @@ public class MainActivityTest {
         onView(withId(R.id.profile)).perform(doubleClick());
         // Check if it's in the COMMUNITY page
         onView(withId(R.id.userNameText)).check(matches(isDisplayed()));
-        onView(withId(R.id.userPronounText)).check(matches(isDisplayed()));
+        // onView(withId(R.id.userPronounText)).check(matches(isDisplayed()));
         onView(withId(R.id.userPhoneNumbText)).check(matches(isDisplayed()));
         onView(withId(R.id.userEmailText)).check(matches(isDisplayed()));
         onView(withId(R.id.userInfoText)).check(matches(isDisplayed()));

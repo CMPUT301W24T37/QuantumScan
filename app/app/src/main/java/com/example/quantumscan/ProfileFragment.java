@@ -33,6 +33,7 @@ public class ProfileFragment extends Fragment {
     String phoneNumb;
     String email;
     String info;
+    private FireStoreBridge fb = new FireStoreBridge("USER");
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -76,7 +77,9 @@ public class ProfileFragment extends Fragment {
             phoneNumb =  userPhoneNumber.getText().toString();
             email = userEmail.getText().toString();
             info =  userUniversity.getText().toString();
-
+            UserFireBaseHolder user = new UserFireBaseHolder(name, phoneNumb, info, "profilePic", email);
+            user.setId("1658f5315ca1a74d");
+            fb.updateUser(user);
 
             dialog.dismiss(); // Close the dialog
         });

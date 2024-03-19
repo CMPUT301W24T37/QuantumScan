@@ -3,6 +3,7 @@
   <component name="deploymentTargetDropDown">
     <value>
       <entry key="app">
+<<<<<<< Updated upstream
         <State>
           <targetSelectedWithDropDown>
             <Target>
@@ -17,6 +18,9 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-03-08T19:57:24.611959Z" />
         </State>
+=======
+        <State />
+>>>>>>> Stashed changes
       </entry>
     </value>
   </component>

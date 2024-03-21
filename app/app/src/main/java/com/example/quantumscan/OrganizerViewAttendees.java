@@ -17,8 +17,9 @@ import java.util.Arrays;
 public class OrganizerViewAttendees extends AppCompatActivity {
 
     ListView eventListView;
-    ArrayAdapter<String> eventAdapter;
-    ArrayList<String> dataList;
+    AttendeeContentAdapter attendeeAdapter;
+    ArrayList<Attendee> dataList;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organizer_event_attendees_list);
@@ -31,11 +32,18 @@ public class OrganizerViewAttendees extends AppCompatActivity {
         String eventName = getIntent().getStringExtra("eventName");
         titleView.setText(eventName);
 
-        String []attendees ={"Austin", "ZhiYang", "Wei","David","Karl","Kaining"};
-        dataList = new ArrayList<>();
-        dataList.addAll(Arrays.asList(attendees));
-        eventAdapter = new ArrayAdapter<>(this, R.layout.attendee_list_content, dataList);
-        eventListView.setAdapter(eventAdapter);
+        //String []attendees ={"Austin", "ZhiYang", "Wei","David","Karl","Kaining"};
+
+
+        dataList = new ArrayList<Attendee>();
+        //dataList.addAll(Arrays.asList(attendees));
+        attendeeAdapter = new AttendeeContentAdapter(this, dataList);
+        eventListView.setAdapter(attendeeAdapter);
+
+
+
+
+
 
 
         backButton.setOnClickListener(new View.OnClickListener() {

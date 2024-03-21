@@ -14,17 +14,24 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.FirebaseStorage;
+
+import com.google.firebase.storage.UploadTask;
+
 public class OrganizerCreateEvent extends AppCompatActivity {
 
     private SelectImage selectImage;
     private Uri imageUri = null;
     private String userID = "1658f5315ca1a74d";
-    private FireStoreBridge fb  = new FireStoreBridge("EVENT");;
+    private FireStoreBridge fb  = new FireStoreBridge("EVENT");
+    // FirebaseStorage storage = FirebaseStorage.getInstance();
 
     // Create an ActivityResultLauncher instance directly within the Activity
 
     public interface imageUrlUploadListener{
         void updateEventImage(String eventId, String imageURL);
+        void uploadEventImage(Event newEvent ,String evenID, Uri imageURI);
     }
 
     // REFERENCE CODE LINK: https://github.com/Everyday-Programmer/Upload-Image-to-Firebase-Android/blob/main/app/src/main/java/com/example/uploadimagefirebase/MainActivity.java
@@ -35,8 +42,8 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                     System.out.println(imageUri);
                     // Handle the imageUri, e.g., display it or prepare it for upload
 
-                        imageUrlUploadListener listener = null;
-                        listener.updateEventImage("asdf", imageUri.toString());
+                        //imageUrlUploadListener listener = null;
+                        //listener.updateEventImage("asdf", imageUri.toString());
                 } else {
                     Toast.makeText(OrganizerCreateEvent.this, "Please select an image", Toast.LENGTH_SHORT).show();
                 }
@@ -60,7 +67,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
         selectImage = new SelectImage(this, activityResultLauncher);
         buttonPickImage.setOnClickListener(v -> selectImage.pickImage());
-        //System.out.println(imageUri);
+
 
 
 
@@ -74,6 +81,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                System.out.println("imageUri after pick " + imageUri);
 
                 String nameText = editTextName.getText().toString();
                 String infoText = editTextInfo.getText().toString();
@@ -81,6 +89,13 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 newEvent.EventIdGenerator(userID);
                 newEvent.setDescription(infoText);
                 newEvent.setTitle(nameText);
+
+                String EventID = newEvent.getId();
+
+                fb.uploadEventImage(newEvent, EventID, imageUri);
+
+
+
                 fb.updateEvent(newEvent,userID);
 
                 Intent returnIntent = new Intent();

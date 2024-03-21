@@ -1,14 +1,26 @@
 package com.example.quantumscan;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -24,11 +36,13 @@ public class OrganizerEventInfo extends AppCompatActivity {
         TextView infoView = findViewById(R.id.info_textView);
         EditText editText = findViewById(R.id.editText);
         Button confirmButton  = findViewById(R.id.buttonConfirm);
+        ImageView imageView = findViewById(R.id.background_imageView);
 
         String eventID = getIntent().getStringExtra("eventID");
         String eventName = getIntent().getStringExtra("eventName");
         titleView.setText(eventName);
         this.setInfo(eventID,infoView);
+        this.imageDisplay(eventID, imageView);
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -37,8 +51,6 @@ public class OrganizerEventInfo extends AppCompatActivity {
                 finish();
             }
         });
-
-
 
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +112,10 @@ public class OrganizerEventInfo extends AppCompatActivity {
                 fb_events.updateEventDescription(thisEvent.getId(), newInfo);
             }
         });
-
     }
 
+    public void imageDisplay(String EventID, ImageView imageView){
+        FireStoreBridge fb_events = new FireStoreBridge("EVENT");
+        fb_events.displayImage(EventID, imageView);
+    }
 }

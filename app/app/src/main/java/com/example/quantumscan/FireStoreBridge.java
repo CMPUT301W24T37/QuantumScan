@@ -2,7 +2,12 @@ package com.example.quantumscan;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -17,6 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -26,12 +33,13 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     private FirebaseFirestore db;
     private CollectionReference collectionName;
     private Query query;
+    private FirebaseStorage storage;
 
     public FireStoreBridge(String collectionName){
         this.db = FirebaseFirestore.getInstance();
         this.collectionName = this.db.collection(collectionName);
         this.query = this.collectionName;
-
+        this.storage = FirebaseStorage.getInstance();
     }
     public FirebaseFirestore getDb() {
         return db;
@@ -393,6 +401,31 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         Log.w(TAG, "Please try when you are connected to the internet", e);
                     }
                 });
+
+    }
+
+    @Override
+    public void uploadEventImage(Event newEvent, String evenID, Uri imageUri) {
+        StorageReference imageRef = storage.getReference().child(newEvent.getId() + ".jpg");
+        imageRef.putFile(imageUri);
+    }
+
+    public void displayImage(String EventID, ImageView imageView){
+        StorageReference islandRef = this.storage.getReference().child(EventID+".jpg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
 
     }
 

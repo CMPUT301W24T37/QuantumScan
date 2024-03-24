@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 /**
- user界面单击在RecyclerView中的加入的Event导航到Attendee_EventPage以查看事件信息、接收通知和扫描二维码登录，请执行以下步骤：
-
+ USER interface Click on the joined Event in the RecyclerView to navigate to the Attendee_EventPage
+ to view event information, receive notifications, and scan the QR code to log in, perform the
+ following steps:
  */
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {

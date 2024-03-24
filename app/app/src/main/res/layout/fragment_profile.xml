@@ -1,16 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Profile Fragment"
-        android:textSize="26dp"
-        android:layout_gravity="center"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/showInfoDialogButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userInfoText" />
+
+        <TextView
+            android:id="@+id/userNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="User Name"
+            android:textSize="26dp"
+            tools:layout_editor_absoluteX="141dp"
+            tools:layout_editor_absoluteY="348dp" />
+
+        <TextView
+            android:id="@+id/userUniversityText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="University"
+            android:textSize="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/userNameText"
+            tools:layout_editor_absoluteX="156dp" />
+        <TextView
+            android:id="@+id/userPhoneNumbText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="+1 114514"
+            android:textSize="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/userUniversityText"
+            tools:layout_editor_absoluteX="156dp" />
+        <TextView
+            android:id="@+id/userEmailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="bolin6@ualberta.ca"
+            android:textSize="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/userPhoneNumbText"
+            tools:layout_editor_absoluteX="156dp" />
+        <TextView
+            android:id="@+id/userInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="User information"
+            android:textSize="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/userEmailText"
+            tools:layout_editor_absoluteX="156dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </FrameLayout>

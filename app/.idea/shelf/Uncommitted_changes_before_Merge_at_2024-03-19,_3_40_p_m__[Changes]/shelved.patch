@@ -1,0 +1,355 @@
+Index: app/src/main/java/com/example/quantumscan/OrganizerCreateEvent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.quantumscan;\n\nimport android.app.Activity;\nimport android.content.Intent;\nimport android.net.Uri;\nimport android.os.Bundle;\nimport android.provider.Settings;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.EditText;\nimport android.widget.Toast;\n\nimport androidx.activity.result.ActivityResultLauncher;\nimport androidx.activity.result.contract.ActivityResultContracts;\nimport androidx.appcompat.app.AppCompatActivity;\n\npublic class OrganizerCreateEvent extends AppCompatActivity {\n\n    private SelectImage selectImage;\n    private Uri imageUri = null;\n    private FireStoreBridge fb  = new FireStoreBridge(\"EVENT\");;\n\n    // Create an ActivityResultLauncher instance directly within the Activity\n\n    public interface imageUrlUploadListener{\n        void updateEventImage(String eventId, String imageURL);\n    }\n\n    // REFERENCE CODE LINK: https://github.com/Everyday-Programmer/Upload-Image-to-Firebase-Android/blob/main/app/src/main/java/com/example/uploadimagefirebase/MainActivity.java\n    private final ActivityResultLauncher<Intent> activityResultLauncher =\n            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {\n                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {\n                    imageUri = result.getData().getData();\n                    System.out.println(imageUri);\n                    // Handle the imageUri, e.g., display it or prepare it for upload\n\n                        imageUrlUploadListener listener = null;\n                        listener.updateEventImage(\"asdf\", imageUri.toString());\n                } else {\n                    Toast.makeText(OrganizerCreateEvent.this, \"Please select an image\", Toast.LENGTH_SHORT).show();\n                }\n            });\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.organizer_create);\n\n        // Components from this page\n        Button buttonReturn = (Button)findViewById(R.id.returnButton);\n        Button buttonSave = (Button)findViewById(R.id.saveButton);\n        Button buttonPickImage = (Button) findViewById(R.id.picButton);\n        EditText editTextName = (EditText) findViewById(R.id.nameEditText);\n        EditText editTextInfo = (EditText) findViewById(R.id.infoEditText);\n        EditText editTextID = (EditText) findViewById(R.id.idEditText);\n\n        String nameText;\n        String infoText;\n        //String idText;\n\n        selectImage = new SelectImage(this, activityResultLauncher);\n        buttonPickImage.setOnClickListener(v -> selectImage.pickImage());\n        //System.out.println(imageUri);\n\n\n\n\n        buttonReturn.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                    finish();\n            }\n        });\n\n        buttonSave.setOnClickListener(new View.OnClickListener() {\n            public void onClick(View view) {\n\n                String nameText = editTextName.getText().toString();\n                String infoText = editTextInfo.getText().toString();\n                Event newEvent = new Event();\n                newEvent.EventIdGenerator(\"uyiuyui\"); //TODO: properly get user id\n                newEvent.setDescription(infoText);\n                newEvent.setTitle(nameText);\n                fb.updateEvent(newEvent,\"uyiuyui\"); //TODO: you just need to pass in newEvent and userid as parameter\n                finish();\n\n            }\n\n\n        });\n\n\n    }\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/quantumscan/OrganizerCreateEvent.java b/app/src/main/java/com/example/quantumscan/OrganizerCreateEvent.java
+--- a/app/src/main/java/com/example/quantumscan/OrganizerCreateEvent.java	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ b/app/src/main/java/com/example/quantumscan/OrganizerCreateEvent.java	(date 1710884401633)
+@@ -59,7 +59,7 @@
+ 
+         selectImage = new SelectImage(this, activityResultLauncher);
+         buttonPickImage.setOnClickListener(v -> selectImage.pickImage());
+-        //System.out.println(imageUri);
++        System.out.println("imageUri after pick" + imageUri);
+ 
+ 
+ 
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_5_32_p_m__[Changes]1/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_5_32_p_m__[Changes]1/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_5_32_p_m__[Changes]1/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_5_32_p_m__[Changes]1/shelved.patch	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,19 +0,0 @@
+-Index: .idea/deploymentTargetDropDown.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"deploymentTargetDropDown\">\n    <value>\n      <entry key=\"Unnamed\">\n        <State />\n      </entry>\n    </value>\n  </component>\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+---- a/.idea/deploymentTargetDropDown.xml	
+-+++ b/.idea/deploymentTargetDropDown.xml	
+-@@ -2,7 +2,7 @@
+- <project version="4">
+-   <component name="deploymentTargetDropDown">
+-     <value>
+--      <entry key="Unnamed">
+-+      <entry key="app">
+-         <State />
+-       </entry>
+-     </value>
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-08,_2_25_a_m__[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-08,_2_25_a_m__[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-08,_2_25_a_m__[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-08,_2_25_a_m__[Changes]/shelved.patch	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,72 +0,0 @@
+-Index: app/src/main/java/com/example/quantumscan/QRCodeGenerator.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.quantumscan;\n\nimport android.graphics.Bitmap;\nimport android.graphics.BitmapFactory;\nimport android.util.Base64;\n\nimport com.google.zxing.BarcodeFormat;\nimport com.google.zxing.WriterException;\nimport com.google.zxing.common.BitMatrix;\nimport com.google.zxing.qrcode.QRCodeWriter;\n\nimport java.io.ByteArrayOutputStream;\n\n// get Bitmap, this Bitmap can be used in imageView.setImageBitmap(bitmap); to display\n// Bitmap qrCodeBitmap = QRCodeHelper.generateQRCodeBitmap(\"sample text\", 250, 250);\n// imageView.setImageBitmap(bitmap)\npublic class QRCodeGenerator {\n    public static Bitmap generateQRCodeBitmap(String text, int width, int height){\n        QRCodeWriter writer = new QRCodeWriter();\n        BitMatrix bitMatrix = null;\n        try {\n            bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, width, height);\n        } catch (WriterException e) {\n            throw new RuntimeException(e);\n        }\n        Bitmap bitmap = Bitmap.createBitmap(250, 250, Bitmap.Config.RGB_565);\n        for (int x = 0; x < bitMatrix.getWidth(); x++) {\n            for (int y = 0; y < bitMatrix.getHeight(); y++) {\n                bitmap.setPixel(x, y, bitMatrix.get(x, y) ? android.graphics.Color.BLACK : android.graphics.Color.WHITE);\n            }\n        }\n        return bitmap;\n    }\n\n    // transfer bitmap to base64 format, this format can be stored in firestore\n    // String base64Image = QRCodeHelper.bitmapToBase64(qrCodeBitmap);\n    public static String bitmapToBase64(Bitmap bitmap){\n        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();\n        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);\n        byte[] byteArray = byteArrayOutputStream.toByteArray();\n        String base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT);\n        return base64Image;\n    }\n\n    // after take base64 string from firestore, this function transfer base64 to bitmap format, then can be displayed.\n    // Bitmap decodedBitmap = QRCodeHelper.base64ToBitmap(base64Image);\n    // imageView.setImageBitmap(bitmap)\n    public static Bitmap base64ToBitmap(String base64Str){\n        byte[] decodedBytes = Base64.decode(base64Str, Base64.DEFAULT);\n        Bitmap bitmap2 = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);\n        return bitmap2;\n    }\n\n}\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/quantumscan/QRCodeGenerator.java b/app/src/main/java/com/example/quantumscan/QRCodeGenerator.java
+---- a/app/src/main/java/com/example/quantumscan/QRCodeGenerator.java	(revision 797c1940dd95195ad533c37f461d131221199653)
+-+++ b/app/src/main/java/com/example/quantumscan/QRCodeGenerator.java	(date 1709889719046)
+-@@ -14,6 +14,8 @@
+- // get Bitmap, this Bitmap can be used in imageView.setImageBitmap(bitmap); to display
+- // Bitmap qrCodeBitmap = QRCodeHelper.generateQRCodeBitmap("sample text", 250, 250);
+- // imageView.setImageBitmap(bitmap)
+-+
+-+// REFERENCE CODE LINK: https://stackoverflow.com/questions/8800919/how-to-generate-a-qr-code-for-an-android-application
+- public class QRCodeGenerator {
+-     public static Bitmap generateQRCodeBitmap(String text, int width, int height){
+-         QRCodeWriter writer = new QRCodeWriter();
+-@@ -34,6 +36,7 @@
+- 
+-     // transfer bitmap to base64 format, this format can be stored in firestore
+-     // String base64Image = QRCodeHelper.bitmapToBase64(qrCodeBitmap);
+-+    // REFERENCE CODE LINK: https://stackoverflow.com/questions/9224056/android-bitmap-to-base64-string
+-     public static String bitmapToBase64(Bitmap bitmap){
+-         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+-         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+-@@ -45,6 +48,7 @@
+-     // after take base64 string from firestore, this function transfer base64 to bitmap format, then can be displayed.
+-     // Bitmap decodedBitmap = QRCodeHelper.base64ToBitmap(base64Image);
+-     // imageView.setImageBitmap(bitmap)
+-+    // REFERENCE CODE LINK: https://stackoverflow.com/questions/4837110/how-to-convert-a-base64-string-into-a-bitmap-image-to-show-it-in-a-imageview
+-     public static Bitmap base64ToBitmap(String base64Str){
+-         byte[] decodedBytes = Base64.decode(base64Str, Base64.DEFAULT);
+-         Bitmap bitmap2 = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+-Index: app/src/main/java/com/example/quantumscan/SelectImage.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.quantumscan;\n\nimport android.app.Activity;\nimport android.content.Intent;\nimport android.graphics.Bitmap;\nimport android.net.Uri;\nimport android.widget.Toast;\n\nimport androidx.activity.result.ActivityResultCallback;\nimport androidx.activity.result.ActivityResultLauncher;\nimport androidx.activity.result.contract.ActivityResultContracts;\n\npublic class SelectImage {\n    private final Activity activity;\n    private final ActivityResultLauncher<Intent> activityResultLauncher;\n\n    public SelectImage(Activity activity, ActivityResultLauncher<Intent> activityResultLauncher) {\n        this.activity = activity;\n        this.activityResultLauncher = activityResultLauncher;\n    }\n\n    public void pickImage() {\n        Intent intent = new Intent(Intent.ACTION_PICK);\n        intent.setType(\"image/*\");\n        activityResultLauncher.launch(intent);\n    }\n\n}\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/quantumscan/SelectImage.java b/app/src/main/java/com/example/quantumscan/SelectImage.java
+---- a/app/src/main/java/com/example/quantumscan/SelectImage.java	(revision 797c1940dd95195ad533c37f461d131221199653)
+-+++ b/app/src/main/java/com/example/quantumscan/SelectImage.java	(date 1709875657436)
+-@@ -20,6 +20,7 @@
+-     }
+- 
+-     public void pickImage() {
+-+
+-         Intent intent = new Intent(Intent.ACTION_PICK);
+-         intent.setType("image/*");
+-         activityResultLauncher.launch(intent);
+-Index: .idea/deploymentTargetDropDown.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"deploymentTargetDropDown\">\n    <value>\n      <entry key=\"Unnamed\">\n        <State />\n      </entry>\n    </value>\n  </component>\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+---- a/.idea/deploymentTargetDropDown.xml	(revision 797c1940dd95195ad533c37f461d131221199653)
+-+++ b/.idea/deploymentTargetDropDown.xml	(date 1709875818948)
+-@@ -2,7 +2,7 @@
+- <project version="4">
+-   <component name="deploymentTargetDropDown">
+-     <value>
+--      <entry key="Unnamed">
+-+      <entry key="app">
+-         <State />
+-       </entry>
+-     </value>
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_10_27_p_m__[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_10_27_p_m__[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_10_27_p_m__[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_10_27_p_m__[Changes]/shelved.patch	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,43 +0,0 @@
+-Index: app/src/main/java/com/example/quantumscan/SelectImage.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.quantumscan;\n\nimport android.app.Activity;\nimport android.content.Intent;\nimport android.graphics.Bitmap;\nimport android.net.Uri;\nimport android.widget.Toast;\n\nimport androidx.activity.result.ActivityResultCallback;\nimport androidx.activity.result.ActivityResultLauncher;\nimport androidx.activity.result.contract.ActivityResultContracts;\n\npublic class SelectImage {\n    private final Activity activity;\n    private final ActivityResultLauncher<Intent> activityResultLauncher;\n\n    public SelectImage(Activity activity, ActivityResultLauncher<Intent> activityResultLauncher) {\n        this.activity = activity;\n        this.activityResultLauncher = activityResultLauncher;\n    }\n\n    public void pickImage() {\n        Intent intent = new Intent(Intent.ACTION_PICK);\n        intent.setType(\"image/*\");\n        activityResultLauncher.launch(intent);\n    }\n\n}\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/quantumscan/SelectImage.java b/app/src/main/java/com/example/quantumscan/SelectImage.java
+---- a/app/src/main/java/com/example/quantumscan/SelectImage.java	(revision 23065c595ff8eed454e439e016abc7ff5a285731)
+-+++ b/app/src/main/java/com/example/quantumscan/SelectImage.java	(date 1709863215500)
+-@@ -20,6 +20,7 @@
+-     }
+- 
+-     public void pickImage() {
+-+
+-         Intent intent = new Intent(Intent.ACTION_PICK);
+-         intent.setType("image/*");
+-         activityResultLauncher.launch(intent);
+-Index: .idea/deploymentTargetDropDown.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"deploymentTargetDropDown\">\n    <value>\n      <entry key=\"app\">\n        <State>\n          <targetSelectedWithDropDown>\n            <Target>\n              <type value=\"QUICK_BOOT_TARGET\" />\n              <deviceKey>\n                <Key>\n                  <type value=\"VIRTUAL_DEVICE_PATH\" />\n                  <value value=\"$USER_HOME$/.android/avd/Pixel_3a_API_34_extension_level_7_arm64-v8a.avd\" />\n                </Key>\n              </deviceKey>\n            </Target>\n          </targetSelectedWithDropDown>\n          <timeTargetWasSelectedWithDropDown value=\"2024-03-07T06:20:12.158644Z\" />\n        </State>\n      </entry>\n    </value>\n  </component>\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+---- a/.idea/deploymentTargetDropDown.xml	(revision 23065c595ff8eed454e439e016abc7ff5a285731)
+-+++ b/.idea/deploymentTargetDropDown.xml	(date 1709861853209)
+-@@ -10,12 +10,12 @@
+-               <deviceKey>
+-                 <Key>
+-                   <type value="VIRTUAL_DEVICE_PATH" />
+--                  <value value="$USER_HOME$/.android/avd/Pixel_3a_API_34_extension_level_7_arm64-v8a.avd" />
+-+                  <value value="$USER_HOME$/.android/avd/Pixel_2_XL_API_34.avd" />
+-                 </Key>
+-               </deviceKey>
+-             </Target>
+-           </targetSelectedWithDropDown>
+--          <timeTargetWasSelectedWithDropDown value="2024-03-07T06:20:12.158644Z" />
+-+          <timeTargetWasSelectedWithDropDown value="2024-03-08T01:37:29.319537Z" />
+-         </State>
+-       </entry>
+-     </value>
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07__5_32_p_m___Changes_1.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07__5_32_p_m___Changes_1.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07__5_32_p_m___Changes_1.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07__5_32_p_m___Changes_1.xml	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_2024-03-07,_5_32_p_m__[Changes]1" date="1709858046068" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_5_32_p_m__[Changes]1/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2024-03-07, 5:32 p.m. [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07__10_27_p_m___Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07__10_27_p_m___Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07__10_27_p_m___Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07__10_27_p_m___Changes_.xml	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_2024-03-07,_10_27_p_m__[Changes]" date="1709875694848" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-07,_10_27_p_m__[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2024-03-07, 10:27 p.m. [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06__6_54_p_m___Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06__6_54_p_m___Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06__6_54_p_m___Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06__6_54_p_m___Changes_.xml	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_2024-03-06,_6_54_p_m__[Changes]" date="1709776443922" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_6_54_p_m__[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2024-03-06, 6:54 p.m. [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_2024-03-08__11_22_a_m___Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-08__11_22_a_m___Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-08__11_22_a_m___Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-08__11_22_a_m___Changes_.xml	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_2024-03-08,_11_22_a_m__[Changes]" date="1709922127752" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-08,_11_22_a_m__[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 2024-03-08, 11:22 a.m. [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_11_42_p_m__[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_11_42_p_m__[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_11_42_p_m__[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_11_42_p_m__[Changes]/shelved.patch	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,19 +0,0 @@
+-Index: .idea/deploymentTargetDropDown.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"deploymentTargetDropDown\">\n    <value>\n      <entry key=\"Unnamed\">\n        <State />\n      </entry>\n    </value>\n  </component>\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+---- a/.idea/deploymentTargetDropDown.xml	(revision 38c35bcefe2d27f7b2bd1e9c077d0ff4323d94cf)
+-+++ b/.idea/deploymentTargetDropDown.xml	(date 1709776586445)
+-@@ -2,7 +2,7 @@
+- <project version="4">
+-   <component name="deploymentTargetDropDown">
+-     <value>
+--      <entry key="Unnamed">
+-+      <entry key="app">
+-         <State />
+-       </entry>
+-     </value>
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_6_54_p_m__[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_6_54_p_m__[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_6_54_p_m__[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_6_54_p_m__[Changes]/shelved.patch	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,19 +0,0 @@
+-Index: .idea/deploymentTargetDropDown.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"deploymentTargetDropDown\">\n    <value>\n      <entry key=\"Unnamed\">\n        <State />\n      </entry>\n    </value>\n  </component>\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+---- a/.idea/deploymentTargetDropDown.xml	(revision 38c35bcefe2d27f7b2bd1e9c077d0ff4323d94cf)
+-+++ b/.idea/deploymentTargetDropDown.xml	(date 1709776351659)
+-@@ -2,7 +2,7 @@
+- <project version="4">
+-   <component name="deploymentTargetDropDown">
+-     <value>
+--      <entry key="Unnamed">
+-+      <entry key="app">
+-         <State />
+-       </entry>
+-     </value>
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_2024-03-08,_11_22_a_m__[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-08,_11_22_a_m__[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-08,_11_22_a_m__[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-08,_11_22_a_m__[Changes]/shelved.patch	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,50 +0,0 @@
+-Index: app/build.gradle.kts
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>plugins {\r\n    id(\"com.android.application\")\r\n    id(\"com.google.gms.google-services\")\r\n}\r\n\r\nandroid {\r\n    namespace = \"com.example.quantumscan\"\r\n    compileSdk = 34\r\n\r\n    defaultConfig {\r\n        applicationId = \"com.example.quantumscan\"\r\n        minSdk = 24\r\n        targetSdk = 34\r\n        versionCode = 1\r\n        versionName = \"1.0\"\r\n\r\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            isMinifyEnabled = false\r\n            proguardFiles(getDefaultProguardFile(\"proguard-android-optimize.txt\"), \"proguard-rules.pro\")\r\n        }\r\n    }\r\n\r\n    buildFeatures{\r\n        viewBinding = true\r\n    }\r\n\r\n    compileOptions {\r\n        sourceCompatibility = JavaVersion.VERSION_1_8\r\n        targetCompatibility = JavaVersion.VERSION_1_8\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation(platform(\"com.google.firebase:firebase-bom:32.7.1\"))\r\n    implementation(\"com.google.firebase:firebase-firestore\")\r\n    implementation(\"androidx.appcompat:appcompat:1.6.1\")\r\n    implementation(\"com.google.android.material:material:1.11.0\")\r\n    implementation(\"androidx.constraintlayout:constraintlayout:2.1.4\")\r\n    testImplementation(\"junit:junit:4.13.2\")\r\n    androidTestImplementation(\"androidx.test.ext:junit:1.1.5\")\r\n    androidTestImplementation(\"androidx.test.espresso:espresso-core:3.5.1\")\r\n    implementation(\"com.journeyapps:zxing-android-embedded:4.2.0\")\r\n    implementation(\"androidx.fragment:fragment:1.3.6\")\r\n    implementation(\"androidx.activity:activity-ktx:1.4.0\")\r\n    implementation(\"androidx.navigation:navigation-fragment-ktx:2.3.5\")\r\n    implementation(\"androidx.navigation:navigation-ui-ktx:2.3.5\")\r\n\r\n    // FireStore dependencies\r\n    implementation(\"com.google.firebase:firebase-firestore:24.10.2\")\r\n    implementation(\"com.google.firebase:firebase-bom:32.7.3\")\r\n\r\n    // QRCode dependencies\r\n    implementation (\"com.github.androidmads:QRGenerator:1.0.1\")\r\n    implementation(\"com.journeyapps:zxing-android-embedded:4.2.0\")\r\n\r\n    // Image picker dependencies\r\n\r\n    // FireStore Test\r\n    implementation (\"org.mockito:mockito-core:4.0.0\")\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+---- a/app/build.gradle.kts	(revision 797c1940dd95195ad533c37f461d131221199653)
+-+++ b/app/build.gradle.kts	(date 1709921245398)
+-@@ -35,14 +35,20 @@
+- }
+- 
+- dependencies {
+-+
+-+    //implementation(file("/Users/zhiyangwang/Library/Android/sdk/platforms/android-34/android.jar"))
+-+
+-     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+-     implementation("com.google.firebase:firebase-firestore")
+-     implementation("androidx.appcompat:appcompat:1.6.1")
+-     implementation("com.google.android.material:material:1.11.0")
+-     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+-+
+-     testImplementation("junit:junit:4.13.2")
+-     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+-     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+-+    testImplementation ("org.robolectric:robolectric:4.7.3")
+-+
+-     implementation("com.journeyapps:zxing-android-embedded:4.2.0")
+-     implementation("androidx.fragment:fragment:1.3.6")
+-     implementation("androidx.activity:activity-ktx:1.4.0")
+-Index: .idea/deploymentTargetDropDown.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"deploymentTargetDropDown\">\n    <value>\n      <entry key=\"Unnamed\">\n        <State />\n      </entry>\n    </value>\n  </component>\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+---- a/.idea/deploymentTargetDropDown.xml	(revision 797c1940dd95195ad533c37f461d131221199653)
+-+++ b/.idea/deploymentTargetDropDown.xml	(date 1709922114108)
+-@@ -2,7 +2,7 @@
+- <project version="4">
+-   <component name="deploymentTargetDropDown">
+-     <value>
+--      <entry key="Unnamed">
+-+      <entry key="app">
+-         <State />
+-       </entry>
+-     </value>
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-08__2_25_a_m___Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-08__2_25_a_m___Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-08__2_25_a_m___Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-08__2_25_a_m___Changes_.xml	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_2024-03-08,_2_25_a_m__[Changes]" date="1709889934703" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-08,_2_25_a_m__[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2024-03-08, 2:25 a.m. [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06__11_42_p_m___Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06__11_42_p_m___Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06__11_42_p_m___Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06__11_42_p_m___Changes_.xml	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
++++ /dev/null	(revision c50c6ca7254e17113de77cd96d0e5cbd997c75bf)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_2024-03-06,_11_42_p_m__[Changes]" date="1709793777943" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-03-06,_11_42_p_m__[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2024-03-06, 11:42 p.m. [Changes]" />
+-</changelist>
+\ No newline at end of file

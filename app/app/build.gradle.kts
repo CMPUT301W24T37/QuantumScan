@@ -48,4 +48,23 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
 
+<<<<<<< Updated upstream
+=======
+    // FireStore dependencies
+    implementation("com.google.firebase:firebase-firestore:24.10.2")
+    implementation("com.google.firebase:firebase-bom:32.7.3")
+    implementation("com.google.firebase:firebase-firestore")
+
+    // QRCode dependencies
+    implementation ("com.github.androidmads:QRGenerator:1.0.1")
+    implementation("com.journeyapps:zxing-android-embedded:4.2.0")
+
+    // Image picker dependencies
+
+    // FireStore Test
+    implementation ("org.mockito:mockito-core:4.0.0")
+
+
+
+>>>>>>> Stashed changes
 }

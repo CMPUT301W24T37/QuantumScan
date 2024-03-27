@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -86,9 +87,8 @@ public class EventInformationFragment extends AppCompatActivity {
     private void joinEvent(String eventId) {
         // Implement the logic to handle the user joining the event.
         // This might involve updating a Firestore collection to add the user to the event.
-
+        System.out.println("Join event");
         String currentUserId = getCurrentUserId();
-
         fireStoreBridge.updateAttendeeSignUpHelper(currentUserId, eventId);
 
         // 将事件ID保存到SharedPreferences中以便AttendeeFragment可以访问
@@ -108,12 +108,7 @@ public class EventInformationFragment extends AppCompatActivity {
      * @return the current user's ID as a String.
      */
     private String getCurrentUserId() {
-        SharedPreferences prefs = getSharedPreferences("AppNameHere", MODE_PRIVATE);
-        String userId = prefs.getString("userId", null);
-        if (userId == null) {
-            userId = generateUniqueId();
-            prefs.edit().putString("userId", userId).apply();
-        }
+        String userId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         return userId;
 
     }

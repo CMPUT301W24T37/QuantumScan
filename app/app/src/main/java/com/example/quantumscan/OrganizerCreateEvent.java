@@ -23,7 +23,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
     private SelectImage selectImage;
     private Uri imageUri = null;
-    private String userID = "1658f5315ca1a74d";
+    private String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);;
     private FireStoreBridge fb  = new FireStoreBridge("EVENT");
     // FirebaseStorage storage = FirebaseStorage.getInstance();
 

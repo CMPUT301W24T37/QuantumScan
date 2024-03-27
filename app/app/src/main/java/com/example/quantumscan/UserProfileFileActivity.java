@@ -48,15 +48,21 @@ public class UserProfileFileActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserFireBaseHolder user = new UserFireBaseHolder();
-                user.setId(userID);
-                user.setEmail(emailText.getText().toString().trim());
-                user.setPhone(phoneText.getText().toString().trim());
-                user.setName(userNameText.getText().toString().trim());
-                user.setUniversity(universityText.getText().toString().trim());
-                fb.updateUser(user);
-                Intent intent = new Intent(UserProfileFileActivity.this, MainActivity.class);
-                startActivity(intent);
+                if (userNameText.getText().toString().trim().length() == 0) {
+                    Toast.makeText(UserProfileFileActivity.this, "User name can not be empty", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    UserFireBaseHolder user = new UserFireBaseHolder();
+                    user.setId(userID);
+                    user.setEmail(emailText.getText().toString().trim());
+                    user.setPhone(phoneText.getText().toString().trim());
+                    user.setName(userNameText.getText().toString().trim());
+                    user.setUniversity(universityText.getText().toString().trim());
+                    fb.updateUser(user);
+                    Intent intent = new Intent(UserProfileFileActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+
 
 
             }

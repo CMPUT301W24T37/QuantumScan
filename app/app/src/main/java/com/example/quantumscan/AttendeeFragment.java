@@ -70,8 +70,6 @@ public class AttendeeFragment extends Fragment {
                             Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getContext(), "Scanned: " + scanResult.getContents(), Toast.LENGTH_LONG).show();
-                            //TODO
-
                             Intent detailIntent = new Intent(getActivity(), EventInformationFragment.class);
                             detailIntent.putExtra("eventID", scanResult.getContents());
                             detailIntent.putExtra("userID", UserID);
@@ -85,7 +83,7 @@ public class AttendeeFragment extends Fragment {
 
         // Initialize your events list here
         events = new ArrayList<>();
-        // Example: events.add(new Event("1", "Event Title", "Event Description"));
+
 
 
     }

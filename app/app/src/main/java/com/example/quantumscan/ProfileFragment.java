@@ -3,6 +3,7 @@ package com.example.quantumscan;
 import android.app.Dialog;
 import android.os.Bundle;
 
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +35,7 @@ public class ProfileFragment extends Fragment {
     String email;
     String info;
     private FireStoreBridge fb = new FireStoreBridge("USER");
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -71,15 +73,20 @@ public class ProfileFragment extends Fragment {
         Button submitButton = dialog.findViewById(R.id.buttonSubmit);
 
         submitButton.setOnClickListener(v -> {
-
-            // edit user info here
-            name =  userName.getText().toString();
-            phoneNumb =  userPhoneNumber.getText().toString();
-            email = userEmail.getText().toString();
-            info =  userUniversity.getText().toString();
-            UserFireBaseHolder user = new UserFireBaseHolder(name, phoneNumb, info, "profilePic", email);
-            user.setId("1658f5315ca1a74d");
-            fb.updateUser(user);
+            if (userName.getText().toString().trim().length() == 0) {
+                Toast.makeText(getContext(), "User name can not be empty. Change cancelled", Toast.LENGTH_LONG).show();
+            }
+            else {
+                // edit user info here
+                name = userName.getText().toString();
+                phoneNumb = userPhoneNumber.getText().toString();
+                email = userEmail.getText().toString();
+                info = userUniversity.getText().toString();
+                UserFireBaseHolder user = new UserFireBaseHolder(name, phoneNumb, info, "profilePic", email);
+                String userID = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                user.setId(userID);
+                fb.updateUser(user);
+            }
 
             dialog.dismiss(); // Close the dialog
         });

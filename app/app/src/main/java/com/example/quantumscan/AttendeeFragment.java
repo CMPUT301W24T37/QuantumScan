@@ -38,6 +38,8 @@ public class AttendeeFragment extends Fragment {
 
     private ArrayAdapter<String> eventAdapter;
     private ArrayList<String> attendeeRole;
+    private String id;
+    private String USerID;
 
     private ArrayList<String> dataList;
     private ArrayList<String> eventIDList;
@@ -67,6 +69,7 @@ public class AttendeeFragment extends Fragment {
                         } else {
                             Toast.makeText(getContext(), "Scanned: " + scanResult.getContents(), Toast.LENGTH_LONG).show();
                             // TODO: Handle the scanned result here.
+
                         }
                     }
                 });
@@ -74,6 +77,8 @@ public class AttendeeFragment extends Fragment {
         // Initialize your events list here
         events = new ArrayList<>();
         // Example: events.add(new Event("1", "Event Title", "Event Description"));
+
+
     }
 
     @Override

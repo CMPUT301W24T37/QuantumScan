@@ -37,6 +37,8 @@ android {
 dependencies {
 
     //implementation(file("/Users/zhiyangwang/Library/Android/sdk/platforms/android-34/android.jar"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation("com.google.firebase:firebase-firestore")
 
 
 
@@ -60,6 +62,8 @@ dependencies {
 
     // FireStore dependencies
     implementation("com.google.firebase:firebase-firestore:24.10.2")
+    implementation("com.google.firebase:firebase-bom:32.7.3")
+    implementation("com.google.firebase:firebase-firestore")
 
     // QRCode dependencies
     implementation ("com.github.androidmads:QRGenerator:1.0.1")

@@ -3,17 +3,21 @@ package com.example.quantumscan;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
+
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -31,7 +35,6 @@ public class EventInformationFragment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_event_information);
-
 
         textViewEventTitle = findViewById(R.id.textViewEventTitle);
         textViewEventDescription = findViewById(R.id.textViewEventDescription);
@@ -98,9 +101,6 @@ public class EventInformationFragment extends AppCompatActivity {
     }
 
 
-
-
-
     /**
      * A placeholder for an actual method that would retrieve the current user's ID.
      * This needs to be implemented according to how your app manages user authentication.
@@ -121,6 +121,7 @@ public class EventInformationFragment extends AppCompatActivity {
     private String generateUniqueId() {
         return UUID.randomUUID().toString();
     }
+
 
 
 

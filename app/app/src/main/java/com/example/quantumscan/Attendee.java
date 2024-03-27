@@ -35,7 +35,7 @@ public class Attendee {
     /**
      * int - account how many times the {@link Attendee} has checked in
      */
-    private int checkInAccount;
+    private int checkInCount;
 
     // Constructors
 
@@ -51,22 +51,23 @@ public class Attendee {
         this.userName = user.getName();
     }
 
+
     // Setters and Getters
 
     /**
      * This returns how many times the {@link Attendee} has checked in the {@link Event}
      * @return int - the times an has {@link Attendee} checked in the {@link Event}
      */
-    public int getCheckInAccount() {
-        return checkInAccount;
+    public int getCheckInCount() {
+        return checkInCount;
     }
 
     /**
      * This takes an int and set it as the times that an {@link Attendee} has checked in the {@link Event}
-     * @param checkInAccount int - how many times the {@link Attendee} has checked in the {@link Event}
+     * @param checkInCount int - how many times the {@link Attendee} has checked in the {@link Event}
      */
-    public void setCheckInAccount(int checkInAccount) {
-        this.checkInAccount = checkInAccount;
+    public void setCheckInCount(int checkInCount) {
+        this.checkInCount = checkInCount;
     }
 
     /**

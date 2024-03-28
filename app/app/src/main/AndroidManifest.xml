@@ -42,6 +42,8 @@
         <activity
             android:name=".AttendeeEventPage"
             android:exported="true" />
+        <activity android:name=".EventInformationFragment"></activity>
+        <activity android:name=".AttendeeFragment"></activity>
     </application>
 
 </manifest>

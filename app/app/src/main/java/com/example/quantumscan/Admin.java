@@ -78,7 +78,7 @@ public class Admin {
                         Log.d(TAG, "deleting ended");
                     } else {
                         // Handle the error
-                        Log.d(TAG, "Error getting documents: ", task.getException());
+                        Log.w(TAG, "Error getting documents: ", task.getException());
                     }
                 });
     }
@@ -97,6 +97,47 @@ public class Admin {
                     } else {
                         // Handle the error
                         Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+    }
+
+    // remove user profile
+    public void deleteUserProfile(String userID) {
+        DocumentReference userRef = db.collection("USER").document(userID);
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d(TAG, "user " + userID + " found");
+                //userRef.update("name", "Default Name");
+                userRef.update("university", "");
+                userRef.update("phone", "");
+                userRef.update("email", "");
+                Log.d(TAG, "deleting finished");
+            }
+        })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "failed to load document (user "+userID+")");
+                }
+        });
+    }
+
+    // remove user avatar
+    public void deleteUserAvatar(String userID) {
+        DocumentReference userRef = db.collection("USER").document(userID);
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Log.d(TAG, "user " + userID + " found");
+                        userRef.update("profilePicture", "DEFAULT_PFP");  // Todo: call default pfp method there
+                        Log.d(TAG, "deleting user's avatar finished");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "failed to load document (user "+userID+")");
                     }
                 });
     }
@@ -154,10 +195,10 @@ public class Admin {
 
     private void deleteEventHelper(String eventID) {
         // 4.01 delete the sub-collection of the event
-        SystemClock.sleep(1500);
+        SystemClock.sleep(3000);
         this.deleteAttendeeListSubCollection(eventID);
         // 4 delete event
-//        SystemClock.sleep(1500);
+        //SystemClock.sleep(1500);
         db.collection("EVENT").document(eventID)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -255,7 +296,6 @@ public class Admin {
 
         // 4.01 delete the sub-collection of the event
         // 4 delete event
-        SystemClock.sleep(1500);
         this.deleteEventHelper(eventID);
     }
 }

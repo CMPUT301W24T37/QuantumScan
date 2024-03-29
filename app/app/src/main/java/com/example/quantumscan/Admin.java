@@ -14,21 +14,25 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+
+//Todo: Settle down the structure of the back-end Models (Attendee Organizer User Event)
 public class Admin {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     //private CollectionReference collectionName;
-    //private Query query;
-    //private FirebaseStorage storage;
+    private Query query;
+    private FirebaseStorage storage;
     //private FireStoreBridge fbUser = new FireStoreBridge("USER");
     //private FireStoreBridge fbEvent = new FireStoreBridge("EVENT");
     //boolean result;
@@ -39,6 +43,13 @@ public class Admin {
 //    public interface OnDocumentsDeletedListener {
 //        void onDocumentsDeleted(String eventID);
 //    }
+
+
+    public interface OnEventRetrievedListener {
+        void onEventRetrieved(ArrayList<Event> events);
+
+    }
+
 
     // delete the sub-collection <attendeeList> in the event. (if you want to call this method, change 'private' to 'public')
     // note: the reason why this exist is because to fully delete a collection, you need to manually delete its sub-collections by removing all their documents
@@ -107,12 +118,18 @@ public class Admin {
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.d(TAG, "user " + userID + " found");
-                //userRef.update("name", "Default Name");
-                userRef.update("university", "");
-                userRef.update("phone", "");
-                userRef.update("email", "");
-                Log.d(TAG, "deleting finished");
+                if (documentSnapshot.exists()) {
+                    Log.d(TAG, "user " + userID + " found");
+                    //userRef.update("name", "Default Name");
+                    userRef.update("university", "");
+                    userRef.update("phone", "");
+                    userRef.update("email", "");
+                    Log.d(TAG, "deleting finished");
+                }
+                else {
+                    Log.w(TAG, "document "+ userID +" does not exist");
+                }
+
             }
         })
             .addOnFailureListener(new OnFailureListener() {
@@ -129,9 +146,14 @@ public class Admin {
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Log.d(TAG, "user " + userID + " found");
-                        userRef.update("profilePicture", "DEFAULT_PFP");  // Todo: call default pfp method there
-                        Log.d(TAG, "deleting user's avatar finished");
+                        if (documentSnapshot.exists()) {
+                            Log.d(TAG, "user " + userID + " found");
+                            userRef.update("profilePicture", "DEFAULT_PFP");  // Todo: call default pfp method there
+                            Log.d(TAG, "deleting user's avatar finished");
+                        }
+                        else {
+                            Log.w(TAG, "document "+ userID +" does not exist");
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -142,56 +164,29 @@ public class Admin {
                 });
     }
 
-//    private Event getEvent(String eventID) {
-//        //Event event;
-//        fbEvent.retrieveEvent(eventID,new FireStoreBridge.OnEventRetrievedListener() {
-//            @Override
-//            public void onEventRetrieved(ArrayList<Event> event1, ArrayList<String> organizerList) {
-//                Event event = event1.get(0);
-//            }
-//        });
-//        event;
-//    }
+    public void deleteEventPoster(String eventID) {
+        DocumentReference eventRef = db.collection("EVENT").document(eventID);
+        eventRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            Log.d(TAG, "event " + eventID + " found");
+                            eventRef.update("posterCode", "");
+                            Log.d(TAG, "deleting event's poster finished");
+                        }
+                        else {
+                            Log.w(TAG, "document "+ eventID +" does not exist");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "failed to load document (event "+eventID+")");
+                    }
+                });
+    }
 
-//    public boolean removeEvent(String eventID) {
-//        try {
-//            // 1. Check if the event exists
-//            DocumentReference eventRef = db.collection("EVENT").document(eventID);
-//            DocumentSnapshot eventSnapshot = eventRef.get().getResult();
-//
-//            if (!eventSnapshot.exists()) {
-//                // 1E. Event does not exist
-//                return false;
-//            }
-//
-//            // attendees (todo)
-//            List<String> attendeeIds = (List<String>) eventRef.collection("attendeeList").get();
-//            // organizer
-//            String organizerId = eventSnapshot.getString("organizerId");
-//
-//            // 2. Loop through Attendee user id list and remove the event ID from their attendeeRoles list
-//            for (String userId : attendeeIds) {
-//                DocumentReference userRef = db.collection("users").document(userId);
-//                // Example update, depends on your data structure
-//                // This might involve more complex logic to actually remove the eventId from the list
-//                userRef.update("attendeeRoles", FieldValue.arrayRemove(eventID));
-//            }
-//
-//            // 3. Remove the event ID from the organizer's organizerRoles list
-//            DocumentReference organizerRef = db.collection("users").document(organizerId);
-//            organizerRef.update("organizerRoles", FieldValue.arrayRemove(eventID));
-//
-//            // 4. Delete the event document from Firebase
-//            eventRef.delete().get();
-//
-//            // 5. Return true, indicating success
-//            return true;
-//        } catch (InterruptedException | ExecutionException e) {
-//            e.printStackTrace();
-//            // E. If any errors occur, return false
-//            return false;
-//        }
-//    }
 
     private void deleteEventHelper(String eventID) {
         // 4.01 delete the sub-collection of the event
@@ -216,7 +211,7 @@ public class Admin {
     }
 
     // Todo: known issue: maybe b/c it is async, the the caller will receive neither true or false (idk how to do callback and stuff)
-    // Todo: meaning the return value won't work which may lead to unexpected results
+    // Todo: meaning the return value won't work which may lead to unexpected results (so I change the return type to 'void')
     // it takes at least 2 seconds to delete.
     public void removeEvent(String eventID) {
         // precondition: attendee in the event has the event id in their attendeeRoles. organizer of the event has the event id in their organizerRoles.
@@ -298,4 +293,120 @@ public class Admin {
         // 4 delete event
         this.deleteEventHelper(eventID);
     }
+
+    // get one single event, store in the first position of the arraylist (eventList)
+    // Note: this method has not finished yet b/c the missing implementation of Attendee class
+    public void retrieveEvent(String eventId, Admin.OnEventRetrievedListener listener){
+        this.query = this.db.collection("EVENT").whereEqualTo(FieldPath.documentId(), eventId);
+        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<Event> eventList = new ArrayList<>();
+                    //ArrayList<String> organizerIdList = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot documentSnapshot0 : task.getResult()) {
+                        // read each event
+                        Log.d(TAG, "Current document: " + documentSnapshot0.getId());
+                        Event event = new Event();
+                        //OrganizerFireBaseHolder organizer = new OrganizerFireBaseHolder();
+                        //retrieve event information
+                        event.setId(documentSnapshot0.getString("id"));
+                        event.setAnnouncement((ArrayList<String>) documentSnapshot0.get("announcements"));
+                        event.setPosterCode(documentSnapshot0.getString("posterCode"));
+                        event.setEventCode(documentSnapshot0.getString("eventCode"));
+                        event.setTitle(documentSnapshot0.getString("title"));
+                        event.setDescription(documentSnapshot0.getString("description"));
+                        event.setOrganizer(documentSnapshot0.getString("organizer"));
+                        // TODO: for check in data retrieve
+                        //retrieve Organizer info
+                        // CollectionReference attendeeListRef = db.collection("EVENT").document(eventId).collection("attendeeList");
+                        //retrieve attendee belong to this event
+                        // retrieveAllEventHelper(attendeeListRef, organizer);
+                        //organizerList.add(organizer);
+                        eventList.add(event);
+                    }
+                    // Notify the listener with the retrieved user object is complete
+                    listener.onEventRetrieved(eventList);
+                } else {
+                    // Handle the case where the task failed
+                    Exception e = task.getException();
+                    System.out.println("Query failed: " + e.getMessage());
+                    // Notify the listener with a null user object
+                    listener.onEventRetrieved(null);
+                }
+            }
+        });
+    }
+
+    // Note: this method has not finished yet b/c the missing implementation of Attendee class
+    // get all the events in the database, which will be stored in an ArrayList
+    public void retrieveAllEvent(Admin.OnEventRetrievedListener listener){
+        this.query = this.db.collection("EVENT");
+        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<Event> eventList = new ArrayList<>();
+                    //ArrayList<String> organizerIdList = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot documentSnapshot0 : task.getResult()) {
+                        // read each event
+                        Log.d(TAG, "Current document: " + documentSnapshot0.getId());
+                        Event event = new Event();
+                        //OrganizerFireBaseHolder organizer = new OrganizerFireBaseHolder();
+                        //retrieve event information
+                        event.setId(documentSnapshot0.getString("id"));
+                        event.setAnnouncement((ArrayList<String>) documentSnapshot0.get("announcements"));
+                        event.setPosterCode(documentSnapshot0.getString("posterCode"));
+                        event.setEventCode(documentSnapshot0.getString("eventCode"));
+                        event.setTitle(documentSnapshot0.getString("title"));
+                        event.setDescription(documentSnapshot0.getString("description"));
+                        event.setOrganizer(documentSnapshot0.getString("organizer"));
+                        // TODO: for check in data retrieve
+                        //retrieve Organizer info
+                        // CollectionReference attendeeListRef = db.collection("EVENT").document(eventId).collection("attendeeList");
+                        //retrieve attendee belong to this event
+                        // retrieveAllEventHelper(attendeeListRef, organizer);
+                        //organizerList.add(organizer);
+                        eventList.add(event);
+                    }
+                    // Notify the listener with the retrieved user object is complete
+                    listener.onEventRetrieved(eventList);
+                } else {
+                    // Handle the case where the task failed
+                    Exception e = task.getException();
+                    System.out.println("Query failed: " + e.getMessage());
+                    // Notify the listener with a null user object
+                    listener.onEventRetrieved(null);
+                }
+            }
+        });
+    }
+    // Usage:
+    /* //ex: print all events' info
+    admin.retrieveAllEvent(new Admin.OnEventRetrievedListener() {
+            @Override
+            public void onEventRetrieved(ArrayList<Event> events) {
+                int counter = 0;
+                for (Event event : events) {
+                    counter++;
+                    Log.d(TAG, "Event " + String.valueOf(counter));
+                    Log.d(TAG, event.getId());
+                    Log.d(TAG, event.getEventCode());
+                    Log.d(TAG, event.getOrganizer());
+                    Log.d(TAG, event.getTitle());
+                    Log.d(TAG, event.getPosterCode().toString());
+                    Log.d(TAG, event.getDescription());
+                    Log.d(TAG, "announcements:");
+                    for (String anno : event.getAnnouncement()) {
+                        Log.d(TAG, "\t"+anno);
+                    }
+                }
+            }
+        });
+     */
+
+
+
 }

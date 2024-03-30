@@ -92,7 +92,7 @@ public class EventInformationFragment extends AppCompatActivity {
         //System.out.println("Join event");
         String currentUserId = getCurrentUserId();
 
-        fireStoreBridge.updateAttendeeSignUpToEventHelper(currentUserId, eventId);
+        fireStoreBridge.updateAttendeeSignUpHelper(currentUserId, eventId);
 
         Toast.makeText(this, "You have joined the event!", Toast.LENGTH_SHORT).show();
     }

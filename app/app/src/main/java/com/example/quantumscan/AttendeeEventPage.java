@@ -2,20 +2,24 @@ package com.example.quantumscan;
 
 
 
+
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.util.ArrayList;
 
 /**
  * In Attendee_Eventpage.java. Attendee_Eventpage.java you need to create three functions "View Information", "Recive Notification "Recive Notification" and "Scan QR-code".
@@ -32,6 +36,9 @@ public class AttendeeEventPage extends AppCompatActivity {
     private TextView tvEventTitle;// TextView for displaying event title
 
     private TextView tvEventDescription;// TextView for displaying event description
+    private ImageView imageViewEventPoster;
+
+    private FireStoreBridge fireStoreBridge;
 
 
     @Override
@@ -39,7 +46,9 @@ public class AttendeeEventPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendee_eventpage);
 
-        eventId = getIntent().getStringExtra("event_id");
+        eventId = getIntent().getStringExtra("eventID");
+
+        fireStoreBridge = new FireStoreBridge("EVENTS");
         View btnViewInfo = findViewById(R.id.btnViewInformation);//Main Activity??or main menu? View Information
 
         View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);//Main Activity??or main menu? ReceiveNotification
@@ -48,25 +57,64 @@ public class AttendeeEventPage extends AppCompatActivity {
 
 
 
-
         btnViewInfo.setOnClickListener(view -> switchToDetailsView());// Set up the "View Information" button
         btnReceiveNotification.setOnClickListener(view -> switchToNotificationView());// Set up the "ReceiveNotification" button
         btnScanQRCode.setOnClickListener(view -> switchToScanQRCode());// Set up the "btnScanQRCode" button
+
+
+
+
     }
 
     private void switchToDetailsView() { //  This view information interface?or menu connects to each component of textview.xml.
 
         setContentView(R.layout.textview);
 
-        // Now findViewById will reference views from textview.xml
+        //  findViewById will reference views from textview.xml
         tvEventTitle = findViewById(R.id.tvEventTitle);
         tvEventDescription = findViewById(R.id.tvEventDescription);
+        imageViewEventPoster = findViewById(R.id.ivEventBackground);
         Button ivReturn = findViewById(R.id.ivReturn);
         ivReturn.setOnClickListener(v -> switchToMainView()); // Switch back to the main view
 
-        fetchEventInformation();
+
+        fetchEventInformation(eventId);
 
     }
+
+
+    private void fetchEventInformation(String eventID) {
+
+
+
+        // Use FireStoreBridge to retrieve the event
+        fireStoreBridge.retrieveEvent(eventId, new FireStoreBridge.OnEventRetrievedListener() {
+            @Override
+            public void onEventRetrieved(ArrayList<Event> eventList, ArrayList<String> organizerList) {
+
+                if (!eventList.isEmpty()) {
+                    Event event = eventList.get(0);// Assuming the first item is the event we're interested in
+                    tvEventTitle = findViewById(R.id.tvEventTitle);
+                    tvEventDescription = findViewById(R.id.tvEventDescription);
+                    imageViewEventPoster = findViewById(R.id.ivEventBackground);
+
+                    tvEventTitle.setText(event.getTitle());
+                    tvEventDescription.setText(event.getDescription());
+
+                    // Load the image using Glide
+//                    Glide.with(AttendeeEventPage.this)
+//                            .load(event.getPosterCode()) // Ensure this method or field exists in your Event class
+//                            .into(imageViewEventPoster);
+                } else {
+
+                    Toast.makeText(AttendeeEventPage.this, "Event not found.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+
 
 
     private void switchToNotificationView() { //  This receives every component of the notification page/interface/menu? (.xml)
@@ -96,26 +144,7 @@ public class AttendeeEventPage extends AppCompatActivity {
         btnReturn.setOnClickListener(v -> finish());
     }
 
-    private void fetchEventInformation() {
-        // Assume eventId is already initialized
-        DocumentReference docRef = db.collection("events").document(eventId);
-        docRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                String title = documentSnapshot.getString("title");
-                String description = documentSnapshot.getString("description");
 
-                // Set the fetched information to the TextViews
-                tvEventTitle.setText(title);
-                tvEventDescription.setText(description);
-            } else {
-                Toast.makeText(AttendeeEventPage.this, "Event data not found.", Toast.LENGTH_SHORT).show();
-                switchToMainView(); // Switch back if data is not found
-            }
-        }).addOnFailureListener(e -> {
-            Toast.makeText(AttendeeEventPage.this, "Error fetching event details.", Toast.LENGTH_SHORT).show();
-            switchToMainView(); // Switch back on failure
-        });
-    }
 
 
 

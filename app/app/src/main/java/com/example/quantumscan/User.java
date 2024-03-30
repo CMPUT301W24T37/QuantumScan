@@ -30,7 +30,7 @@ public class User {
     /**
      * {@link ArrayList<Organizer>} - The ArrayList that contain Organizer objects, representing a user host a new Event as an Organizer
      */
-    private ArrayList<Organizer> organizerRoles;
+    private ArrayList<String> organizerRoles;
     /**
      * {@link String} - The user name
      */
@@ -83,7 +83,7 @@ public class User {
     public User(String userId, String name, String profilePicture) {
         this.id = userId;
         this.attendeeRoles = new ArrayList<Attendee>();
-        this.organizerRoles = new ArrayList<Organizer>();
+        this.organizerRoles = new ArrayList<String>();
         this.name = name;
         this.profilePicture = profilePicture;
     }
@@ -96,7 +96,7 @@ public class User {
     public User(String userId, String name) {
         this.id = userId;
         this.attendeeRoles = new ArrayList<Attendee>();
-        this.organizerRoles = new ArrayList<Organizer>();
+        this.organizerRoles = new ArrayList<String>();
         this.name = name;
         this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
     }
@@ -108,7 +108,7 @@ public class User {
     public User(String userId) {
         this.id = userId;
         this.attendeeRoles = new ArrayList<Attendee>();
-        this.organizerRoles = new ArrayList<Organizer>();
+        this.organizerRoles = new ArrayList<String>();
         this.name = "New User";  // default user name
         this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
     }
@@ -119,7 +119,7 @@ public class User {
     public User() {
         this.id = "PLACE_HOLDER";
         this.attendeeRoles = new ArrayList<Attendee>();
-        this.organizerRoles = new ArrayList<Organizer>();
+        this.organizerRoles = new ArrayList<String>();
         this.name = "New User";  // default user name
         this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
     }
@@ -162,7 +162,7 @@ public class User {
      * This returns the {@link ArrayList<Organizer>} of the User
      * @return {@link ArrayList<Organizer>} The ArrayList of the Organizer
      */
-    public ArrayList<Organizer> getOrganizerRoles() {
+    public ArrayList<String> getOrganizerRoles() {
         return organizerRoles;
     }
 
@@ -170,7 +170,7 @@ public class User {
      * takes a {@link ArrayList<Organizer>} and set it as the user's Organizer list
      * @param organizerRoles {@link ArrayList<Organizer>} The ArrayList of the Organizer
      */
-    public void setOrganizerRoles(ArrayList<Organizer> organizerRoles) {
+    public void setOrganizerRoles(ArrayList<String> organizerRoles) {
         this.organizerRoles = organizerRoles;
     }
 
@@ -306,15 +306,16 @@ public class User {
      * This add an Organizer object in organizerRoles (userId + eventID) by creating a NEW event
      * Representing the user hosting a new event.
      */
-    public void addOrganizerRole() {
+    public Event addOrganizerRole() {
         // Create a new event
         Event event = new Event();
         // Assign an unique ID for eventID
         event.EventIdGenerator(this.getId());
         // create a new Organizer object by passing User object and Event object
-        Organizer organizer = new Organizer(this, event);
-        this.organizerRoles.add(organizer);
+        //Organizer organizer = new Organizer(this, event);
+        this.organizerRoles.add(event.getId());
         // set the organizer in the Event object
-        event.setOrganizer(organizer);
+        event.setOrganizer(this.getId());
+        return event;
     }
 }

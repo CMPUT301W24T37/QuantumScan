@@ -33,13 +33,12 @@ public class AttendeeTest {
         // create a new user locally (locally for below as well)
         User user = newLocalUserForOrganizer();
         // create a new event (add an organizer role)
-        user.addOrganizerRole();
         // get the organizer role list of user
-        ArrayList<Organizer> organizerRoles = user.getOrganizerRoles();
+        //ArrayList<String> organizerRoles = user.getOrganizerRoles();
         // get the new organizer role
-        Organizer organizer = organizerRoles.get(0);
+        //String organizer = organizerRoles.get(0);
         // return the event that is created by the user
-        return organizer.getEvent();
+        return user.addOrganizerRole();
     }
 
     @Test

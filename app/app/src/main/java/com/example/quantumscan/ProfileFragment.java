@@ -63,9 +63,6 @@ public class ProfileFragment extends Fragment {
         });
 
 
-
-
-
         Button showInfoDialogButton = view.findViewById(R.id.showInfoDialogButton);
         showInfoDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override

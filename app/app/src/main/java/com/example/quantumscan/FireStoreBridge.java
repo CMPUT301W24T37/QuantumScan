@@ -269,20 +269,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
     public void updateUser(UserFireBaseHolder user){
         String userID = user.getId();
-
-        this.collectionName.document(userID)
-                .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Welcome !");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Please try when you are connected to the internet", e);
-                    }
-                });
+        this.collectionName.document(userID).update("name", user.getName());
+        this.collectionName.document(userID).update("university", user.getUniversity());
+        this.collectionName.document(userID).update("phone", user.getPhone());
+        this.collectionName.document(userID).update("email", user.getEmail());
 
     }
 

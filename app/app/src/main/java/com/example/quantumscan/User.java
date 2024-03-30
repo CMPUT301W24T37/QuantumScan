@@ -24,11 +24,11 @@ public class User {
      */
     private String id;
     /**
-     * {@link ArrayList<Attendee>} - The ArrayList that contain Attendee objects, representing a user signed up as an Attendee of one Event
+     * {@link ArrayList<String>} - The ArrayList that contain the ids of the Event, representing a user signed up as an Attendee of one Event
      */
-    private ArrayList<Attendee> attendeeRoles;
+    private ArrayList<String> attendeeRoles;
     /**
-     * {@link ArrayList<Organizer>} - The ArrayList that contain Organizer objects, representing a user host a new Event as an Organizer
+     * {@link ArrayList<String>} - The ArrayList that contain the ids of the Event, representing a user host a new Event as an Organizer
      */
     private ArrayList<String> organizerRoles;
     /**
@@ -82,7 +82,7 @@ public class User {
      */
     public User(String userId, String name, String profilePicture) {
         this.id = userId;
-        this.attendeeRoles = new ArrayList<Attendee>();
+        this.attendeeRoles = new ArrayList<String>();
         this.organizerRoles = new ArrayList<String>();
         this.name = name;
         this.profilePicture = profilePicture;
@@ -95,7 +95,7 @@ public class User {
      */
     public User(String userId, String name) {
         this.id = userId;
-        this.attendeeRoles = new ArrayList<Attendee>();
+        this.attendeeRoles = new ArrayList<String>();
         this.organizerRoles = new ArrayList<String>();
         this.name = name;
         this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
@@ -107,7 +107,7 @@ public class User {
      */
     public User(String userId) {
         this.id = userId;
-        this.attendeeRoles = new ArrayList<Attendee>();
+        this.attendeeRoles = new ArrayList<String>();
         this.organizerRoles = new ArrayList<String>();
         this.name = "New User";  // default user name
         this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
@@ -118,7 +118,7 @@ public class User {
      */
     public User() {
         this.id = "PLACE_HOLDER";
-        this.attendeeRoles = new ArrayList<Attendee>();
+        this.attendeeRoles = new ArrayList<String>();
         this.organizerRoles = new ArrayList<String>();
         this.name = "New User";  // default user name
         this.profilePicture = "DEFAULT_PFP";  // Todo: replace it with the generateProfilePictureByName() in the future (in part4 perhaps)
@@ -143,18 +143,18 @@ public class User {
     }
 
     /**
-     * This returns the {@link ArrayList<Attendee>} of the User
-     * @return {@link ArrayList<Attendee>} The ArrayList of the Attendee
+     * This returns the {@link ArrayList<String>} of the User
+     * @return {@link ArrayList<String>} The ArrayList of the Attendee
      */
-    public ArrayList<Attendee> getAttendeeRoles() {
+    public ArrayList<String> getAttendeeRoles() {
         return attendeeRoles;
     }
 
     /**
-     * takes a {@link ArrayList<Attendee>} and set it as the user's attendees list
-     * @param attendeeRoles {@link ArrayList<Attendee>} The ArrayList of the Attendee
+     * takes a {@link ArrayList<String>} and set it as the user's attendees list
+     * @param attendeeRoles {@link ArrayList<String>} The ArrayList of the Attendee
      */
-    public void setAttendeeRoles(ArrayList<Attendee> attendeeRoles) {
+    public void setAttendeeRoles(ArrayList<String> attendeeRoles) {
         this.attendeeRoles = attendeeRoles;
     }
 
@@ -296,8 +296,12 @@ public class User {
      */
     public void addAttendeeRole(Event event) {
         // create a new Attendee object by passing User object and Event object
-        Attendee attendee = new Attendee(this, event);
-        this.attendeeRoles.add(attendee);
+        Attendee attendee = new Attendee(
+                getId(),
+                false,
+                getName(),
+                0);
+        this.attendeeRoles.add(event.getId());
         // add the Attendee in the Event object
         event.addAttendee(attendee);
     }

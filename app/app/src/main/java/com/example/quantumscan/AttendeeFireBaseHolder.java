@@ -1,20 +1,26 @@
+// AttendeeFireBaseHolder
+
+
 package com.example.quantumscan;
 
 public class AttendeeFireBaseHolder {
-    // TODO: This is dogshit, but do not delete it
-    private boolean checkInStatus;
-    private String attendeeId;
-
+    private String id;
+    private boolean checkedIn;
     private String name;
-    private long checkInCount;
-    public AttendeeFireBaseHolder(String attendeeId, boolean checkInStatus) {
-        this.attendeeId = attendeeId;
-        this.checkInStatus = checkInStatus;
 
+    private int checkInCount;
+
+
+    public AttendeeFireBaseHolder(String id, boolean checkedIn, String name, int checkInCount) {
+        this.id = id;
+        this.checkedIn = checkedIn;
+        this.name = name;
+        this.checkInCount = checkInCount;
     }
+
     public AttendeeFireBaseHolder() {
-
     }
+
     public String getName() {
         return name;
     }
@@ -22,30 +28,30 @@ public class AttendeeFireBaseHolder {
     public void setName(String name) {
         this.name = name;
     }
-    public long getCheckInCount() {
+
+    public int getCheckInCount() {
         return checkInCount;
     }
 
-    public void setCheckInCount(long checkInCount) {
+    public void setCheckInCount(int checkInCount) {
         this.checkInCount = checkInCount;
     }
 
-    public String getAttendeeId() {
-        return attendeeId;
+    public String getId() {
+        return id;
     }
 
-    public void setAttendeeId(String attendeeId) {
-        this.attendeeId = attendeeId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public boolean isCheckInStatus() {
-        return checkInStatus;
+    public boolean isCheckedIn() {
+        return checkedIn;
     }
 
-    public void setCheckInStatus(boolean checkInStatus) {
-        this.checkInStatus = checkInStatus;
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
     }
-
 
 
 }

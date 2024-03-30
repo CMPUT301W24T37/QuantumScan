@@ -391,6 +391,10 @@ public class Event {
         // Code there
     }
 
+    public void setAttendees(ArrayList<Attendee> attendees) {
+        this.attendees = attendees;
+    }
+
     // remove/delete one Attendee from the checked-in list by passing Attendee object
 
     /**

@@ -544,7 +544,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * </p>
      * */
 
-    public void updateAttendeeSignUpHelper(String userId, String eventId){
+    private void updateAttendeeSignUpHelper(String userId, String eventId){
         CollectionReference eventCollection =  getDb().collection("EVENT");
         CollectionReference userCollection =  getDb().collection("USER");
         System.out.println(userId+"1234567890");

@@ -58,6 +58,11 @@ public class Admin {
 
     }
 
+    public interface OnUserRetrievedListener {
+        void onUserRetrieved(ArrayList<User> users);
+
+    }
+
 
     // delete the sub-collection <attendeeList> in the event. (if you want to call this method, change 'private' to 'public')
     // note: the reason why this exist is because to fully delete a collection, you need to manually delete its sub-collections by removing all their documents
@@ -485,6 +490,73 @@ public class Admin {
 //                        Log.d(TAG, String.valueOf(attendee.isCheckedIn()));
 //                    }
 //                    counter2 = 0;
+                }
+            }
+        });
+     */
+    public void retrieveAllUser(Admin.OnUserRetrievedListener listener) {
+        this.query = this.db.collection("USER");
+        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<User> users = new ArrayList<>();
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        //ArrayList<String> attendeeRoles = new ArrayList<String>();
+                        //ArrayList<String> organizerRoles = new ArrayList<String>();
+                        // Retrieve user data from document and set properties of the User object
+                        Log.d(TAG, "Current document (user): "+documentSnapshot.getId());
+                        User user = new User();
+                        user.setId(documentSnapshot.getString("id"));
+                        user.setName(documentSnapshot.getString("name"));
+                        user.setProfilePicture(documentSnapshot.getString("profilePicture"));
+                        user.setEmail(documentSnapshot.getString("email"));
+                        user.setPhone(documentSnapshot.getString("phone"));
+                        user.setUniversity(documentSnapshot.getString("university"));
+                        user.setAttendeeRoles((ArrayList<String>) documentSnapshot.get("attendeeRoles"));
+                        user.setOrganizerRoles((ArrayList<String>) documentSnapshot.get("organizerRoles"));
+                        users.add(user);
+                    }
+
+                    // Notify the listener with the retrieved user object is complete
+                    listener.onUserRetrieved(users);
+                } else {
+                    // Handle the case where the task failed
+                    Exception e = task.getException();
+                    System.out.println("Query failed: " + e.getMessage());
+                    // Notify the listener with a null user object
+                    listener.onUserRetrieved(null);
+                }
+            }
+        });
+    }
+    /* How to use (ex: print info of all users)
+    admin.retrieveAllUser(new Admin.OnUserRetrievedListener() {
+            @Override
+            public void onUserRetrieved(ArrayList<User> users) {
+                if (users == null) {
+                    Log.w(TAG, "ArrayList<User> users is null");
+                    return;
+                }
+                int counter =0;
+                for (User user : users) {
+                    counter = counter + 1;
+                    Log.d(TAG, "User "+counter);
+                    Log.d(TAG, "\tUser id: "+user.getId());
+                    Log.d(TAG, "\tUser name: "+user.getName());
+                    Log.d(TAG, "\tUser email: "+user.getEmail());
+                    Log.d(TAG, "\tUser phone: "+user.getPhone());
+                    Log.d(TAG, "\tUser university: "+user.getUniversity());
+                    Log.d(TAG, "\tUser avatar URL: "+user.getProfilePicture());
+                    Log.d(TAG, "\tUser's signed events' id: ");
+                    for (String signedEventID : user.getAttendeeRoles()) {
+                        Log.d(TAG, "\t\tEvent id: "+signedEventID);
+                    }
+                    Log.d(TAG, "\tUser's hosting events' id: ");
+                    for (String hostingEventID : user.getOrganizerRoles()) {
+                        Log.d(TAG, "\t\tEvent id: "+hostingEventID);
+                    }
+                    Log.d(TAG, "\n");
                 }
             }
         });

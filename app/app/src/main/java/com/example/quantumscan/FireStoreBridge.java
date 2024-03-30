@@ -33,10 +33,12 @@ import java.util.Objects;
 public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListener{
     private FirebaseFirestore db;
     private CollectionReference collectionName;
+    private String c;
     private Query query;
     private FirebaseStorage storage;
 
     public FireStoreBridge(String collectionName){
+        c = collectionName;
         this.db = FirebaseFirestore.getInstance();
         this.collectionName = this.db.collection(collectionName);
         this.query = this.collectionName;
@@ -123,13 +125,13 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
     public void retrieveEvent(String eventId, OnEventRetrievedListener listener){
         this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), eventId);
+
         this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     ArrayList<Event> eventList = new ArrayList<>();
                     ArrayList<String> organizerIdList = new ArrayList<>();
-
                     for (QueryDocumentSnapshot documentSnapshot0 : task.getResult()) {
                         // read each event
                         Event event = new Event();
@@ -149,13 +151,16 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         // retrieveAllEventHelper(attendeeListRef, organizer);
                         //organizerList.add(organizer);
                         eventList.add(event);
+
+
                     }
                     // Notify the listener with the retrieved user object is complete
+
+
                     listener.onEventRetrieved(eventList, organizerIdList);
                 } else {
                     // Handle the case where the task failed
                     Exception e = task.getException();
-                    System.out.println("Query failed: " + e.getMessage());
                     // Notify the listener with a null user object
 
                 }
@@ -173,7 +178,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
     public void retrieveAllEvent(OnEventRetrievedListener listener) {
         this.query = this.collectionName;
-
         this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -268,20 +272,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
     public void updateUser(UserFireBaseHolder user){
         String userID = user.getId();
-
-        this.collectionName.document(userID)
-                .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Welcome !");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Please try when you are connected to the internet", e);
-                    }
-                });
+        this.collectionName.document(userID).update("name", user.getName());
+        this.collectionName.document(userID).update("university", user.getUniversity());
+        this.collectionName.document(userID).update("phone", user.getPhone());
+        this.collectionName.document(userID).update("email", user.getEmail());
 
     }
 
@@ -520,14 +514,12 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         newQuery = newCollection.whereEqualTo(FieldPath.documentId(), eventId);
         newQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
-
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                     long attendeeLimit = documentSnapshot.getLong("attendeeLimit");
                     long currentTotalAttendee = documentSnapshot.getLong("currentTotalAttendee");
                     if (currentTotalAttendee < attendeeLimit){
-
                         updateAttendeeSignUpHelper(userId, eventId);
                     }else{
 

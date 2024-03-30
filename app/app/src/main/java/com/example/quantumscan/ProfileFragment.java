@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 
 public class ProfileFragment extends Fragment {
 
@@ -46,6 +48,20 @@ public class ProfileFragment extends Fragment {
         userPhoneNumb = view.findViewById(R.id.userPhoneNumbText);
         userEmail = view.findViewById(R.id.userEmailText);
         userInfo = view.findViewById(R.id.userInfoText);
+        String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        FireStoreBridge fb1 = new FireStoreBridge("USER");
+        fb1.retrieveUser(userId, new FireStoreBridge.OnUserRetrievedListener() {
+            @Override
+            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+                userName.setText(user.getName());
+                userUniversity.setText(user.getUniversity());
+                userPhoneNumb.setText(user.getPhone());
+                userEmail.setText(user.getEmail());
+                userInfo.setText(user.getId());
+
+            }
+        });
+
 
         Button showInfoDialogButton = view.findViewById(R.id.showInfoDialogButton);
         showInfoDialogButton.setOnClickListener(new View.OnClickListener() {

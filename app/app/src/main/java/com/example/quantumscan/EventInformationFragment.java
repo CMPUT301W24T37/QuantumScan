@@ -14,14 +14,15 @@ import android.widget.TextView;
 
 import android.widget.Toast;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import java.util.ArrayList;
+
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
 
 public class EventInformationFragment extends AppCompatActivity {
     private TextView textViewEventTitle;
@@ -69,6 +70,7 @@ public class EventInformationFragment extends AppCompatActivity {
         fireStoreBridge.retrieveEvent(eventId, new FireStoreBridge.OnEventRetrievedListener() {
             @Override
             public void onEventRetrieved(ArrayList<Event> eventList, ArrayList<String> organizerList) {
+
                 if (!eventList.isEmpty()) {
                     // 假设我们只对第一个结果感兴趣
                     Event event = eventList.get(0);
@@ -87,15 +89,13 @@ public class EventInformationFragment extends AppCompatActivity {
     private void joinEvent(String eventId) {
         // Implement the logic to handle the user joining the event.
         // This might involve updating a Firestore collection to add the user to the event.
-        System.out.println("Join event");
+        //System.out.println("Join event");
         String currentUserId = getCurrentUserId();
-        fireStoreBridge.updateAttendeeSignUpHelper(currentUserId, eventId);
+        System.out.println(currentUserId);
 
-        // 将事件ID保存到SharedPreferences中以便AttendeeFragment可以访问
-        SharedPreferences prefs = getSharedPreferences("JoinedEvents", MODE_PRIVATE);
-        Set<String> joinedEventIds = new HashSet<>(prefs.getStringSet("eventIds", new HashSet<>()));
-        joinedEventIds.add(eventId);
-        prefs.edit().putStringSet("eventIds", joinedEventIds).apply();
+
+        fireStoreBridge.updateAttendeeSignUpHelper(getCurrentUserId(), eventId);
+
 
         Toast.makeText(this, "You have joined the event!", Toast.LENGTH_SHORT).show();
     }
@@ -108,17 +108,10 @@ public class EventInformationFragment extends AppCompatActivity {
      * @return the current user's ID as a String.
      */
     private String getCurrentUserId() {
+
         String userId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         return userId;
 
     }
-
-    private String generateUniqueId() {
-        return UUID.randomUUID().toString();
-    }
-
-
-
-
 }
 

@@ -92,7 +92,10 @@ public class EventInformationFragment extends AppCompatActivity {
         //System.out.println("Join event");
         String currentUserId = getCurrentUserId();
         System.out.println(currentUserId);
-        fireStoreBridge.updateAttendeeSignUpHelper("1658f5315ca1a74e", eventId);
+
+
+        fireStoreBridge.updateAttendeeSignUpHelper(getCurrentUserId(), eventId);
+
 
         Toast.makeText(this, "You have joined the event!", Toast.LENGTH_SHORT).show();
     }
@@ -110,11 +113,5 @@ public class EventInformationFragment extends AppCompatActivity {
         return userId;
 
     }
-
-
-
-
-
-
 }
 

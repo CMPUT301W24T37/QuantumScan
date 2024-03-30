@@ -33,6 +33,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginPage" />
+        <activity android:name=".LoginPageAdmin" />
         <activity android:name=".OrganizerCreateEvent" />
         <activity android:name=".OrganizerEventPage" />
         <activity android:name=".OrganizerEventInfo" />

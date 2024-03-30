@@ -48,7 +48,7 @@ public class AttendeeEventPage extends AppCompatActivity {
 
         eventId = getIntent().getStringExtra("eventID");
 
-        fireStoreBridge = new FireStoreBridge("EVENTS");
+        fireStoreBridge = new FireStoreBridge("EVENT");
         View btnViewInfo = findViewById(R.id.btnViewInformation);//Main Activity??or main menu? View Information
 
         View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);//Main Activity??or main menu? ReceiveNotification

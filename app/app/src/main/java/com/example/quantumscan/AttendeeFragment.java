@@ -1,6 +1,7 @@
 package com.example.quantumscan;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -44,6 +45,27 @@ public class AttendeeFragment extends Fragment {
     private ArrayList<String> dataList;
     private ArrayList<String> eventIDList;
 
+    // Initialize the launcher with the contract and callback to handle the result
+    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    if (data != null) {
+                        // Handle the data from the result
+                        String eventID = data.getStringExtra("eventID");
+                        String eventName = data.getStringExtra("eventName");
+                        // Use the returned value as needed
+                        dataList.add(eventName);
+                        eventIDList.add(eventID);
+                        eventAdapter.notifyDataSetChanged();
+
+
+                    }
+                }
+            });
+
 
 
 
@@ -74,7 +96,7 @@ public class AttendeeFragment extends Fragment {
                             Intent detailIntent = new Intent(getActivity(), EventInformationFragment.class);
                             detailIntent.putExtra("eventID", scanResult.getContents());
                             detailIntent.putExtra("userID", UserID);
-                            startActivity(detailIntent);
+                            mStartForResult.launch(detailIntent);
                         }
                     }
 //

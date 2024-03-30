@@ -29,7 +29,7 @@ public class AdminHomepage extends AppCompatActivity {
         eventIDList = new ArrayList<>();
 
         dataList.addAll(Arrays.asList(events));
-        eventIDList.
+        eventIDList.addAll(Arrays.asList(eventID));
 
 
 

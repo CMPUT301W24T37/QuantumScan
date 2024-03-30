@@ -28,6 +28,7 @@ import com.google.firebase.storage.StorageReference;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListener{
     private FirebaseFirestore db;
@@ -239,8 +240,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
                             for (QueryDocumentSnapshot documentSnapshot1 : task.getResult()) {
                                 AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
-                                attendee.setAttendeeId(documentSnapshot1.getString("id"));
-                                attendee.setCheckInStatus(documentSnapshot1.getBoolean("checkedIn"));
+                                attendee.setCheckInCount(Objects.requireNonNull(documentSnapshot1.getLong("checkInCount")).intValue());
+                                attendee.setName(documentSnapshot1.getString("name"));
+                                attendee.setId(documentSnapshot1.getString("id"));
+                                attendee.setCheckedIn(documentSnapshot1.getBoolean("checkedIn"));
                                 attendeeFireBaseHolders.add(attendee);
                             }
 
@@ -298,9 +301,9 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         ArrayList<AttendeeListFireBaseHolder> attendeeList = new ArrayList<>();
         for (int i = 0; i < eventInfo.getAttendees().size(); i++){
             AttendeeListFireBaseHolder attendee = new AttendeeListFireBaseHolder(
-                    eventInfo.getAttendees().get(i).getUserID(),
-                    eventInfo.getAttendees().get(i).getCheckIn(),
-                    eventInfo.getAttendees().get(i).getUserName(),
+                    eventInfo.getAttendees().get(i).getId(),
+                    eventInfo.getAttendees().get(i).isCheckedIn(),
+                    eventInfo.getAttendees().get(i).getName(),
                     eventInfo.getAttendees().get(i).getCheckInCount());
             attendeeList.add(attendee);
         }//eventInfo.getOrganizer().getUser().getId() eventInfo.getOrganizer().getUser().getId()
@@ -485,10 +488,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
-                        attendee.setCheckInCount(document.getLong("checkInCount"));
+                        attendee.setCheckInCount(document.getLong("checkInCount").intValue());
                         attendee.setName(document.getString("name"));
-                        attendee.setAttendeeId(document.getId());
-                        attendee.setCheckInStatus(document.getBoolean("checkedIn"));
+                        attendee.setId(document.getId());
+                        attendee.setCheckedIn(document.getBoolean("checkedIn"));
                         attendeeList.add(attendee);
                     }
                 } else {

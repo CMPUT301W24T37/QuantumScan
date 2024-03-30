@@ -22,8 +22,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 
@@ -47,6 +50,11 @@ public class Admin {
 
     public interface OnEventRetrievedListener {
         void onEventRetrieved(ArrayList<Event> events);
+
+    }
+
+    public interface OnEventAttendeeListRetrievedListener {
+        void onEventAttendeeListRetrieved(ArrayList<Attendee> attendees);
 
     }
 
@@ -295,7 +303,7 @@ public class Admin {
     }
 
     // get one single event, store in the first position of the arraylist (eventList)
-    // Note: this method has not finished yet b/c the missing implementation of Attendee class
+    // Note: this method won't contain attendeeList, this will be empty arraylist or null.
     public void retrieveEvent(String eventId, Admin.OnEventRetrievedListener listener){
         this.query = this.db.collection("EVENT").whereEqualTo(FieldPath.documentId(), eventId);
         this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -318,57 +326,6 @@ public class Admin {
                         event.setTitle(documentSnapshot0.getString("title"));
                         event.setDescription(documentSnapshot0.getString("description"));
                         event.setOrganizer(documentSnapshot0.getString("organizer"));
-                        // TODO: for check in data retrieve
-                        //retrieve Organizer info
-                        // CollectionReference attendeeListRef = db.collection("EVENT").document(eventId).collection("attendeeList");
-                        //retrieve attendee belong to this event
-                        // retrieveAllEventHelper(attendeeListRef, organizer);
-                        //organizerList.add(organizer);
-                        eventList.add(event);
-                    }
-                    // Notify the listener with the retrieved user object is complete
-                    listener.onEventRetrieved(eventList);
-                } else {
-                    // Handle the case where the task failed
-                    Exception e = task.getException();
-                    System.out.println("Query failed: " + e.getMessage());
-                    // Notify the listener with a null user object
-                    listener.onEventRetrieved(null);
-                }
-            }
-        });
-    }
-
-    // Note: this method has not finished yet b/c the missing implementation of Attendee class
-    // get all the events in the database, which will be stored in an ArrayList
-    public void retrieveAllEvent(Admin.OnEventRetrievedListener listener){
-        this.query = this.db.collection("EVENT");
-        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    ArrayList<Event> eventList = new ArrayList<>();
-                    //ArrayList<String> organizerIdList = new ArrayList<>();
-
-                    for (QueryDocumentSnapshot documentSnapshot0 : task.getResult()) {
-                        // read each event
-                        Log.d(TAG, "Current document: " + documentSnapshot0.getId());
-                        Event event = new Event();
-                        //OrganizerFireBaseHolder organizer = new OrganizerFireBaseHolder();
-                        //retrieve event information
-                        event.setId(documentSnapshot0.getString("id"));
-                        event.setAnnouncement((ArrayList<String>) documentSnapshot0.get("announcements"));
-                        event.setPosterCode(documentSnapshot0.getString("posterCode"));
-                        event.setEventCode(documentSnapshot0.getString("eventCode"));
-                        event.setTitle(documentSnapshot0.getString("title"));
-                        event.setDescription(documentSnapshot0.getString("description"));
-                        event.setOrganizer(documentSnapshot0.getString("organizer"));
-                        // TODO: for check in data retrieve
-                        //retrieve Organizer info
-                        // CollectionReference attendeeListRef = db.collection("EVENT").document(eventId).collection("attendeeList");
-                        //retrieve attendee belong to this event
-                        // retrieveAllEventHelper(attendeeListRef, organizer);
-                        //organizerList.add(organizer);
                         eventList.add(event);
                     }
                     // Notify the listener with the retrieved user object is complete
@@ -384,12 +341,12 @@ public class Admin {
         });
     }
     // Usage:
-    /* //ex: print all events' info
+    /* //ex: print one event's info (except attendeeList)
     admin.retrieveAllEvent(new Admin.OnEventRetrievedListener() {
             @Override
             public void onEventRetrieved(ArrayList<Event> events) {
                 int counter = 0;
-                for (Event event : events) {
+                for (Event event : events) {  // there is always only one event in events, you can also access it using events.get(0)
                     counter++;
                     Log.d(TAG, "Event " + String.valueOf(counter));
                     Log.d(TAG, event.getId());
@@ -407,6 +364,130 @@ public class Admin {
         });
      */
 
+    public void retrieveEventAttendeeList(String eventID, Admin.OnEventAttendeeListRetrievedListener listener) {
+        CollectionReference attendeeListRef = db.collection("EVENT")
+                .document(eventID)
+                .collection("attendeeList");
+        attendeeListRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<Attendee> attendees = new ArrayList<>();
 
+                    for (QueryDocumentSnapshot documentSnapshot1 : task.getResult()) {
+                        Attendee attendee = new Attendee();
+                        attendee.setCheckInCount(Objects.requireNonNull(documentSnapshot1.getLong("checkInCount")).intValue());
+                        attendee.setName(documentSnapshot1.getString("name"));
+                        attendee.setId(documentSnapshot1.getString("id"));
+                        attendee.setCheckedIn(documentSnapshot1.getBoolean("checkedIn"));
+                        attendees.add(attendee);
+                        Log.w(TAG, "attendee added in attendees");
+                    }
+                    listener.onEventAttendeeListRetrieved(attendees);
+
+                }else {
+                    // Handle the case where the task failed
+                    Exception e = task.getException();
+                    System.out.println("task failed: " + e.getMessage());
+                    // Notify the listener with a null user object
+                    listener.onEventAttendeeListRetrieved(null);
+                }
+            }
+        });
+    }
+    /* How to use: (ex: print all attendees' info)
+    admin.retrieveEventAttendeeList("20240306001125||1658f5315ca1a74d", new Admin.OnEventAttendeeListRetrievedListener() {
+            @Override
+            public void onEventAttendeeListRetrieved(ArrayList<Attendee> attendees) {
+                for (Attendee attendee : attendees) {
+                    Log.d(TAG, "Attendee's user ID: "+attendee.getId());
+                    Log.d(TAG, "Attendee's user name: "+attendee.getName());
+                    Log.d(TAG, "Attendee's checked-in count: "+String.valueOf(attendee.getCheckInCount()));
+                    Log.d(TAG, "is the Attendee checked in now: "+String.valueOf(attendee.isCheckedIn()));
+                }
+            }
+        });
+     */
+
+
+    // Note: this method can not fetch the attendeeList b/c it is in its subcollection, so the attendeeList will be empty?
+    // get all the events in the database, which will be stored in an ArrayList
+    public void retrieveAllEvent(Admin.OnEventRetrievedListener listener){
+        this.query = this.db.collection("EVENT");
+        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<Event> eventList = new ArrayList<>();
+                    //ArrayList<String> organizerIdList = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot documentSnapshot0 : task.getResult()) {
+                        // read each event
+                        if (true) {
+                            Log.d(TAG, "Current document: " + documentSnapshot0.getId());
+                            Event event = new Event();
+                            //OrganizerFireBaseHolder organizer = new OrganizerFireBaseHolder();
+                            //retrieve event information
+                            event.setId(documentSnapshot0.getString("id"));
+                            event.setAnnouncement((ArrayList<String>) documentSnapshot0.get("announcements"));
+                            event.setPosterCode(documentSnapshot0.getString("posterCode"));
+                            event.setEventCode(documentSnapshot0.getString("eventCode"));
+                            event.setTitle(documentSnapshot0.getString("title"));
+                            event.setDescription(documentSnapshot0.getString("description"));
+                            event.setOrganizer(documentSnapshot0.getString("organizer"));
+                            eventList.add(event);
+                        }
+                        else {
+                            Log.d(TAG, "skip...");
+                        }
+                    }
+                    // Notify the listener with the retrieved user object is complete
+                    listener.onEventRetrieved(eventList);
+                } else {
+                    // Handle the case where the task failed
+                    Exception e = task.getException();
+                    Log.d(TAG, "Query failed: " + e.getMessage());
+                    // Notify the listener with a null user object
+                    listener.onEventRetrieved(null);
+                }
+            }
+        });
+    }
+        /* How to use:  // ex: print all events info (except attendeeList)
+    note: lines start with "//" won't do anything and you can remove them.
+            admin.retrieveAllEvent(new Admin.OnEventRetrievedListener() {
+            @Override
+            public void onEventRetrieved(ArrayList<Event> events) {
+
+                for (Event event : events) {
+                    int counter1 = 0;
+//                    int counter2 = 0;
+                    counter1++;
+                    Log.d(TAG, "Event " + String.valueOf(counter1));
+                    Log.d(TAG, event.getId());
+                    Log.d(TAG, event.getEventCode());
+                    Log.d(TAG, event.getOrganizer());
+                    Log.d(TAG, event.getTitle());
+                    Log.d(TAG, event.getPosterCode().toString());
+                    Log.d(TAG, event.getDescription());
+                    Log.d(TAG, "announcements:");
+                    for (String anno : event.getAnnouncement()) {
+                        Log.d(TAG, "\t" + anno);
+                    }
+                    402~411 aren't doing anything so I commented them out
+//                    Log.d(TAG, "attendees are:");
+//                    for (Attendee attendee : event.getAttendees()) {
+//                        counter2++;
+//                        Log.d(TAG, "Attendee " + String.valueOf(counter2));
+//                        Log.d(TAG, attendee.getId());
+//                        Log.d(TAG, attendee.getName());
+//                        Log.d(TAG, String.valueOf(attendee.getCheckInCount()));
+//                        Log.d(TAG, String.valueOf(attendee.isCheckedIn()));
+//                    }
+//                    counter2 = 0;
+                }
+            }
+        });
+     */
 
 }

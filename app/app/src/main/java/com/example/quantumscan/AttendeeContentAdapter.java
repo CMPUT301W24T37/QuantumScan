@@ -26,9 +26,9 @@ public class AttendeeContentAdapter extends ArrayAdapter<Attendee> {
         TextView checkCountTextView = (TextView) convertView.findViewById(R.id.check_in_num);
         ImageView checkStatusView = (ImageView) convertView.findViewById(R.id.check_in_status);
         // Populate the data into the template view using the data object
-        nameTextView.setText(attendee.getUserName());
+        nameTextView.setText(attendee.getName());
         checkCountTextView.setText(String.valueOf(attendee.getCheckInCount()));
-        if(attendee.getCheckIn()){
+        if(attendee.isCheckedIn()){
             checkStatusView.setImageResource(R.drawable.ic_checked);
         }else {
             checkStatusView.setImageResource(R.drawable.ic_unchecked);;

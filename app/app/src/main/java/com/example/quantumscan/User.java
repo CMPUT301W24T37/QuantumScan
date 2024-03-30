@@ -296,7 +296,11 @@ public class User {
      */
     public void addAttendeeRole(Event event) {
         // create a new Attendee object by passing User object and Event object
-        Attendee attendee = new Attendee(this, event);
+        Attendee attendee = new Attendee(
+                getId(),
+                false,
+                getName(),
+                0);
         this.attendeeRoles.add(attendee);
         // add the Attendee in the Event object
         event.addAttendee(attendee);

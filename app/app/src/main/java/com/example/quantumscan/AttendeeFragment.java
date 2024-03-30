@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,14 +104,17 @@ public class AttendeeFragment extends Fragment {
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
 
         FireStoreBridge fb = new FireStoreBridge("USER");
-        fb.retrieveUser("1658f5315ca1a74e", new FireStoreBridge.OnUserRetrievedListener() {
+        fb.retrieveUser(getCurrentUserId(), new FireStoreBridge.OnUserRetrievedListener() {
             @Override
             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
-                System.out.println(attendeeRoles.size() + "--------------------------------------");
                 for(String event : attendeeRoles){
                     eventIDList.add(event);
                     System.out.println(event);
                 }
+                System.out.println(user.getId());
+                System.out.println(user.getName());
+                System.out.println(attendeeRoles.size());
+                System.out.println(attendeeRoles.get(0));
 
                 FireStoreBridge fb_events = new FireStoreBridge("EVENT");
                 fb_events.retrieveAllEvent(new FireStoreBridge.OnEventRetrievedListener() {
@@ -164,6 +168,12 @@ public class AttendeeFragment extends Fragment {
         } else {
             requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
+    }
+    private String getCurrentUserId() {
+
+        String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        return userId;
+
     }
 
 

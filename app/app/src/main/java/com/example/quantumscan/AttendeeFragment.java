@@ -106,6 +106,7 @@ public class AttendeeFragment extends Fragment {
         fb.retrieveUser("1658f5315ca1a74e", new FireStoreBridge.OnUserRetrievedListener() {
             @Override
             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+                System.out.println(attendeeRoles.size() + "--------------------------------------");
                 for(String event : attendeeRoles){
                     eventIDList.add(event);
                     System.out.println(event);

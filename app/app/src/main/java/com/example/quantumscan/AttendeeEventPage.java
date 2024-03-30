@@ -48,7 +48,7 @@ public class AttendeeEventPage extends AppCompatActivity {
 
         eventId = getIntent().getStringExtra("eventID");
 
-        fireStoreBridge = new FireStoreBridge("EVENTS");
+        fireStoreBridge = new FireStoreBridge("EVENT");
         View btnViewInfo = findViewById(R.id.btnViewInformation);//Main Activity??or main menu? View Information
 
         View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);//Main Activity??or main menu? ReceiveNotification
@@ -82,13 +82,9 @@ public class AttendeeEventPage extends AppCompatActivity {
 
     }
 
-
     private void fetchEventInformation(String eventID) {
-
-
-
         // Use FireStoreBridge to retrieve the event
-        fireStoreBridge.retrieveEvent(eventId, new FireStoreBridge.OnEventRetrievedListener() {
+        fireStoreBridge.retrieveEvent(eventID, new FireStoreBridge.OnEventRetrievedListener() {
             @Override
             public void onEventRetrieved(ArrayList<Event> eventList, ArrayList<String> organizerList) {
 
@@ -107,7 +103,7 @@ public class AttendeeEventPage extends AppCompatActivity {
 //                            .into(imageViewEventPoster);
                 } else {
 
-                    Toast.makeText(AttendeeEventPage.this, "Event not found.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AttendeeEventPage.this, "Event not found." + eventID, Toast.LENGTH_SHORT).show();
                 }
             }
         });

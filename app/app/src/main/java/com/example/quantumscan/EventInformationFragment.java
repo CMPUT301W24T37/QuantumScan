@@ -91,8 +91,11 @@ public class EventInformationFragment extends AppCompatActivity {
         // This might involve updating a Firestore collection to add the user to the event.
         //System.out.println("Join event");
         String currentUserId = getCurrentUserId();
+        System.out.println(currentUserId);
 
-        fireStoreBridge.updateAttendeeSignUpToEvent(currentUserId, eventId);
+
+        fireStoreBridge.updateAttendeeSignUpHelper(getCurrentUserId(), eventId);
+
 
         Toast.makeText(this, "You have joined the event!", Toast.LENGTH_SHORT).show();
     }
@@ -110,11 +113,5 @@ public class EventInformationFragment extends AppCompatActivity {
         return userId;
 
     }
-
-
-
-
-
-
 }
 

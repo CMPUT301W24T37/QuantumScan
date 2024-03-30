@@ -110,11 +110,5 @@ public class EventInformationFragment extends AppCompatActivity {
         return userId;
 
     }
-
-
-
-
-
-
 }
 

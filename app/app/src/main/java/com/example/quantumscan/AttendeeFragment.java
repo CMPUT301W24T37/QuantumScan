@@ -170,7 +170,6 @@ public class AttendeeFragment extends Fragment {
         }
     }
     private String getCurrentUserId() {
-
         String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         return userId;
 

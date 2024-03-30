@@ -63,11 +63,7 @@ public class UserProfileFileActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
 
-
-
             }
-
-
         });
 
     }

@@ -114,7 +114,7 @@ public class AttendeeFragment extends Fragment {
                 System.out.println(user.getId());
                 System.out.println(user.getName());
                 System.out.println(attendeeRoles.size());
-                System.out.println(attendeeRoles.get(0));
+                //System.out.println(attendeeRoles.get(0));
 
                 FireStoreBridge fb_events = new FireStoreBridge("EVENT");
                 fb_events.retrieveAllEvent(new FireStoreBridge.OnEventRetrievedListener() {

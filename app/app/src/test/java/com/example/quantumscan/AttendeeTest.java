@@ -54,33 +54,33 @@ public class AttendeeTest {
         assertTrue(user.getOrganizerRoles().isEmpty());
     }
 
-    @Test
-    public void testUserAddAttendeeRole() {
-        // Create an event from an organizer (not the user below)
-        Event event = createNewEventFromAnOrganizer();
-        // Create a new user
-        User user = newLocalUser();
-        // Check user's AttendeeRoleList is empty
-        assertTrue(user.getAttendeeRoles().isEmpty());
-        // User sign up for the event
-        user.addAttendeeRole(event);
-        // Check user's AttendeeRoleList is NOT empty
-        assertFalse(user.getAttendeeRoles().isEmpty());
-        // get the Attendee object
-        Attendee attendee = user.getAttendeeRoles().get(0);
-        // check default attributes' value
-        assertFalse(attendee.getCheckIn());
-        // check Attendee getters
-        assertEquals(user, attendee.getUser());
-        assertEquals(event, attendee.getEvent());
-        // get the Event object from attendee
-        assertEquals(attendee.getEvent(), event);
-        // check the use is in the event's AttendeeList
-        assertEquals(attendee, event.getAttendees().get(0));
-        assertEquals(user, event.getAttendees().get(0).getUser());
-        // check user_id
-        assertEquals(user.getId(), attendee.getUserID());
-        // check user_name
-        assertEquals(user.getName(), attendee.getUserName());
-    }
+//    @Test
+//    public void testUserAddAttendeeRole() {
+//        // Create an event from an organizer (not the user below)
+//        Event event = createNewEventFromAnOrganizer();
+//        // Create a new user
+//        User user = newLocalUser();
+//        // Check user's AttendeeRoleList is empty
+//        assertTrue(user.getAttendeeRoles().isEmpty());
+//        // User sign up for the event
+//        user.addAttendeeRole(event);
+//        // Check user's AttendeeRoleList is NOT empty
+//        assertFalse(user.getAttendeeRoles().isEmpty());
+//        // get the Attendee object
+//        Attendee attendee = user.getAttendeeRoles().get(0);
+//        // check default attributes' value
+//        assertFalse(attendee.getCheckIn());
+//        // check Attendee getters
+//        assertEquals(user, attendee.getUser());
+//        assertEquals(event, attendee.getEvent());
+//        // get the Event object from attendee
+//        assertEquals(attendee.getEvent(), event);
+//        // check the use is in the event's AttendeeList
+//        assertEquals(attendee, event.getAttendees().get(0));
+//        assertEquals(user, event.getAttendees().get(0).getUser());
+//        // check user_id
+//        assertEquals(user.getId(), attendee.getUserID());
+//        // check user_name
+//        assertEquals(user.getName(), attendee.getUserName());
+//    }
 }

@@ -1,5 +1,6 @@
 package com.example.quantumscan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +28,9 @@ public class LoginPageAdmin extends AppCompatActivity {
             public void onClick(View view) {
                 enterKey = editText.getText().toString();
                 if(enterKey.equals(encryptionKey)){
-                    finish();
+                    Intent intent = new Intent(LoginPageAdmin.this, AdminHomepage.class);
+                    System.out.println("True, running page");
+                    startActivity(intent);
 
                 }
 

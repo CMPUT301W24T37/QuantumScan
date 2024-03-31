@@ -23,7 +23,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
     private SelectImage selectImage;
     private Uri imageUri = null;
-    private String userID = "1658f5315ca1a74d";
+    private String userID;
     private FireStoreBridge fb  = new FireStoreBridge("EVENT");
     // FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -52,7 +52,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organizer_create);
-
+        userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         // Components from this page
         Button buttonReturn = (Button)findViewById(R.id.returnButton);
         Button buttonSave = (Button)findViewById(R.id.saveButton);

@@ -28,14 +28,17 @@ import com.google.firebase.storage.StorageReference;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListener{
     private FirebaseFirestore db;
     private CollectionReference collectionName;
+    private String c;
     private Query query;
     private FirebaseStorage storage;
 
     public FireStoreBridge(String collectionName){
+        c = collectionName;
         this.db = FirebaseFirestore.getInstance();
         this.collectionName = this.db.collection(collectionName);
         this.query = this.collectionName;
@@ -122,13 +125,13 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
     public void retrieveEvent(String eventId, OnEventRetrievedListener listener){
         this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), eventId);
+
         this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     ArrayList<Event> eventList = new ArrayList<>();
                     ArrayList<String> organizerIdList = new ArrayList<>();
-
                     for (QueryDocumentSnapshot documentSnapshot0 : task.getResult()) {
                         // read each event
                         Event event = new Event();
@@ -148,13 +151,16 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         // retrieveAllEventHelper(attendeeListRef, organizer);
                         //organizerList.add(organizer);
                         eventList.add(event);
+
+
                     }
                     // Notify the listener with the retrieved user object is complete
+
+
                     listener.onEventRetrieved(eventList, organizerIdList);
                 } else {
                     // Handle the case where the task failed
                     Exception e = task.getException();
-                    System.out.println("Query failed: " + e.getMessage());
                     // Notify the listener with a null user object
 
                 }
@@ -172,7 +178,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
     public void retrieveAllEvent(OnEventRetrievedListener listener) {
         this.query = this.collectionName;
-
         this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -191,7 +196,9 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         event.setEventCode(documentSnapshot0.getString("eventCode"));
                         event.setTitle(documentSnapshot0.getString("title"));
                         event.setDescription(documentSnapshot0.getString("description"));
+
                        organizerIdList.add(documentSnapshot0.getString("organizer"));
+
                         // TODO: for check in data retrieve
                         //retrieve Organizer info
                         //CollectionReference attendeeListRef = getCollectionName();
@@ -237,8 +244,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
                             for (QueryDocumentSnapshot documentSnapshot1 : task.getResult()) {
                                 AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
-                                attendee.setAttendeeId(documentSnapshot1.getString("id"));
-                                attendee.setCheckInStatus(documentSnapshot1.getBoolean("checkedIn"));
+                                attendee.setCheckInCount(Objects.requireNonNull(documentSnapshot1.getLong("checkInCount")).intValue());
+                                attendee.setName(documentSnapshot1.getString("name"));
+                                attendee.setId(documentSnapshot1.getString("id"));
+                                attendee.setCheckedIn(documentSnapshot1.getBoolean("checkedIn"));
                                 attendeeFireBaseHolders.add(attendee);
                             }
 
@@ -263,20 +272,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
     public void updateUser(UserFireBaseHolder user){
         String userID = user.getId();
-
-        this.collectionName.document(userID)
-                .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Welcome !");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Please try when you are connected to the internet", e);
-                    }
-                });
+        this.collectionName.document(userID).update("name", user.getName());
+        this.collectionName.document(userID).update("university", user.getUniversity());
+        this.collectionName.document(userID).update("phone", user.getPhone());
+        this.collectionName.document(userID).update("email", user.getEmail());
 
     }
 
@@ -296,9 +295,9 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         ArrayList<AttendeeListFireBaseHolder> attendeeList = new ArrayList<>();
         for (int i = 0; i < eventInfo.getAttendees().size(); i++){
             AttendeeListFireBaseHolder attendee = new AttendeeListFireBaseHolder(
-                    eventInfo.getAttendees().get(i).getUserID(),
-                    eventInfo.getAttendees().get(i).getCheckIn(),
-                    eventInfo.getAttendees().get(i).getUserName(),
+                    eventInfo.getAttendees().get(i).getId(),
+                    eventInfo.getAttendees().get(i).isCheckedIn(),
+                    eventInfo.getAttendees().get(i).getName(),
                     eventInfo.getAttendees().get(i).getCheckInCount());
             attendeeList.add(attendee);
         }//eventInfo.getOrganizer().getUser().getId() eventInfo.getOrganizer().getUser().getId()
@@ -325,7 +324,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         System.out.println("event upload failed");
                     }
                 });
-        
 
 
 
@@ -484,10 +482,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
-                        attendee.setCheckInCount(document.getLong("checkInCount"));
+                        attendee.setCheckInCount(document.getLong("checkInCount").intValue());
                         attendee.setName(document.getString("name"));
-                        attendee.setAttendeeId(document.getId());
-                        attendee.setCheckInStatus(document.getBoolean("checkedIn"));
+                        attendee.setId(document.getId());
+                        attendee.setCheckedIn(document.getBoolean("checkedIn"));
                         attendeeList.add(attendee);
                     }
                 } else {
@@ -499,8 +497,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         });
 
 
-
-
     }
 
     /**
@@ -510,18 +506,21 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * user id should be directly obtained from the database or from the device
      * </p>
      * */
-    public void updateAttendeeSignUp(String userId, String eventId){
-        this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), eventId);
-        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            boolean signUpResult = false;
+
+
+    public void updateAttendeeSignUpToEvent(String userId, String eventId){
+        CollectionReference newCollection =  getDb().collection("EVENT");
+        Query newQuery;
+        newQuery = newCollection.whereEqualTo(FieldPath.documentId(), eventId);
+        newQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                     long attendeeLimit = documentSnapshot.getLong("attendeeLimit");
                     long currentTotalAttendee = documentSnapshot.getLong("currentTotalAttendee");
                     if (currentTotalAttendee < attendeeLimit){
-                        signUpResult = true;
-
+                        updateAttendeeSignUpHelper(userId, eventId);
                     }else{
 
                     }
@@ -539,6 +538,57 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * user id should be directly obtained from the database or from the device
      * </p>
      * */
-    public void updateAttendeeSignUpHelper(String userId, String eventId){}
+
+    public void updateAttendeeSignUpHelper(String userId, String eventId){
+        CollectionReference eventCollection =  getDb().collection("EVENT");
+        CollectionReference userCollection =  getDb().collection("USER");
+        System.out.println(userId+"1234567890");
+
+        Query newQuery = userCollection.whereEqualTo(FieldPath.documentId(), userId);
+
+        newQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    if (task.isSuccessful()) {
+                        attendee.setName(document.getString("name"));
+                        eventCollection.document(eventId).collection("attendeeList").document(userId).set(attendee)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "Welcome !");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                                    }
+                                });
+
+                        userCollection.document(userId).update("attendeeRoles", FieldValue.arrayUnion(eventId))
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "Welcome !");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                                    }
+                                });
+                    }else{
+
+                    }
+
+                }
+            }
+        });
+
+    }
+
 
 }

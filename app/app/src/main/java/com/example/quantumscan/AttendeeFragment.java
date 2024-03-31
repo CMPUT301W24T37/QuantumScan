@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
+
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -38,9 +39,13 @@ public class AttendeeFragment extends Fragment {
 
     private ArrayAdapter<String> eventAdapter;
     private ArrayList<String> attendeeRole;
+    private String id;
+    private String UserID;
 
     private ArrayList<String> dataList;
     private ArrayList<String> eventIDList;
+
+
 
 
     @Override
@@ -66,14 +71,23 @@ public class AttendeeFragment extends Fragment {
                             Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getContext(), "Scanned: " + scanResult.getContents(), Toast.LENGTH_LONG).show();
-                            // TODO: Handle the scanned result here.
+
+                            Intent detailIntent = new Intent(getActivity(), EventInformationFragment.class);
+                            detailIntent.putExtra("eventID", scanResult.getContents());
+                            detailIntent.putExtra("userID", UserID);
+                            startActivity(detailIntent);
                         }
                     }
+//
+
+
                 });
 
         // Initialize your events list here
         events = new ArrayList<>();
-        // Example: events.add(new Event("1", "Event Title", "Event Description"));
+
+
+
     }
 
     @Override
@@ -90,13 +104,17 @@ public class AttendeeFragment extends Fragment {
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
 
         FireStoreBridge fb = new FireStoreBridge("USER");
-        fb.retrieveUser("1658f5315ca1a74e", new FireStoreBridge.OnUserRetrievedListener() {
+        fb.retrieveUser(getCurrentUserId(), new FireStoreBridge.OnUserRetrievedListener() {
             @Override
             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
                 for(String event : attendeeRoles){
                     eventIDList.add(event);
                     System.out.println(event);
                 }
+                System.out.println(user.getId());
+                System.out.println(user.getName());
+                System.out.println(attendeeRoles.size());
+                //System.out.println(attendeeRoles.get(0));
 
                 FireStoreBridge fb_events = new FireStoreBridge("EVENT");
                 fb_events.retrieveAllEvent(new FireStoreBridge.OnEventRetrievedListener() {
@@ -151,14 +169,11 @@ public class AttendeeFragment extends Fragment {
             requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
     }
+    private String getCurrentUserId() {
+        String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        return userId;
 
-    /**
-    跳转到Attendee_Eventpage
-     */
-    /*
-    private void navigateToEventPage(Event event) {
-        Intent intent = new Intent(getActivity(), AttendeeEventPage.class);
-        intent.putExtra("event_id", event.getId()); // Pass event ID to the activity
-        startActivity(intent);
-    }*/
+    }
+
+
 }

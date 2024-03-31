@@ -1,5 +1,7 @@
 package com.example.quantumscan;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -9,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.example.quantumscan.databinding.ActivityMainBinding;
 import com.google.firebase.firestore.FirebaseFirestore;

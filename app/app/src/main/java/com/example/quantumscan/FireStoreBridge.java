@@ -408,6 +408,14 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         imageRef.putFile(imageUri);
     }
 
+    public void updateImage(String EventID, ImageView imageView, Uri imageUri){
+        StorageReference desertRef = storage.getReference().child(EventID+"jpg");
+        desertRef.delete();
+        StorageReference imageRef = storage.getReference().child(EventID + ".jpg");
+        imageRef.putFile(imageUri);
+        //displayImage(EventID, imageView);
+
+    }
     public void displayImage(String EventID, ImageView imageView){
         StorageReference islandRef = this.storage.getReference().child(EventID+".jpg");
 

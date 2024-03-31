@@ -62,8 +62,10 @@ public class OrganizerEventPage extends AppCompatActivity {
         posterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrganizerEventPage.this, OrganizerUpdatePoster.class);
-                startActivity(intent);
+                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerUpdatePoster.class);
+                detailIntent.putExtra("eventID", eventID);
+                detailIntent.putExtra("eventName", eventName);
+                startActivity(detailIntent);
             }
         });
     }

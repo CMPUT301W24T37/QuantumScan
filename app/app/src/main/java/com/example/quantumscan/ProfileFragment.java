@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 
 public class ProfileFragment extends Fragment {
-
+    ImageView imageView;
     TextView userName;
     TextView userUniversity;
     TextView userPhoneNumb;
@@ -48,6 +49,7 @@ public class ProfileFragment extends Fragment {
         userPhoneNumb = view.findViewById(R.id.userPhoneNumbText);
         userEmail = view.findViewById(R.id.userEmailText);
         userInfo = view.findViewById(R.id.userInfoText);
+        imageView = view.findViewById(R.id.profileImage);
         String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         FireStoreBridge fb1 = new FireStoreBridge("USER");
         fb1.retrieveUser(userId, new FireStoreBridge.OnUserRetrievedListener() {
@@ -58,7 +60,6 @@ public class ProfileFragment extends Fragment {
                 userPhoneNumb.setText(user.getPhone());
                 userEmail.setText(user.getEmail());
                 userInfo.setText(user.getId());
-
             }
         });
 

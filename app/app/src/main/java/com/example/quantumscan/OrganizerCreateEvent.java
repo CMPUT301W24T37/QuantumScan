@@ -40,10 +40,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     imageUri = result.getData().getData();
                     System.out.println(imageUri);
-                    // Handle the imageUri, e.g., display it or prepare it for upload
 
-                        //imageUrlUploadListener listener = null;
-                        //listener.updateEventImage("asdf", imageUri.toString());
                 } else {
                     Toast.makeText(OrganizerCreateEvent.this, "Please select an image", Toast.LENGTH_SHORT).show();
                 }
@@ -67,10 +64,6 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
         selectImage = new SelectImage(this, activityResultLauncher);
         buttonPickImage.setOnClickListener(v -> selectImage.pickImage());
-
-
-
-
 
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override

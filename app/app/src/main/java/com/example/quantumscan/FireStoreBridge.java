@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -67,6 +68,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     }
     private interface OnCheckedInListener{
         void onCheckedInListener(ArrayList<AttendeeFireBaseHolder> attendeeList);
+    }
+
+    public interface OnUserCheckInListener{
+        void onCheckUserJoin(boolean attendeeExist);
     }
     /**
      * find user in a database:
@@ -482,7 +487,12 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * </p>
      * */
     public void updateAttendeeCheckIn(String userId, String eventId){
-        this.collectionName.document(eventId).collection("attendeeList").document(userId).update("checkedIn", true)
+        CollectionReference EventCollection = getDb().collection("EVENT");
+        System.out.println("chekd in fb" + userId);
+
+        System.out.println("chekd in fb" + eventId);
+
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("checkedIn", true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -496,7 +506,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     }
                 });
 
-        this.collectionName.document(eventId).collection("attendeeList").document(userId).update("checkInCount", FieldValue.increment(1))
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("checkInCount", FieldValue.increment(1))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -636,6 +646,31 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
             }
         });
 
+    }
+
+    public void checkAttendeeExist(String userId, String eventId, OnUserCheckInListener listener){
+        System.out.println("before crash," + eventId);
+        CollectionReference attendeeListCollection = getDb().collection("EVENT").document(eventId).collection("attendeeList");
+
+        // Query for documents in the 'attendeeList' collection where the document ID matches 'userId'
+        attendeeListCollection.whereEqualTo(FieldPath.documentId(), userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                    // Document with 'userId' exists in the 'attendeeList' collection
+                    System.out.println("Document exists");
+                    listener.onCheckUserJoin(true);
+                } else {
+                    // No document with 'userId' in the 'attendeeList' collection
+                    System.out.println("Document doesn't exist");
+                    listener.onCheckUserJoin(false);
+                }
+            } else {
+                // Handle the error
+                System.out.println("Error checking document existence");
+                // Optionally, call the listener with an error or false
+            }
+        });
     }
 
 

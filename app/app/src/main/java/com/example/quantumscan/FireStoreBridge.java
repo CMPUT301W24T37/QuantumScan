@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -511,7 +510,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
     }
 
-
     /**
      * find user in a database:
      * <p>
@@ -559,19 +557,22 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         Query newQuery;
         newQuery = newCollection.whereEqualTo(FieldPath.documentId(), eventId);
         newQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                     long attendeeLimit = documentSnapshot.getLong("attendeeLimit");
-                    long currentTotalAttendee = documentSnapshot.getLong("currentTotalAttendee");
+                    long currentTotalAttendee = documentSnapshot.getLong("currentTotalAttendee" );
                     if (currentTotalAttendee < attendeeLimit){
+                        System.out.println("before increment");
+                        newCollection.document(eventId).update("currentTotalAttendee",FieldValue.increment(1));
+                        System.out.println("after incremenet");
                         updateAttendeeSignUpHelper(userId, eventId);
+
                     }else{
+                        System.out.println("you have reached limit");
 
                     }
                 }
-
             }
         });
 
@@ -629,7 +630,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     }else{
 
                     }
-
                 }
             }
         });

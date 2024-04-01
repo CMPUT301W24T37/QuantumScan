@@ -57,7 +57,6 @@ public class OrganizerCreateEvent extends AppCompatActivity {
         EditText editTextName = (EditText) findViewById(R.id.nameEditText);
         EditText editTextInfo = (EditText) findViewById(R.id.infoEditText);
         EditText editTextID = (EditText) findViewById(R.id.idEditText);
-
         String nameText;
         String infoText;
         //String idText;
@@ -98,7 +97,6 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 finish();
 
             }
-
 
         });
 

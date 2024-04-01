@@ -71,7 +71,7 @@ public class AttendeeFragment extends Fragment {
                             Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getContext(), "Scanned: " + scanResult.getContents(), Toast.LENGTH_LONG).show();
-
+                            // TODO: CHECKIN JOININ
                             Intent detailIntent = new Intent(getActivity(), EventInformationFragment.class);
                             detailIntent.putExtra("eventID", scanResult.getContents());
                             detailIntent.putExtra("userID", UserID);

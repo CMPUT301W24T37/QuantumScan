@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class AttendeeContentAdapter extends ArrayAdapter<Attendee> {
-    public AttendeeContentAdapter(Context context, ArrayList<Attendee> users) {
-        super(context, 0, users);
+public class AttendeeContentAdapter extends ArrayAdapter<AttendeeFireBaseHolder> {
+    public AttendeeContentAdapter(Context context, ArrayList<AttendeeFireBaseHolder> users) {
+        super(context,0,users);
     }
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Attendee attendee = getItem(position);
+        AttendeeFireBaseHolder attendee = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.attendee_list_content, parent, false);

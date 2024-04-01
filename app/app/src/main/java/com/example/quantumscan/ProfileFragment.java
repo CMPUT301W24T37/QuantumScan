@@ -21,7 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class ProfileFragment extends Fragment {
@@ -37,6 +41,9 @@ public class ProfileFragment extends Fragment {
     String phoneNumb;
     String email;
     String info;
+    String imageUrl;
+
+    String pictureName;
     private FireStoreBridge fb = new FireStoreBridge("USER");
 
     @Override
@@ -55,6 +62,16 @@ public class ProfileFragment extends Fragment {
         fb1.retrieveUser(userId, new FireStoreBridge.OnUserRetrievedListener() {
             @Override
             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+
+                imageUrl = user.getProfilePicture();
+                if (imageUrl.equals("DEFAULT_PFP")){
+                    pictureName = randomPick(user);
+                    fb1.updateProfilePhoto(user.getId(), pictureName);
+                    fb1.displayProfile(pictureName, imageView);
+                }else{
+                    fb1.displayProfile(imageUrl, imageView);
+                }
+
                 userName.setText(user.getName());
                 userUniversity.setText(user.getUniversity());
                 userPhoneNumb.setText(user.getPhone());
@@ -99,7 +116,7 @@ public class ProfileFragment extends Fragment {
                 phoneNumb = userPhoneNumber.getText().toString();
                 email = userEmail.getText().toString();
                 info = userUniversity.getText().toString();
-                UserFireBaseHolder user = new UserFireBaseHolder(name, phoneNumb, info, "profilePic", email);
+                UserFireBaseHolder user = new UserFireBaseHolder(name, phoneNumb, info, "DEFAULT_PFP", email);
                 String userID = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                 user.setId(userID);
                 fb.updateUser(user);
@@ -110,4 +127,15 @@ public class ProfileFragment extends Fragment {
 
         dialog.show();
     }
+
+    public String randomPick(User user){
+        String Name = user.getName().toString();
+        char firstLetter = Name.charAt(0);
+        Random rand = new Random();
+        int rand_int1 = rand.nextInt(4)+1;
+        String pictureName = "" + firstLetter + rand_int1+".png";
+        return pictureName;
+    }
+
+
 }

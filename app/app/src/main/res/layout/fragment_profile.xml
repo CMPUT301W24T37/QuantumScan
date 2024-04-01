@@ -12,13 +12,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/showInfoDialogButton"
+        <FrameLayout
+            android:id="@+id/profilePictureContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit"
+            app:layout_constraintBottom_toTopOf="@id/userNameText"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userInfoText" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="120dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_profile"/>
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_create"
+                android:layout_gravity="bottom|end"
+                />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/userNameText"
@@ -27,6 +46,11 @@
             android:layout_gravity="center"
             android:hint="User Name"
             android:textSize="26dp"
+            app:layout_constraintTop_toBottomOf="@+id/profilePictureContainer"
+            app:layout_constraintBottom_toTopOf="@+id/userUniversityText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="80dp"
             tools:layout_editor_absoluteX="141dp"
             tools:layout_editor_absoluteY="348dp" />
 
@@ -38,6 +62,8 @@
             android:hint="University"
             android:textSize="20dp"
             app:layout_constraintTop_toBottomOf="@+id/userNameText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteX="156dp" />
 
         <TextView
@@ -48,6 +74,8 @@
             android:hint="Phone Number"
             android:textSize="20dp"
             app:layout_constraintTop_toBottomOf="@+id/userUniversityText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteX="156dp" />
 
         <TextView
@@ -58,6 +86,8 @@
             android:hint="email"
             android:textSize="20dp"
             app:layout_constraintTop_toBottomOf="@+id/userPhoneNumbText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteX="156dp" />
 
         <TextView
@@ -68,8 +98,22 @@
             android:hint="user info"
             android:textSize="20dp"
             app:layout_constraintTop_toBottomOf="@+id/userEmailText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteX="156dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <Button
+            android:id="@+id/showInfoDialogButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="60dp"
+
+            app:layout_constraintTop_toBottomOf="@+id/userInfoText" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

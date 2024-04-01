@@ -40,10 +40,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     imageUri = result.getData().getData();
                     System.out.println(imageUri);
-                    // Handle the imageUri, e.g., display it or prepare it for upload
 
-                        //imageUrlUploadListener listener = null;
-                        //listener.updateEventImage("asdf", imageUri.toString());
                 } else {
                     Toast.makeText(OrganizerCreateEvent.this, "Please select an image", Toast.LENGTH_SHORT).show();
                 }
@@ -59,18 +56,14 @@ public class OrganizerCreateEvent extends AppCompatActivity {
         Button buttonPickImage = (Button) findViewById(R.id.picButton);
         EditText editTextName = (EditText) findViewById(R.id.nameEditText);
         EditText editTextInfo = (EditText) findViewById(R.id.infoEditText);
-        EditText editTextID = (EditText) findViewById(R.id.idEditText);
-
+        EditText editTextLimit = (EditText) findViewById(R.id.idEditText);
         String nameText;
         String infoText;
+
         //String idText;
 
         selectImage = new SelectImage(this, activityResultLauncher);
         buttonPickImage.setOnClickListener(v -> selectImage.pickImage());
-
-
-
-
 
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +82,9 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 newEvent.EventIdGenerator(userID);
                 newEvent.setDescription(infoText);
                 newEvent.setTitle(nameText);
+                newEvent.setAttendeeLimit(Long.parseLong(editTextLimit.getText().toString().trim()));
+                newEvent.setCurrentTotalAttendee(0);
+
 
                 String EventID = newEvent.getId();
 
@@ -105,7 +101,6 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 finish();
 
             }
-
 
         });
 

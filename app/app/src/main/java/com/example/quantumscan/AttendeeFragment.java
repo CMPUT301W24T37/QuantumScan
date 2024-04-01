@@ -71,11 +71,29 @@ public class AttendeeFragment extends Fragment {
                             Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getContext(), "Scanned: " + scanResult.getContents(), Toast.LENGTH_LONG).show();
+                            //TODO: CHECKIN JOININ
+                            FireStoreBridge fb2 = new FireStoreBridge("USER");
+                            UserID = getCurrentUserId();
+                            fb2.checkAttendeeExist(UserID, scanResult.getContents(), new FireStoreBridge.OnUserCheckInListener() {
+                                @Override
+                                public void onCheckUserJoin(boolean attendeeExist) {
+                                    System.out.println(attendeeExist);
+                                    // sign up
+                                    if (attendeeExist == false){
+                                            System.out.println("checked doesnt exist");
+                                        Intent detailIntent = new Intent(getActivity(), EventInformationFragment.class);
+                                        detailIntent.putExtra("eventID", scanResult.getContents());
+                                        detailIntent.putExtra("userID", UserID);
+                                        startActivity(detailIntent);
+                                    // check in
+                                    }else{
+                                        System.out.println("checked  exist");
+                                        fb2.updateAttendeeCheckIn(UserID, scanResult.getContents());
 
-                            Intent detailIntent = new Intent(getActivity(), EventInformationFragment.class);
-                            detailIntent.putExtra("eventID", scanResult.getContents());
-                            detailIntent.putExtra("userID", UserID);
-                            startActivity(detailIntent);
+                                    }
+                                }
+                            });
+
                         }
                     }
 //

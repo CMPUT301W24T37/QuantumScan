@@ -9,16 +9,20 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -83,16 +87,16 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * @param userID the height of the rectangle, must be non-negative
      */
     public void retrieveUser(String userID, OnUserRetrievedListener listener) {
-        this.query = this.collectionName.whereEqualTo(FieldPath.documentId(), userID);
-        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        CollectionReference userCollection = getDb().collection("USER");
+        DocumentReference user = userCollection.document(userID);
+        user.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    User user = new User(null,null,null, null,null);
-                    ArrayList<String> attendeeRoles = new ArrayList<String>();
-                    ArrayList<String> organizerRoles = new ArrayList<String>();
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                        // Retrieve user data from document and set properties of the User object
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                try  {
+                        User user = new User(null,null,null, null,null);
+                        ArrayList<String> attendeeRoles = new ArrayList<String>();
+                        ArrayList<String> organizerRoles = new ArrayList<String>();
+
                         user.setName(documentSnapshot.getString("name"));
                         user.setProfilePicture(documentSnapshot.getString("profilePicture"));
                         user.setPhone(documentSnapshot.getString("phone"));
@@ -104,19 +108,16 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         attendeeRoles = (ArrayList<String>) list1;
                         organizerRoles = (ArrayList<String>) list2;
 
-                    }
 
                     // Notify the listener with the retrieved user object is complete
                     listener.onUserRetrieved(user, attendeeRoles, organizerRoles);
-                } else {
-                    // Handle the case where the task failed
-                    Exception e = task.getException();
-                    System.out.println("Query failed: " + e.getMessage());
-                    // Notify the listener with a null user object
+                } catch (Exception e){
+
                     listener.onUserRetrieved(null,null,null);
                 }
             }
         });
+
     }
 
     /**
@@ -531,34 +532,34 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
     public void retrieveAttendeeCheckIn(String eventId, OnCheckedInListener listener){
         CollectionReference collection = getDb().collection("EVENT");
-        this.query = collection.document(eventId).collection("attendeeList");
-        this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ArrayList<AttendeeFireBaseHolder> attendeeList = new ArrayList<>();
-                if (task.isSuccessful()) {
-                    int count = 0;
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
-                        attendee.setCheckInCount(document.getLong("checkInCount").intValue());
-                        attendee.setName(document.getString("name"));
-                        attendee.setId(document.getId());
-                        attendee.setCheckedIn(document.getBoolean("checkedIn"));
-                        attendeeList.add(attendee);
-                        count++;
-                    }
-                    if (count == 0){
+        CollectionReference attendeeList = collection.document(eventId).collection("attendeeList");
+
+            attendeeList.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    try {
+                        ArrayList<AttendeeFireBaseHolder> attendeeList = new ArrayList<>();
+
+                        int count = 0;
+                        for (QueryDocumentSnapshot document : value) {
+                            AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
+                            attendee.setCheckInCount(document.getLong("checkInCount").intValue());
+                            attendee.setName(document.getString("name"));
+                            attendee.setId(document.getId());
+                            attendee.setCheckedIn(document.getBoolean("checkedIn"));
+                            attendeeList.add(attendee);
+                            count++;
+                        }
+
+
+                        listener.onCheckedInListener(attendeeList);
+                    } catch (Exception e){
+                        System.out.println(error);
                         listener.onCheckedInListener(null);
                     }
-                } else {
-                    listener.onCheckedInListener(null);
                 }
-                listener.onCheckedInListener(attendeeList);
             }
-
-        });
-
-
+        );
     }
 
     /**

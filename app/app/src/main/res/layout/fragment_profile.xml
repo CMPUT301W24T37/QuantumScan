@@ -39,13 +39,14 @@
                 />
         </FrameLayout>
 
-        <TextView
+        <EditText
             android:id="@+id/userNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="User Name"
             android:textSize="26dp"
+            android:enabled="false"
             app:layout_constraintTop_toBottomOf="@+id/profilePictureContainer"
             app:layout_constraintBottom_toTopOf="@+id/userUniversityText"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,49 +55,53 @@
             tools:layout_editor_absoluteX="141dp"
             tools:layout_editor_absoluteY="348dp" />
 
-        <TextView
+        <EditText
             android:id="@+id/userUniversityText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="University"
             android:textSize="20dp"
+            android:enabled="false"
             app:layout_constraintTop_toBottomOf="@+id/userNameText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteX="156dp" />
 
-        <TextView
+        <EditText
             android:id="@+id/userPhoneNumbText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="Phone Number"
             android:textSize="20dp"
+            android:enabled="false"
             app:layout_constraintTop_toBottomOf="@+id/userUniversityText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteX="156dp" />
 
-        <TextView
+        <EditText
             android:id="@+id/userEmailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="email"
             android:textSize="20dp"
+            android:enabled="false"
             app:layout_constraintTop_toBottomOf="@+id/userPhoneNumbText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteX="156dp" />
 
-        <TextView
+        <EditText
             android:id="@+id/userInfoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="user info"
             android:textSize="20dp"
+            android:enabled="false"
             app:layout_constraintTop_toBottomOf="@+id/userEmailText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

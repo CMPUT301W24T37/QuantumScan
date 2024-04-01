@@ -8,7 +8,9 @@ import android.os.Bundle;
 
 import android.provider.Settings;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -35,15 +37,15 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+import android.widget.EditText;
 
 public class ProfileFragment extends Fragment {
     ImageView imageView;
-    TextView userName;
-    TextView userUniversity;
-    TextView userPhoneNumb;
-    TextView userEmail;
-    TextView userInfo;
+    EditText userName;
+    EditText userUniversity;
+    EditText userPhoneNumb;
+    EditText userEmail;
+    EditText userInfo;
 
     String name;
     String university;
@@ -52,6 +54,7 @@ public class ProfileFragment extends Fragment {
     String info;
     String imageUrl;
     private SelectImage selectImage;
+    private GestureDetector gestureDetector;
 
     private Uri imageUri = null;
 
@@ -66,14 +69,12 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getContext(), "Please select an image", Toast.LENGTH_SHORT).show();
                 }
             });
-
     String pictureName;
     private FireStoreBridge fb = new FireStoreBridge("USER");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         userName = view.findViewById(R.id.userNameText);
         userUniversity = view.findViewById(R.id.userUniversityText);
@@ -114,10 +115,52 @@ public class ProfileFragment extends Fragment {
         showInfoDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showUserInfoDialog();
+                userName.setEnabled(true);
+                userUniversity.setEnabled(true);
+                userPhoneNumb.setEnabled(true);
+                userEmail.setEnabled(true);
+                userInfo.setEnabled(true);
+                userName.requestFocus();
+                userName.setSelection(userName.getText().length());
+                //showUserInfoDialog();
             }
         });
 
+        gestureDetector = new GestureDetector(this.getContext(), new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                System.out.println("double tab dectedeed 1");
+
+                return true;
+            }
+        });
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Code to make EditText non-editable
+                userName.setEnabled(false);
+                userUniversity.setEnabled(false);
+                userPhoneNumb.setEnabled(false);
+                userEmail.setEnabled(false);
+                userInfo.setEnabled(false);
+
+                if (userName.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getContext(), "User name can not be empty. Change cancelled", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // edit user info here
+                    name = userName.getText().toString();
+                    phoneNumb = userPhoneNumb.getText().toString();
+                    email = userEmail.getText().toString();
+                    info = userUniversity.getText().toString();
+                    UserFireBaseHolder user = new UserFireBaseHolder(name, phoneNumb, info, "DEFAULT_PFP", email);
+                    String userID = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                    user.setId(userID);
+                    fb.updateUser(user);
+                }
+                return gestureDetector.onTouchEvent(event);
+            }
+        });
 
 
         return view;
@@ -136,6 +179,7 @@ public class ProfileFragment extends Fragment {
         Button submitButton = dialog.findViewById(R.id.buttonSubmit);
 
         submitButton.setOnClickListener(v -> {
+
             if (userName.getText().toString().trim().length() == 0) {
                 Toast.makeText(getContext(), "User name can not be empty. Change cancelled", Toast.LENGTH_LONG).show();
             }
@@ -174,5 +218,4 @@ public class ProfileFragment extends Fragment {
         FireStoreBridge fb_user = new FireStoreBridge("USER");
         fb_user.updatePhoto(userID, imageUri);
     }
-
 }

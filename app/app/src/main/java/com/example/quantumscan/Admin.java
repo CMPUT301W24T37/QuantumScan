@@ -65,7 +65,7 @@ public class Admin {
 
 
     // delete the sub-collection <attendeeList> in the event. (if you want to call this method, change 'private' to 'public')
-    // note: the reason why this exist is because to fully delete a collection, you need to manually delete its sub-collections by removing all their documents
+    // note: the reason why this exist is because to fully delete a collection, you need to manually delete its sub-collections by removing all its documents
     // source1: https://firebase.google.com/docs/firestore/manage-data/delete-data#delete_documents
     // source2: https://firebase.google.com/docs/firestore/manage-data/delete-data#collections
     private void deleteAttendeeListSubCollection(String eventID) {

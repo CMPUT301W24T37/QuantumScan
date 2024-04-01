@@ -133,7 +133,8 @@ public class ProfileFragment extends Fragment {
         char firstLetter = Name.charAt(0);
         Random rand = new Random();
         int rand_int1 = rand.nextInt(4)+1;
-        String pictureName = "" + firstLetter + rand_int1+".png";
+        String pictureName = "" + firstLetter + rand_int1;
+        pictureName = pictureName.toUpperCase()+".png";
         return pictureName;
     }
 

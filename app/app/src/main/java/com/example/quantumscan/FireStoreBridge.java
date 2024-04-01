@@ -297,28 +297,17 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         this.collectionName.document(userId).update("profilePicture", profilePhoto);
     }
 
-    /**
-     * find user in a database:
-     * <p>
-     * This method is responsible for retrieving user information given the user id.
-     * user id should be directly obtained from the database or from the device
-     * </p>
-     * */
+    /** updateEventHelper will take in a eventID and a organizerID. organizerID will be used to identify
+     user in USER collection. eventID will be added into organizerRoles filed to keep track which event
+     are organized by the user
+     @param eventInfo {@link Event}
+     @param organizerID {@link String}
+     **/
     public void updateEvent(Event eventInfo, String organizerID){
         // get event id
         String eventId= eventInfo.getId();
         System.out.println(eventId);
 
-        // create an attendeeList that will be added to organizer <both are firebase holder>
-        ArrayList<AttendeeListFireBaseHolder> attendeeList = new ArrayList<>();
-        for (int i = 0; i < eventInfo.getAttendees().size(); i++){
-            AttendeeListFireBaseHolder attendee = new AttendeeListFireBaseHolder(
-                    eventInfo.getAttendees().get(i).getId(),
-                    eventInfo.getAttendees().get(i).isCheckedIn(),
-                    eventInfo.getAttendees().get(i).getName(),
-                    eventInfo.getAttendees().get(i).getCheckInCount());
-            attendeeList.add(attendee);
-        }//eventInfo.getOrganizer().getUser().getId() eventInfo.getOrganizer().getUser().getId()
         EventFireBaseHolder event = new EventFireBaseHolder(
                 eventInfo.getAnnouncement(),
                 eventInfo.getDescription(),
@@ -326,7 +315,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 eventId,
                 organizerID,
                 eventInfo.getPosterCode(),
-                eventInfo.getTitle());
+                eventInfo.getTitle(),
+                eventInfo.getAttendeeLimit(),
+                eventInfo.getCurrentTotalAttendee());
+
         this.updateEventHelper(eventId, organizerID);
         this.collectionName.document(eventId).set(event)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -347,13 +339,12 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
     }
 
-    /**
-     * find user in a database:
-     * <p>
-     * This method is responsible for retrieving user information given the user id.
-     * user id should be directly obtained from the database or from the device
-     * </p>
-     * */
+    /** updateEventHelper will take in a eventID and a organizerID. organizerID will be used to identify
+     user in USER collection. eventID will be added into organizerRoles filed to keep track which event
+     are organized by the user
+     @param eventID {@link String}
+     @param organizerID {@link String}
+     **/
     private void updateEventHelper(String eventID, String organizerID){
         CollectionReference userCollection = this.getDb().collection("USER");
         userCollection.document(organizerID).update("organizerRoles", FieldValue.arrayUnion(eventID))

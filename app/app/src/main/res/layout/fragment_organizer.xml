@@ -2,69 +2,102 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_organizer_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".OrganizerFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="15dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/backgroundImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:src="@drawable/pic_office"
-            android:radius="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_create"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="15dp"
+            android:radius="16dp">
 
-        <Button
-            android:id="@+id/buttonCreate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:color="#FFFFFF"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:radius="20dp"
-            android:text="Create"
-            android:layout_margin="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/backgroundImage"
-            app:layout_constraintEnd_toEndOf="@+id/backgroundImage" />
+            <ImageView
+                android:id="@+id/backgroundImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pic_office"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/buttonCreate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:color="#FFFFFF"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:radius="20dp"
+                android:text="Create"
+                android:layout_margin="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/backgroundImage"
+                app:layout_constraintEnd_toEndOf="@+id/backgroundImage" />
+
+            <TextView
+                android:id="@+id/textViewSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="NEW EVENT"
+                android:textColor="@android:color/white"
+                android:textSize="34sp"
+                android:textStyle="bold"
+                android:layout_margin="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/backgroundImage" />
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textViewSubtitle"
+                android:layout_alignParentStart="true"
+                android:text="Let's start this by create"
+                android:textColor="@android:color/white"
+                android:layout_marginHorizontal="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/textViewSubtitle"
+                app:layout_constraintStart_toStartOf="@+id/backgroundImage" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/textViewSubtitle"
+            android:id="@+id/textViewEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="NEW EVENT"
-            android:textColor="@android:color/white"
+            android:layout_margin="15dp"
+            android:text="Events I created"
+            android:textColor="@android:color/black"
             android:textSize="34sp"
             android:textStyle="bold"
-            android:layout_margin="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/backgroundImage" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_create" />
 
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
+
+        <ListView
+            android:id="@+id/organizerEventList"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textViewSubtitle"
-            android:layout_alignParentStart="true"
-            android:text="Let's start this by create"
-            android:textColor="@android:color/white"
-            android:layout_marginHorizontal="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewSubtitle"
-            app:layout_constraintStart_toStartOf="@+id/backgroundImage" />
+            android:choiceMode="singleChoice"
+            android:listSelector="#999999"
+            app:layout_constraintTop_toBottomOf="@+id/textViewEvent">
+
+        </ListView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

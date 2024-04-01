@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:textSize="30sp">
+
+    <TextView
+        android:id="@+id/attendee_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attendee"
+        android:textStyle="bold"
+        android:textSize="35sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/check_in_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check in 29"
+        android:textSize="25sp"
+        app:layout_constraintTop_toBottomOf="@+id/attendee_name">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/check_in_status"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@drawable/ic_unchecked"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="20dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

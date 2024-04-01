@@ -66,7 +66,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     private interface OnEventRetrievedListenerHelper{
         void onAttendeeRetrieved(ArrayList<AttendeeFireBaseHolder> attendeeList);
     }
-    private interface OnCheckedInListener{
+    interface OnCheckedInListener{
         void onCheckedInListener(ArrayList<AttendeeFireBaseHolder> attendeeList);
     }
 
@@ -530,12 +530,14 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * </p>
      * */
     public void retrieveAttendeeCheckIn(String eventId, OnCheckedInListener listener){
-        this.query = this.collectionName.document(eventId).collection("attendeeList");
+        CollectionReference collection = getDb().collection("EVENT");
+        this.query = collection.document(eventId).collection("attendeeList");
         this.query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 ArrayList<AttendeeFireBaseHolder> attendeeList = new ArrayList<>();
                 if (task.isSuccessful()) {
+                    int count = 0;
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         AttendeeFireBaseHolder attendee = new AttendeeFireBaseHolder();
                         attendee.setCheckInCount(document.getLong("checkInCount").intValue());
@@ -543,9 +545,13 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         attendee.setId(document.getId());
                         attendee.setCheckedIn(document.getBoolean("checkedIn"));
                         attendeeList.add(attendee);
+                        count++;
+                    }
+                    if (count == 0){
+                        listener.onCheckedInListener(null);
                     }
                 } else {
-
+                    listener.onCheckedInListener(null);
                 }
                 listener.onCheckedInListener(attendeeList);
             }
@@ -601,7 +607,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     public void updateAttendeeSignUpHelper(String userId, String eventId){
         CollectionReference eventCollection =  getDb().collection("EVENT");
         CollectionReference userCollection =  getDb().collection("USER");
-        System.out.println(userId+"1234567890");
+
 
         Query newQuery = userCollection.whereEqualTo(FieldPath.documentId(), userId);
 
@@ -612,6 +618,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     if (task.isSuccessful()) {
                         attendee.setName(document.getString("name"));
+                        attendee.setId(userId);
                         eventCollection.document(eventId).collection("attendeeList").document(userId).set(attendee)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

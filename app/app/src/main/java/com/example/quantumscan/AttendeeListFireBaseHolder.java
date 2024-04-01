@@ -4,7 +4,6 @@ public class AttendeeListFireBaseHolder {
     private String id;
     private boolean checkedIn;
     private String name;
-
     private int checkInCount;
 
 

@@ -197,7 +197,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         event.setTitle(documentSnapshot0.getString("title"));
                         event.setDescription(documentSnapshot0.getString("description"));
 
-                       organizerIdList.add(documentSnapshot0.getString("organizer"));
+                        organizerIdList.add(documentSnapshot0.getString("organizer"));
 
                         // TODO: for check in data retrieve
                         //retrieve Organizer info
@@ -258,6 +258,22 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                             // Notify the listener with a null user object
 
                         }
+                    }
+                });
+    }
+    public void createUser(UserFireBaseHolder user){
+        String userID = user.getId();
+        this.collectionName.document(userID)
+                .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
                     }
                 });
     }

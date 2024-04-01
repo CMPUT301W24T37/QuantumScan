@@ -58,7 +58,7 @@ public class UserProfileFileActivity extends AppCompatActivity {
                     user.setPhone(phoneText.getText().toString().trim());
                     user.setName(userNameText.getText().toString().trim());
                     user.setUniversity(universityText.getText().toString().trim());
-                    fb.updateUser(user);
+                    fb.createUser(user);
                     Intent intent = new Intent(UserProfileFileActivity.this, MainActivity.class);
                     startActivity(intent);
                 }

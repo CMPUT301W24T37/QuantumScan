@@ -261,6 +261,22 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     }
                 });
     }
+    public void createUser(UserFireBaseHolder user){
+        String userID = user.getId();
+        this.collectionName.document(userID)
+                .set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Welcome !");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Please try when you are connected to the internet", e);
+                    }
+                });
+    }
 
     /**
      * find user in a database:

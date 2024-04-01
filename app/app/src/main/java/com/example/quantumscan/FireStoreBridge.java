@@ -276,7 +276,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         this.collectionName.document(userID).update("university", user.getUniversity());
         this.collectionName.document(userID).update("phone", user.getPhone());
         this.collectionName.document(userID).update("email", user.getEmail());
+    }
 
+    public void updateProfilePhoto(String userId, String profilePhoto){
+        this.collectionName.document(userId).update("profilePicture", profilePhoto);
     }
 
     /**
@@ -418,6 +421,25 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     }
     public void displayImage(String EventID, ImageView imageView){
         StorageReference islandRef = this.storage.getReference().child(EventID+".jpg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
+    }
+
+    public void displayProfile(String pictureName, ImageView imageView){
+        StorageReference islandRef = this.storage.getReference().child("default_avatars/"+pictureName);
 
         final long ONE_MEGABYTE = 1024 * 1024;
         islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {

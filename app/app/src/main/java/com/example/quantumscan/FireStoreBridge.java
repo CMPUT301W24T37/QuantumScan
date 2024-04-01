@@ -52,6 +52,8 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         return collectionName;
     }
 
+
+
     public interface OnUserRetrievedListener {
         void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles);
     }
@@ -418,7 +420,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         Log.w(TAG, "Please try when you are connected to the internet", e);
                     }
                 });
-
     }
 
     @Override
@@ -435,6 +436,16 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         //displayImage(EventID, imageView);
 
     }
+
+    public void updatePhoto(String userID, Uri imageUri) {
+        StorageReference desertRef = storage.getReference().child("default_avatars/" + userID + ".jpg");
+        desertRef.delete();
+        StorageReference imageRef = storage.getReference().child("default_avatars/" + userID + ".jpg");
+        imageRef.putFile(imageUri);
+        this.collectionName.document(userID).update("profilePicture", userID + ".jpg");
+    }
+
+
     public void displayImage(String EventID, ImageView imageView){
         StorageReference islandRef = this.storage.getReference().child(EventID+".jpg");
 

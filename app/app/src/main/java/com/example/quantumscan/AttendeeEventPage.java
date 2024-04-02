@@ -57,8 +57,6 @@ public class AttendeeEventPage extends AppCompatActivity {
         View btnScanQRCode = findViewById(R.id.btnScanQRCode);//Main Activity??or main menu? ScanQRCode
         returnButton = findViewById(R.id.btnReturn);
 
-
-
         btnViewInfo.setOnClickListener(view -> switchToDetailsView());// Set up the "View Information" button
         btnReceiveNotification.setOnClickListener(view -> switchToNotificationView());// Set up the "ReceiveNotification" button
         btnScanQRCode.setOnClickListener(view -> switchToScanQRCode());// Set up the "btnScanQRCode" button

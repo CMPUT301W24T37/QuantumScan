@@ -103,9 +103,6 @@ public class AttendeeFragment extends Fragment {
 
         // Initialize your events list here
         events = new ArrayList<>();
-
-
-
     }
 
     @Override

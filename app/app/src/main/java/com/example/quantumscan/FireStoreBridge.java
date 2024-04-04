@@ -77,6 +77,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     public interface OnUserCheckInListener{
         void onCheckUserJoin(boolean attendeeExist);
     }
+
+    public interface OnRetrieveAnnouncement{
+        void onRetrieveAnnouncement(Announcement announcement);
+    }
     /**
      * find user in a database:
      * <p>
@@ -680,6 +684,55 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
             }
         });
     }
+
+    public void retrieveAnnouncement(String userId, OnRetrieveAnnouncement listener){
+        CollectionReference collectionUser = getDb().collection("USER");
+        // Change from get().addOnCompleteListener to addSnapshotListener for real-time updates
+        DocumentReference userDocRef = collectionUser.document(userId);
+        userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    List<String> eventIdList = (List<String>) documentSnapshot.get("attendeeRoles");
+
+                    for (String docId : eventIdList) {
+                        DocumentReference docRef = getDb().collection("EVENT").document(docId);
+                        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                if (e != null) {
+                                    Log.w(TAG, "Event listen failed.", e);
+                                    return;
+                                }
+
+                                if (documentSnapshot != null && documentSnapshot.exists()) {
+                                    String organizer = documentSnapshot.getString("organizer");
+                                    List<String> announcementList = (List<String>) documentSnapshot.get("announcements");
+                                    String eventTitle = documentSnapshot.getString("title");
+                                    // Ensure there is at least one announcement to retrieve
+                                    if (announcementList != null && !announcementList.isEmpty()) {
+                                        String announcement = announcementList.get(announcementList.size() - 1);
+                                        Announcement annouuncement = new Announcement(organizer, announcement, eventTitle);
+                                        listener.onRetrieveAnnouncement(annouuncement);
+                                    }
+                                } else {
+                                    Log.d(TAG, "Event data: null");
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    Log.d(TAG, "User data: null");
+                }
+            }
+        });
+    }
+
 
 
 }

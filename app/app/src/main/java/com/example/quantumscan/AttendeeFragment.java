@@ -1,10 +1,13 @@
 package com.example.quantumscan;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +16,21 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 
-
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -44,13 +54,15 @@ public class AttendeeFragment extends Fragment {
 
     private ArrayList<String> dataList;
     private ArrayList<String> eventIDList;
-
-
+    private FusedLocationProviderClient fusedLocationClient;
+    private Location location = null;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getContext());
+        if (this.getActivity() == null) {Log.d("atmeng", "Activity is null smh");}
 
         // Initialize the ActivityResultLauncher for camera permission request
         requestCameraPermissionLauncher =
@@ -79,17 +91,36 @@ public class AttendeeFragment extends Fragment {
                                 public void onCheckUserJoin(boolean attendeeExist) {
                                     System.out.println(attendeeExist);
                                     // sign up
-                                    if (attendeeExist == false){
-                                            System.out.println("checked doesnt exist");
+                                    if (attendeeExist == false) {
+                                        System.out.println("checked doesnt exist");
                                         Intent detailIntent = new Intent(getActivity(), EventInformationFragment.class);
                                         detailIntent.putExtra("eventID", scanResult.getContents());
                                         detailIntent.putExtra("userID", UserID);
                                         startActivity(detailIntent);
-                                    // check in
-                                    }else{
+                                        // check in
+                                    } else {
                                         System.out.println("checked  exist");
                                         fb2.updateAttendeeCheckIn(UserID, scanResult.getContents());
+                                        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                            Log.d("atmeng", "Try to get location and update it");
+                                            fusedLocationClient.getLastLocation()
+                                                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                                                        @Override
+                                                        public void onSuccess(Location location) {
+                                                            Log.d("atmeng", "get location query success!");
 
+                                                            // Got last known location. In some rare situations this can be null.
+                                                            if (location != null) {
+                                                                Log.d("atmeng", "Lat: "+String.valueOf(location.getLatitude())+"Lon: "+String.valueOf(location.getLongitude()));
+                                                                // Logic to handle location object
+                                                                fb2.updateAttendeeLocation(UserID, scanResult.getContents(), location);
+                                                            } else {
+                                                                Log.d("atmeng", "location is null...");
+                                                                fb2.updateAttendeeLocation(UserID, scanResult.getContents(), location);
+                                                            }
+                                                        }
+                                                    });
+                                        }
                                     }
                                 }
                             });

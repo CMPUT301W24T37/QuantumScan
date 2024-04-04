@@ -25,6 +25,15 @@ public class Attendee {
     }
 
     public Attendee() {
+        this.location = null;
+    }
+
+    public GeoPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(GeoPoint location) {
+        this.location = location;
     }
 
     public String getName() {

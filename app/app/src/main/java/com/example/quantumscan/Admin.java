@@ -385,6 +385,9 @@ public class Admin {
                         attendee.setName(documentSnapshot1.getString("name"));
                         attendee.setId(documentSnapshot1.getString("id"));
                         attendee.setCheckedIn(documentSnapshot1.getBoolean("checkedIn"));
+                        if (documentSnapshot1.get("location") != null) {
+                            attendee.setLocation(documentSnapshot1.getGeoPoint("location"));
+                        }
                         attendees.add(attendee);
                         Log.w(TAG, "attendee added in attendees");
                     }

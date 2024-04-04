@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -525,6 +527,66 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     }
                 });
 
+    }
+
+    public void updateAttendeeCheckInWithLocation(String userId, String eventId, Location location){
+        CollectionReference EventCollection = getDb().collection("EVENT");
+        System.out.println("chekd in fb" + userId);
+
+        System.out.println("chekd in fb" + eventId);
+
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("checkedIn", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("event upload successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("event upload failed");
+                    }
+                });
+
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("checkInCount", FieldValue.increment(1))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("event upload successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("event upload failed");
+                    }
+                });
+        updateAttendeeLocation( userId,  eventId,  location);
+
+    }
+
+    public void updateAttendeeLocation(String userId, String eventId, Location location) {
+        CollectionReference EventCollection = getDb().collection("EVENT");
+        GeoPoint geopoint = null;
+        if (location != null) {
+            geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+            Log.d(TAG, "successfully get the location");
+        }
+        else {Log.w(TAG, "the location is null (will update as null)");}
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("location", geopoint)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("Geopoint location updated successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Geopoint location updated failed");
+                    }
+                });
     }
 
     /**

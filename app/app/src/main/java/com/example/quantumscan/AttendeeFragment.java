@@ -150,36 +150,19 @@ public class AttendeeFragment extends Fragment {
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
 
         FireStoreBridge fb = new FireStoreBridge("USER");
-        fb.retrieveUser(getCurrentUserId(), new FireStoreBridge.OnUserRetrievedListener() {
+
+        fb.retrieveJoinedEvent(getCurrentUserId(), new FireStoreBridge.OnRetrieveJoinedEvent() {
             @Override
-            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
-                for(String event : attendeeRoles){
-                    eventIDList.add(event);
-                    System.out.println(event);
-                }
-                System.out.println(user.getId());
-                System.out.println(user.getName());
-                System.out.println(attendeeRoles.size());
-                //System.out.println(attendeeRoles.get(0));
-
-                FireStoreBridge fb_events = new FireStoreBridge("EVENT");
-                fb_events.retrieveAllEvent(new FireStoreBridge.OnEventRetrievedListener() {
-                    @Override
-                    public void onEventRetrieved(ArrayList<Event> events, ArrayList<String> organizerList) {
-                        for(String eventID : eventIDList){
-
-                            for(Event event: events){
-                                if(Objects.equals(eventID, event.getId())){
-                                    System.out.println("Size"+ event.getTitle());
-                                    dataList.add(event.getTitle());
-                                }
-                            }
-                        }
-                        eventAdapter.notifyDataSetChanged();
+            public void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventList) {
+                dataList.clear();
+                for(EventFireBaseHolder event: eventList){
+                    if (!dataList.contains(event.getId())) {
+                        dataList.add(event.getTitle());
+                        eventIDList.add(event.getId());
 
                     }
-                });
-
+                }
+                eventAdapter.notifyDataSetChanged();
             }
         });
 

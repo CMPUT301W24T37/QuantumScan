@@ -102,7 +102,7 @@
         android:layout_width="360dp"
         android:layout_height="60dp"
         android:layout_margin="15dp"
-        android:text="Upload Poster"
+        android:text="Delete Poster"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

@@ -84,7 +84,7 @@
         android:layout_width="350dp"
         android:layout_height="200dp"
         android:scaleType="fitXY"
-        android:src="@drawable/pic_test_background"
+        android:src="@drawable/pic_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"

@@ -28,7 +28,7 @@ public class LoginPageAdmin extends AppCompatActivity {
             public void onClick(View view) {
                 enterKey = editText.getText().toString();
                 if(enterKey.equals(encryptionKey)){
-                    Intent intent = new Intent(LoginPageAdmin.this, AdminHomepage.class);
+                    Intent intent = new Intent(LoginPageAdmin.this, AdminMainActivity.class);
                     System.out.println("True, running page");
                     startActivity(intent);
 

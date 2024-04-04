@@ -529,7 +529,44 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
     }
 
-    private void updateAttendeeLocation(String userId, String eventId, Location location) {
+    public void updateAttendeeCheckInWithLocation(String userId, String eventId, Location location){
+        CollectionReference EventCollection = getDb().collection("EVENT");
+        System.out.println("chekd in fb" + userId);
+
+        System.out.println("chekd in fb" + eventId);
+
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("checkedIn", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("event upload successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("event upload failed");
+                    }
+                });
+
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("checkInCount", FieldValue.increment(1))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("event upload successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("event upload failed");
+                    }
+                });
+        updateAttendeeLocation( userId,  eventId,  location);
+
+    }
+
+    public void updateAttendeeLocation(String userId, String eventId, Location location) {
         CollectionReference EventCollection = getDb().collection("EVENT");
         GeoPoint geopoint = null;
         if (location != null) {

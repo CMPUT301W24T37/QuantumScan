@@ -40,9 +40,13 @@ public class EventInformationFragment extends AppCompatActivity {
 
         textViewEventTitle = findViewById(R.id.textViewEventTitle);
         textViewEventDescription = findViewById(R.id.textViewEventDescription);
-        imageViewEventPoster = findViewById(R.id.imageViewEvent);
+
         buttonJoinEvent = findViewById(R.id.buttonJoinEvent);
         buttonReturn = findViewById(R.id.buttonReturn);
+        imageViewEventPoster = findViewById(R.id.imageViewEvent);
+
+
+
 
 
         // Retrieve the event ID passed from AttendeeFragment
@@ -78,11 +82,13 @@ public class EventInformationFragment extends AppCompatActivity {
                     textViewEventDescription.setText(event.getDescription());
 
                     // 如果事件有海报图像，使用posterCode作为图像ID来显示图像
-                    if (event.getPosterCode() != null && !event.getPosterCode().isEmpty()) {
-                        fireStoreBridge.displayImage(event.getPosterCode(), imageViewEventPoster);
+                    imageDisplay(eventId, imageViewEventPoster);
+
+
+
                     }
                 }
-            }
+
         });
     }
 
@@ -112,6 +118,11 @@ public class EventInformationFragment extends AppCompatActivity {
         String userId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         return userId;
 
+    }
+
+    public void imageDisplay(String EventID, ImageView imageView){
+        FireStoreBridge fb_events = new FireStoreBridge("EVENT");
+        fb_events.displayImage(EventID, imageView);
     }
 }
 

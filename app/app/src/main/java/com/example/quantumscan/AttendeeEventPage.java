@@ -39,6 +39,7 @@ public class AttendeeEventPage extends AppCompatActivity {
     private ImageView imageViewEventPoster;
 
     private FireStoreBridge fireStoreBridge;
+    private Button buttonReturn;
 
 
     @Override
@@ -60,6 +61,15 @@ public class AttendeeEventPage extends AppCompatActivity {
         btnViewInfo.setOnClickListener(view -> switchToDetailsView());// Set up the "View Information" button
         btnReceiveNotification.setOnClickListener(view -> switchToNotificationView());// Set up the "ReceiveNotification" button
         btnScanQRCode.setOnClickListener(view -> switchToScanQRCode());// Set up the "btnScanQRCode" button
+
+        buttonReturn = findViewById(R.id.btnReturn);
+
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // 关闭当前活动，返回上一个活动
+            }
+        });
 
 
 
@@ -96,17 +106,20 @@ public class AttendeeEventPage extends AppCompatActivity {
 
                     tvEventTitle.setText(event.getTitle());
                     tvEventDescription.setText(event.getDescription());
+                    imageDisplay(eventId, imageViewEventPoster);
 
-                    // Load the image using Glide
-//                    Glide.with(AttendeeEventPage.this)
-//                            .load(event.getPosterCode()) // Ensure this method or field exists in your Event class
-//                            .into(imageViewEventPoster);
+
                 } else {
 
                     Toast.makeText(AttendeeEventPage.this, "Event not found." + eventID, Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    public void imageDisplay(String EventID, ImageView imageView){
+        FireStoreBridge fb_events = new FireStoreBridge("EVENT");
+        fb_events.displayImage(EventID, imageView);
     }
 
 

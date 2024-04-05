@@ -52,6 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_margin="15dp"
         android:layout_marginRight="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_eventName">
@@ -73,43 +74,72 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonInfo"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_margin="15dp"
-        android:text="Edit Information"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonPoster"
         android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_margin="15dp"
-        android:text="Delete Poster"
+        android:layout_height="70dp"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        app:cornerRadius="16dp"
+
+        app:iconGravity="textStart"
+        android:paddingStart="30dp"
         android:textSize="20sp"
         android:textStyle="bold"
+
+        app:icon="@drawable/ic_picture"
+        app:iconPadding="30dp"
+        app:iconSize="40dp"
+
+        android:text="Delete Poster"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonInfo" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonDelete"
         android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_margin="15dp"
-        android:text="Remove Event"
+        android:layout_height="70dp"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        app:cornerRadius="16dp"
+
+        app:iconGravity="textStart"
+        android:paddingStart="30dp"
         android:textSize="20sp"
         android:textStyle="bold"
+
+        app:icon="@drawable/ic_delete"
+        app:iconPadding="30dp"
+        app:iconSize="40dp"
+
+        android:text="Remove Event"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonPoster" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonInfo"
+        android:layout_width="360dp"
+        android:layout_height="70dp"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        app:cornerRadius="16dp"
 
+        android:text="View Information"
+        app:iconGravity="textStart"
+        android:paddingStart="30dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+
+        app:icon="@drawable/ic_info"
+        app:iconPadding="30dp"
+        app:iconSize="40dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,9 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,9 +25,13 @@ public class CommunityFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ArrayList<Announcement> announcementList;
+    private ListView announcementListView;
+    private CommunityFragmentAdapter announcementAdapter;
 
     public CommunityFragment() {
         // Required empty public constructor
@@ -59,6 +68,35 @@ public class CommunityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_community, container, false);
+        View view = inflater.inflate(R.layout.fragment_community, container, false);
+        announcementList = new ArrayList<>();
+        announcementListView = view.findViewById(R.id.announcementListView);
+        announcementAdapter = new CommunityFragmentAdapter(this.getContext(), announcementList);
+        announcementListView.setAdapter(announcementAdapter);
+
+        // book list click
+        FireStoreBridge fb = new FireStoreBridge("EVENT");
+        String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        fb.retrieveAnnouncement(userId, new FireStoreBridge.OnRetrieveAnnouncement() {
+            @Override
+            public void onRetrieveAnnouncement(Announcement announcement) {
+                announcementList.add(announcement);
+                announcementListView.setAdapter(announcementAdapter);
+            }
+        });
+        announcementListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> list, View v, int pos, long id) {
+                refresh();
+            }
+        });
+
+        return view;
     }
+    public void refresh(){
+        announcementAdapter = new CommunityFragmentAdapter(this.getContext(), announcementList);
+        announcementListView.setAdapter(announcementAdapter);
+    }
+
+
+
 }

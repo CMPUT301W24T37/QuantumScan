@@ -65,8 +65,6 @@ public class EventInformationFragment extends AppCompatActivity {
                 finish(); // 关闭当前活动，返回上一个活动
             }
         });
-
-
     }
 
     private void fetchEventInformation(String eventId) {
@@ -99,10 +97,7 @@ public class EventInformationFragment extends AppCompatActivity {
         String currentUserId = getCurrentUserId();
         System.out.println(currentUserId);
 
-
-        fireStoreBridge.updateAttendeeSignUpHelper(getCurrentUserId(), eventId);
-
-
+        fireStoreBridge.updateAttendeeSignUpToEvent(getCurrentUserId(), eventId);
         Toast.makeText(this, "You have joined the event!", Toast.LENGTH_SHORT).show();
     }
 
@@ -114,7 +109,6 @@ public class EventInformationFragment extends AppCompatActivity {
      * @return the current user's ID as a String.
      */
     private String getCurrentUserId() {
-
         String userId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         return userId;
 

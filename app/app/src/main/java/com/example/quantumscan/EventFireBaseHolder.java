@@ -1,5 +1,6 @@
 package com.example.quantumscan;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EventFireBaseHolder {
@@ -10,6 +11,11 @@ public class EventFireBaseHolder {
     private String posterCode;
     private String title;
     private String description;
+    private long attendeeLimit;
+
+    private long currentTotalAttendee;
+
+
     public EventFireBaseHolder() {
         this.announcements = new ArrayList<>();
         this.description = "description";
@@ -20,7 +26,9 @@ public class EventFireBaseHolder {
         this.title = "title";
 
     }
-    public EventFireBaseHolder(ArrayList<String> announcements, String description, String eventCode, String id, String organizer, String posterCode, String title) {
+    public EventFireBaseHolder(ArrayList<String> announcements, String description, String eventCode,
+                               String id, String organizer, String posterCode, String title,
+                               long attendeeLimit, long currentTotalAttendee) {
         this.announcements = announcements;
         this.description = description;
         this.eventCode = eventCode;
@@ -28,15 +36,31 @@ public class EventFireBaseHolder {
         this.organizer = organizer;
         this.posterCode = posterCode;
         this.title = title;
+        this.attendeeLimit = attendeeLimit;
+        this.currentTotalAttendee = currentTotalAttendee;
 
     }
-
 
 
     public ArrayList<String> getAnnouncements() {
         return announcements;
     }
 
+    public long getAttendeeLimit() {
+        return attendeeLimit;
+    }
+
+    public void setAttendeeLimit(long attendeeLimit) {
+        this.attendeeLimit = attendeeLimit;
+    }
+
+    public long getCurrentTotalAttendee() {
+        return currentTotalAttendee;
+    }
+
+    public void setCurrentTotalAttendee(long currentTotalAttendee) {
+        this.currentTotalAttendee = currentTotalAttendee;
+    }
     public void setAnnouncements(ArrayList<String> announcements) {
         this.announcements = announcements;
     }

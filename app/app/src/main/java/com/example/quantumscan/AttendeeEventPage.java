@@ -39,7 +39,9 @@ public class AttendeeEventPage extends AppCompatActivity {
     private ImageView imageViewEventPoster;
 
     private FireStoreBridge fireStoreBridge;
+
     private Button buttonReturn;
+
 
 
     @Override
@@ -55,12 +57,12 @@ public class AttendeeEventPage extends AppCompatActivity {
         View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);//Main Activity??or main menu? ReceiveNotification
 
         View btnScanQRCode = findViewById(R.id.btnScanQRCode);//Main Activity??or main menu? ScanQRCode
-
-
+        returnButton = findViewById(R.id.btnReturn);
 
         btnViewInfo.setOnClickListener(view -> switchToDetailsView());// Set up the "View Information" button
         btnReceiveNotification.setOnClickListener(view -> switchToNotificationView());// Set up the "ReceiveNotification" button
         btnScanQRCode.setOnClickListener(view -> switchToScanQRCode());// Set up the "btnScanQRCode" button
+        returnButton.setOnClickListener(view -> finish());
 
         buttonReturn = findViewById(R.id.btnReturn);
 

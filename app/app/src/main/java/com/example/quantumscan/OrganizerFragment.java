@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,9 +75,11 @@ public class OrganizerFragment extends Fragment {
 
 
         FireStoreBridge fb = new FireStoreBridge("USER");
-        fb.retrieveUser("1658f5315ca1a74d", new FireStoreBridge.OnUserRetrievedListener() {
+        String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        fb.retrieveUser(userId, new FireStoreBridge.OnUserRetrievedListener() {
             @Override
             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+                eventIDList.clear();
                 for(String event : organizerRoles){
                     eventIDList.add(event);
                     System.out.println(event);
@@ -86,6 +89,7 @@ public class OrganizerFragment extends Fragment {
                 fb_events.retrieveAllEvent(new FireStoreBridge.OnEventRetrievedListener() {
                     @Override
                     public void onEventRetrieved(ArrayList<Event> events, ArrayList<String> organizerList) {
+                        dataList.clear();
                         for(String eventID : eventIDList){
 
                             for(Event event: events){

@@ -3,12 +3,17 @@
 
 package com.example.quantumscan;
 
+import com.google.firebase.firestore.GeoPoint;
+
+import org.mockito.internal.matchers.Null;
+
 public class Attendee {
     private String id;
     private boolean checkedIn;
     private String name;
 
     private int checkInCount;
+    private GeoPoint location;  // this will be assigned only when the Attendee checked in the event.
 
 
     public Attendee(String id, boolean checkedIn, String name, int checkInCount) {
@@ -16,9 +21,19 @@ public class Attendee {
         this.checkedIn = checkedIn;
         this.name = name;
         this.checkInCount = checkInCount;
+        this.location = null;
     }
 
     public Attendee() {
+        this.location = null;
+    }
+
+    public GeoPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(GeoPoint location) {
+        this.location = location;
     }
 
     public String getName() {

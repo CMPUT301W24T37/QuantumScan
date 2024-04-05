@@ -161,7 +161,7 @@ public class Admin {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             Log.d(TAG, "user " + userID + " found");
-                            userRef.update("profilePicture", "DEFAULT_PFP");  // Todo: call default pfp method there
+                            userRef.update("profilePicture", "DEFAULT_PFP");
                             Log.d(TAG, "deleting user's avatar finished");
                         }
                         else {

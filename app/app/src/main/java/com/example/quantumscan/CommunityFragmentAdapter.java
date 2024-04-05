@@ -16,9 +16,13 @@ import java.util.ArrayList;
 
 public class CommunityFragmentAdapter extends ArrayAdapter<Announcement> {
 
-
+    private ArrayList<Announcement> Announcement;
     public CommunityFragmentAdapter(Context context, ArrayList<Announcement> Announcement) {
         super(context, 0, Announcement);
+        this.Announcement = Announcement;
+    }
+    public int getSize(){
+        return this.Announcement.size();
     }
     @NonNull
     @Override

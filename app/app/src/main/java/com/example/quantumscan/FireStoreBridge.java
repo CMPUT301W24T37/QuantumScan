@@ -86,6 +86,9 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     public interface OnRetrieveAnnouncement{
         void onRetrieveAnnouncement(Announcement announcement);
     }
+    public interface OnRetrieveEventAnnouncement{
+        void onRetrieveEventAnnouncement (ArrayList<String> announcements);
+    }
     /**
      * find user in a database:
      * <p>
@@ -486,7 +489,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 // Handle any errors
             }
         });
-
     }
 
     /**
@@ -755,13 +757,15 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         // Change from get().addOnCompleteListener to addSnapshotListener for real-time updates
         DocumentReference userDocRef = collectionUser.document(userId);
         userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
+
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
                     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
-
+                System.out.println("changed detected 1");
                 if (documentSnapshot != null && documentSnapshot.exists()) {
                     List<String> eventIdList = (List<String>) documentSnapshot.get("attendeeRoles");
 
@@ -783,17 +787,24 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                                     if (announcementList != null && !announcementList.isEmpty()) {
                                         String announcement = announcementList.get(announcementList.size() - 1);
                                         Announcement annouuncement = new Announcement(organizer, announcement, eventTitle);
+                                        System.out.println("changed detected 2");
                                         listener.onRetrieveAnnouncement(annouuncement);
                                     }
                                 } else {
                                     Log.d(TAG, "Event data: null");
+                                    System.out.println("changed detected 3");
+                                    listener.onRetrieveAnnouncement(null);
                                 }
                             }
                         });
                     }
                 } else {
                     Log.d(TAG, "User data: null");
+                    System.out.println("changed detected 4");
+                    listener.onRetrieveAnnouncement(null);
                 }
+                listener.onRetrieveAnnouncement(null);
+                System.out.println("changed detected 5");
             }
         });
     }
@@ -857,6 +868,20 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     }
 
 
+    public void retrieveEventAnnouncement(String eventId, OnRetrieveEventAnnouncement listener){
+        CollectionReference collectionUser = getDb().collection("EVENT");
+        // Change from get().addOnCompleteListener to addSnapshotListener for real-time updates
+        DocumentReference userDocRef = collectionUser.document(eventId);
+        userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
 
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                System.out.println("triggered");
+                ArrayList<String> announcementList = (ArrayList<String>)  documentSnapshot.get("announcements");
+                listener.onRetrieveEventAnnouncement(announcementList);
+                // Ensure there is at least one announcement to retrieve
+            }
 
+        });
+    }
 }

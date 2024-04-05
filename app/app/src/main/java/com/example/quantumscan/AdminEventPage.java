@@ -17,14 +17,16 @@ public class AdminEventPage extends AppCompatActivity {
         TextView eventNameView = findViewById(R.id.textView_eventName);
         Button backButton = findViewById(R.id.returnButton);
         Button infoButton = findViewById(R.id.buttonInfo);
-        Button listButton = findViewById(R.id.buttonViewAttend);
         Button posterButton = findViewById(R.id.buttonPoster);
+        Button deleteButton = findViewById(R.id.buttonDelete);
         Admin admin = new Admin();
 
         // Retrieve the city name passed from MainActivity
         String eventID = getIntent().getStringExtra("eventID");
         String eventName = getIntent().getStringExtra("eventName");
         eventNameView.setText(eventName);
+        System.out.println("ID" + eventID);
+
 
         /*
         Event eventOBJ = DataHolder.getInstance().getEvent(eventID);
@@ -64,6 +66,12 @@ public class AdminEventPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 admin.deleteEventPoster(eventID);
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                admin.removeEvent(eventID);
             }
         });
     }

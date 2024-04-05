@@ -1,7 +1,9 @@
 package com.example.quantumscan;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,18 @@ public class AdminProfileFragment extends Fragment {
 //        dataList.addAll(Arrays.asList(events));
 //        eventIDList.addAll(Arrays.asList(eventID));
 
+        if (getContext() instanceof Activity) {
+            Activity activity = (Activity) getContext();
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            // Your code to set the height
+            int screenHeight = displayMetrics.heightPixels;
+
+            // Set ListView height to screenHeight - 100 pixels
+            ViewGroup.LayoutParams params = eventListView.getLayoutParams();
+            params.height = screenHeight - 450;
+            eventListView.setLayoutParams(params);
+        }
 
         admin.retrieveAllUser(new Admin.OnUserRetrievedListener() {
             @Override

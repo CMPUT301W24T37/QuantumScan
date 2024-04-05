@@ -86,18 +86,6 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     <Button
-        android:id="@+id/buttonViewAttend"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_margin="15dp"
-        android:text="View Attendees"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonInfo" />
-
-    <Button
         android:id="@+id/buttonPoster"
         android:layout_width="360dp"
         android:layout_height="60dp"
@@ -107,7 +95,21 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonViewAttend" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonInfo" />
+
+    <Button
+        android:id="@+id/buttonDelete"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:text="Remove Event"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPoster" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

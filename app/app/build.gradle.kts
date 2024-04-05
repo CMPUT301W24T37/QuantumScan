@@ -74,6 +74,7 @@ dependencies {
     implementation ("org.mockito:mockito-core:4.0.0")
 
     // displayImage
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // Google Map
     implementation("com.google.android.gms:play-services-maps:18.2.0")

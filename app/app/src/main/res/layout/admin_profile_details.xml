@@ -7,6 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView7"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/rounded_border"
+            android:padding="2dp"
+            android:src="@drawable/pic_test_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="113dp" />
+    </FrameLayout>
+
+
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="wrap_content"
@@ -14,7 +38,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
 
 
         <TextView
@@ -86,12 +110,18 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/showInfoDialogButton"
+        android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
+        android:layout_marginStart="250dp"
+        android:layout_marginEnd="27dp"
+        android:text="Delete Profile"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.945" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

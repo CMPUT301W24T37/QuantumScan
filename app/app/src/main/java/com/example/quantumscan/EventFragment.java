@@ -1,7 +1,9 @@
 package com.example.quantumscan;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,20 @@ public class EventFragment extends Fragment  {
 
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
         eventListView.setAdapter(eventAdapter);
+
+        if (getContext() instanceof Activity) {
+            Activity activity = (Activity) getContext();
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            // Your code to set the height
+            int screenHeight = displayMetrics.heightPixels;
+
+            // Set ListView height to screenHeight - 100 pixels
+            ViewGroup.LayoutParams params = eventListView.getLayoutParams();
+            params.height = screenHeight - 450;
+            eventListView.setLayoutParams(params);
+        }
+
 
 //        dataList.addAll(Arrays.asList(events));
 //        eventIDList.addAll(Arrays.asList(eventID));

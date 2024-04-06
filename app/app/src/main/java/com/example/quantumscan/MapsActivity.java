@@ -63,65 +63,65 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in our campus and move the camera
         LatLng uofa = new LatLng(53.524622005135996, -113.52469491976284);
-        mMap.addMarker(new MarkerOptions()
-                .position(uofa)
-                .title("Marker in University of Alberta")
-                .draggable(false)
-                .icon(BitmapDescriptorFactory.defaultMarker(90.0f)));  // this will be the marker for the last checked-in location of attendee
+//        mMap.addMarker(new MarkerOptions()
+//                .position(uofa)
+//                .title("Marker in University of Alberta")
+//                .draggable(false)
+//                .icon(BitmapDescriptorFactory.defaultMarker(90.0f)));  // this will be the marker for the last checked-in location of attendee
 
         // retrieve the attendeeList of the event, and read the location of each attendee
-//        Admin admin = new Admin();
-//        admin.retrieveEventAttendeeList(eventID, new Admin.OnEventAttendeeListRetrievedListener() {
-//            @Override
-//            public void onEventAttendeeListRetrieved(ArrayList<Attendee> attendeeList) {
-//                for (Attendee attendee : attendeeList) {
-//                    if (attendee.isCheckedIn() && attendee.getLocation() != null) {  // only display the locations from checked-in attendees if locations exist
-//                        // get the location
-//                        Double attendeeLatitude = attendee.getLocation().getLatitude();
-//                        Double attendeeLongitude = attendee.getLocation().getLongitude();
-//                        LatLng attendeeLatlng = new LatLng(attendeeLatitude, attendeeLongitude);
-//
-//                        // this will be the marker for the last checked-in location of attendee
-//                        mMap.addMarker(new MarkerOptions()
-//                                .position(attendeeLatlng)
-//                                .title(attendee.getName())
-//                                .draggable(false));
-//                    }
-//
-//                }
-//            }
-//        });
+        Admin admin = new Admin();
+        admin.retrieveEventAttendeeList(eventID, new Admin.OnEventAttendeeListRetrievedListener() {
+            @Override
+            public void onEventAttendeeListRetrieved(ArrayList<Attendee> attendeeList) {
+                for (Attendee attendee : attendeeList) {
+                    if (attendee.isCheckedIn() && attendee.getLocation() != null) {  // only display the locations from checked-in attendees if locations exist
+                        // get the location
+                        double attendeeLatitude = attendee.getLocation().getLatitude();
+                        double attendeeLongitude = attendee.getLocation().getLongitude();
+                        LatLng attendeeLatlng = new LatLng(attendeeLatitude, attendeeLongitude);
+
+                        // this will be the marker for the last checked-in location of attendee
+                        mMap.addMarker(new MarkerOptions()
+                                .position(attendeeLatlng)
+                                .title(attendee.getName())
+                                .draggable(false));
+                    }
+
+                }
+            }
+        });
         mMap.moveCamera(CameraUpdateFactory.newLatLng(uofa));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(3));
 
-        /* // How to do with location permission check
+         // How to do with location permission check
         // Below is the if statement to check we we have permission for user location,
         // if we do (in the else block) then do something, if we don't then do something else (in if block)
         // This will be used in the Attendee check in, once the Attendee has checked in, we use this permission checking to decide if we put Geopoint object or null Object in firebase
         // Below is also an example of adding the user location marker on Google map depends on whether the use has allowed the permission for retrieving location
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //return;
-        }
-        else {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                // Logic to handle location object
-                                LatLng myLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(myLoc)
-                                        .title("Austin Meng")
-                                        .draggable(false)
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                            }
-                        }
-                    });
-        }
+//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            //return;
+//        }
+//        else {
+//            fusedLocationClient.getLastLocation()
+//                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//                        @Override
+//                        public void onSuccess(Location location) {
+//                            // Got last known location. In some rare situations this can be null.
+//                            if (location != null) {
+//                                // Logic to handle location object
+//                                LatLng myLoc = new LatLng(location.getLatitude(), location.getLongitude());
+//                                mMap.addMarker(new MarkerOptions()
+//                                        .position(myLoc)
+//                                        .title("Austin Meng")
+//                                        .draggable(false)
+//                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+//                            }
+//                        }
+//                    });
+//        }
 
-         */
+
 
 
         /*

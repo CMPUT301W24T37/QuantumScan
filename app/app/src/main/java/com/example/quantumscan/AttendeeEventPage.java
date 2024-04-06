@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +40,9 @@ public class AttendeeEventPage extends AppCompatActivity {
     private ImageView imageViewEventPoster;
 
     private FireStoreBridge fireStoreBridge;
-    private  Button returnButton;
+
+    private Button buttonReturn;
+
 
 
     @Override
@@ -51,19 +54,15 @@ public class AttendeeEventPage extends AppCompatActivity {
 
         fireStoreBridge = new FireStoreBridge("EVENT");
         View btnViewInfo = findViewById(R.id.btnViewInformation);//Main Activity??or main menu? View Information
-
         View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);//Main Activity??or main menu? ReceiveNotification
 
         View btnScanQRCode = findViewById(R.id.btnScanQRCode);//Main Activity??or main menu? ScanQRCode
-        returnButton = findViewById(R.id.btnReturn);
+        buttonReturn = findViewById(R.id.btnReturn);
 
         btnViewInfo.setOnClickListener(view -> switchToDetailsView());// Set up the "View Information" button
         btnReceiveNotification.setOnClickListener(view -> switchToNotificationView());// Set up the "ReceiveNotification" button
         btnScanQRCode.setOnClickListener(view -> switchToScanQRCode());// Set up the "btnScanQRCode" button
-        returnButton.setOnClickListener(view -> finish());
-
-
-
+        buttonReturn.setOnClickListener(view -> finish());
 
     }
 
@@ -82,6 +81,40 @@ public class AttendeeEventPage extends AppCompatActivity {
         fetchEventInformation(eventId);
 
     }
+    private void switchToNotificationView() {
+        setContentView(R.layout.attendee_notification);
+        TextView textView = findViewById(R.id.notificationTextView);
+        ListView listView = findViewById(R.id.attendee_notification_listview);
+        ArrayList<String> announcementsList = new ArrayList<>();
+        NotificationAdapter adapter = new NotificationAdapter(this, announcementsList);
+        listView.setAdapter(adapter);
+        textView.setVisibility(View.INVISIBLE);
+        FireStoreBridge fb = new FireStoreBridge("EVENT");
+        fb.retrieveEventAnnouncement(eventId, new FireStoreBridge.OnRetrieveEventAnnouncement() {
+            @Override
+            public void onRetrieveEventAnnouncement(ArrayList<String> announcements) {
+                announcementsList.clear();
+
+                if (announcements.size() == 0){
+                    listView.setVisibility(View.INVISIBLE);
+                    textView.setVisibility(View.VISIBLE);
+
+                }else if (announcements.size() > 0) {
+                    listView.setVisibility(View.VISIBLE);
+                    textView.setVisibility(View.INVISIBLE);
+                    for (int i = 0; i < announcements.size(); i++) {
+                        announcementsList.add(announcements.get(i));
+
+                    }
+                }
+
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+
+
+    }
 
     private void fetchEventInformation(String eventID) {
         // Use FireStoreBridge to retrieve the event
@@ -97,11 +130,9 @@ public class AttendeeEventPage extends AppCompatActivity {
 
                     tvEventTitle.setText(event.getTitle());
                     tvEventDescription.setText(event.getDescription());
+                    imageDisplay(eventId, imageViewEventPoster);
 
-                    // Load the image using Glide
-//                    Glide.with(AttendeeEventPage.this)
-//                            .load(event.getPosterCode()) // Ensure this method or field exists in your Event class
-//                            .into(imageViewEventPoster);
+
                 } else {
 
                     Toast.makeText(AttendeeEventPage.this, "Event not found." + eventID, Toast.LENGTH_SHORT).show();
@@ -110,21 +141,15 @@ public class AttendeeEventPage extends AppCompatActivity {
         });
     }
 
-
-
-
-
-    private void switchToNotificationView() { //  This receives every component of the notification page/interface/menu? (.xml)
-        // Switch to the notification view
-        //setContentView(R.layout.notification_view);
-
-        // Initialize components specific to notification_view.xml
-        // Assume you have a return button with the id btnReturnFromNotification
-        //Button btnReturnFromNotification = findViewById(R.id.btnReturnFromNotification);
-        //btnReturnFromNotification.setOnClickListener(v -> switchToMainView());
-
-        // Here, you would load and display notification-related information
+    public void imageDisplay(String EventID, ImageView imageView){
+        FireStoreBridge fb_events = new FireStoreBridge("EVENT");
+        fb_events.displayImage(EventID, imageView);
     }
+
+
+
+
+
 
 
     private void switchToScanQRCode() { //  The page of this connects to every component of theScanQRCode.xml

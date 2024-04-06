@@ -82,7 +82,11 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 newEvent.EventIdGenerator(userID);
                 newEvent.setDescription(infoText);
                 newEvent.setTitle(nameText);
-                newEvent.setAttendeeLimit(Long.parseLong(editTextLimit.getText().toString().trim()));
+                if (editTextLimit.getText().toString().trim().matches("")) {
+                    newEvent.setAttendeeLimit(Long.parseLong("9999999"));
+                } else {
+                    newEvent.setAttendeeLimit(Long.parseLong(editTextLimit.getText().toString().trim()));
+                }
                 newEvent.setCurrentTotalAttendee(0);
 
 

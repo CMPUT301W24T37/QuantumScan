@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,8 +33,11 @@ import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListener{
     private FirebaseFirestore db;
@@ -80,6 +85,9 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
     public interface OnRetrieveAnnouncement{
         void onRetrieveAnnouncement(Announcement announcement);
+    }
+    public interface OnRetrieveEventAnnouncement{
+        void onRetrieveEventAnnouncement (ArrayList<String> announcements);
     }
     /**
      * find user in a database:
@@ -481,7 +489,6 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 // Handle any errors
             }
         });
-
     }
 
     /**
@@ -525,6 +532,66 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     }
                 });
 
+    }
+
+    public void updateAttendeeCheckInWithLocation(String userId, String eventId, Location location){
+        CollectionReference EventCollection = getDb().collection("EVENT");
+        System.out.println("chekd in fb" + userId);
+
+        System.out.println("chekd in fb" + eventId);
+
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("checkedIn", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("event upload successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("event upload failed");
+                    }
+                });
+
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("checkInCount", FieldValue.increment(1))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("event upload successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("event upload failed");
+                    }
+                });
+        updateAttendeeLocation( userId,  eventId,  location);
+
+    }
+
+    public void updateAttendeeLocation(String userId, String eventId, Location location) {
+        CollectionReference EventCollection = getDb().collection("EVENT");
+        GeoPoint geopoint = null;
+        if (location != null) {
+            geopoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+            Log.d(TAG, "successfully get the location");
+        }
+        else {Log.w(TAG, "the location is null (will update as null)");}
+        EventCollection.document(eventId).collection("attendeeList").document(userId).update("location", geopoint)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("Geopoint location updated successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Geopoint location updated failed");
+                    }
+                });
     }
 
     /**
@@ -690,13 +757,15 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         // Change from get().addOnCompleteListener to addSnapshotListener for real-time updates
         DocumentReference userDocRef = collectionUser.document(userId);
         userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
+
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
                     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
-
+                System.out.println("changed detected 1");
                 if (documentSnapshot != null && documentSnapshot.exists()) {
                     List<String> eventIdList = (List<String>) documentSnapshot.get("attendeeRoles");
 
@@ -718,21 +787,155 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                                     if (announcementList != null && !announcementList.isEmpty()) {
                                         String announcement = announcementList.get(announcementList.size() - 1);
                                         Announcement annouuncement = new Announcement(organizer, announcement, eventTitle);
+                                        System.out.println("changed detected 2");
                                         listener.onRetrieveAnnouncement(annouuncement);
                                     }
                                 } else {
                                     Log.d(TAG, "Event data: null");
+                                    System.out.println("changed detected 3");
+                                    listener.onRetrieveAnnouncement(null);
                                 }
                             }
                         });
                     }
                 } else {
                     Log.d(TAG, "User data: null");
+                    System.out.println("changed detected 4");
+                    listener.onRetrieveAnnouncement(null);
+                }
+                listener.onRetrieveAnnouncement(null);
+                System.out.println("changed detected 5");
+            }
+        });
+    }
+
+
+    public interface OnRetrieveJoinedEvent{
+        void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventList);
+    }
+
+    public void retrieveJoinedEvent(String userID, OnRetrieveJoinedEvent listener) {
+        System.out.println("triggered" + " 23");
+        CollectionReference collectionUser = getDb().collection("USER");
+        DocumentReference userDoc = collectionUser.document(userID);
+        userDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                System.out.println("triggered" + " 23.5");
+                System.out.println(userID);
+                CollectionReference collectionEvent = getDb().collection("EVENT");
+                List<String> eventIdList = (List<String>) value.get("attendeeRoles");
+                System.out.println("important size "+ eventIdList.size());
+                Map<String, EventFireBaseHolder> eventMap = new HashMap<>();
+                AtomicInteger remainingEvents = new AtomicInteger(eventIdList.size());
+
+                for (String eventId : eventIdList) {
+                    collectionEvent.document(eventId).get().addOnSuccessListener(documentSnapshot -> {
+
+                        EventFireBaseHolder event = new EventFireBaseHolder();
+
+                        event.setEventCode(documentSnapshot.getString("eventCode"));
+                        event.setOrganizer(documentSnapshot.getString("organizer"));
+                        event.setDescription(documentSnapshot.getString("description"));
+                        event.setTitle(documentSnapshot.getString("title"));
+                        event.setAttendeeLimit(documentSnapshot.getLong("attendeeLimit"));
+                        event.setCurrentTotalAttendee(documentSnapshot.getLong("currentTotalAttendee"));
+                        event.setPosterCode(documentSnapshot.getString("organizer")); // Should this be "posterCode" instead of "organizer"?
+                        event.setId(documentSnapshot.getId()); // Use documentSnapshot.getId() to ensure the ID is accurately captured
+
+                        synchronized (eventMap) {
+                            eventMap.put(event.getId(), event);
+                        }
+
+                        // Check if all events have been fetched
+                        if (remainingEvents.decrementAndGet() == 0) {
+                            System.out.println("size size size size size + " + eventMap.size());
+                            // Convert map values to a list to match the listener's expected input
+                            ArrayList<EventFireBaseHolder> uniqueEventList = new ArrayList<>(eventMap.values());
+                            System.out.println("size size size size size + 2" + uniqueEventList.size());
+                            listener.onRetrieveJoinedEvent(uniqueEventList);
+                        }
+                    }).addOnFailureListener(e -> {
+                        Log.e(TAG, "Error fetching event document", e);
+                        if (remainingEvents.decrementAndGet() == 0) {
+                            ArrayList<EventFireBaseHolder> uniqueEventList = new ArrayList<>(eventMap.values());
+                            listener.onRetrieveJoinedEvent(uniqueEventList); // Or handle error accordingly
+                        }
+                    });
                 }
             }
         });
     }
 
 
+    public void retrieveEventAnnouncement(String eventId, OnRetrieveEventAnnouncement listener){
+        CollectionReference collectionUser = getDb().collection("EVENT");
+        // Change from get().addOnCompleteListener to addSnapshotListener for real-time updates
+        DocumentReference userDocRef = collectionUser.document(eventId);
+        userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
 
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                System.out.println("triggered");
+                ArrayList<String> announcementList = (ArrayList<String>)  documentSnapshot.get("announcements");
+                listener.onRetrieveEventAnnouncement(announcementList);
+                // Ensure there is at least one announcement to retrieve
+            }
+
+        });
+    }
+
+
+    public void retrieveOrganizedEvent(String userID, OnRetrieveJoinedEvent listener) {
+        System.out.println("triggered" + " 23");
+        CollectionReference collectionUser = getDb().collection("USER");
+        DocumentReference userDoc = collectionUser.document(userID);
+        userDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                System.out.println("triggered" + " 23.5");
+                System.out.println(userID);
+                CollectionReference collectionEvent = getDb().collection("EVENT");
+                List<String> eventIdList = (List<String>) value.get("organizerRoles");
+                System.out.println("important size "+ eventIdList.size());
+                Map<String, EventFireBaseHolder> eventMap = new HashMap<>();
+                AtomicInteger remainingEvents = new AtomicInteger(eventIdList.size());
+
+                for (String eventId : eventIdList) {
+                    collectionEvent.document(eventId).get().addOnSuccessListener(documentSnapshot -> {
+
+                        EventFireBaseHolder event = new EventFireBaseHolder();
+
+                        event.setEventCode(documentSnapshot.getString("eventCode"));
+                        event.setOrganizer(documentSnapshot.getString("organizer"));
+                        event.setDescription(documentSnapshot.getString("description"));
+                        event.setTitle(documentSnapshot.getString("title"));
+                        event.setAttendeeLimit(documentSnapshot.getLong("attendeeLimit"));
+                        event.setCurrentTotalAttendee(documentSnapshot.getLong("currentTotalAttendee"));
+                        event.setPosterCode(documentSnapshot.getString("organizer")); // Should this be "posterCode" instead of "organizer"?
+                        event.setId(documentSnapshot.getId()); // Use documentSnapshot.getId() to ensure the ID is accurately captured
+
+                        synchronized (eventMap) {
+                            eventMap.put(event.getId(), event);
+                        }
+
+                        // Check if all events have been fetched
+                        if (remainingEvents.decrementAndGet() == 0) {
+                            System.out.println("size size size size size + " + eventMap.size());
+                            // Convert map values to a list to match the listener's expected input
+                            ArrayList<EventFireBaseHolder> uniqueEventList = new ArrayList<>(eventMap.values());
+                            System.out.println("size size size size size + 2" + uniqueEventList.size());
+                            listener.onRetrieveJoinedEvent(uniqueEventList);
+                        }
+                    }).addOnFailureListener(e -> {
+                        Log.e(TAG, "Error fetching event document", e);
+                        if (remainingEvents.decrementAndGet() == 0) {
+                            ArrayList<EventFireBaseHolder> uniqueEventList = new ArrayList<>(eventMap.values());
+                            listener.onRetrieveJoinedEvent(uniqueEventList); // Or handle error accordingly
+                        }
+                    });
+                }
+            }
+        });
+    }
 }

@@ -161,7 +161,7 @@ public class Admin {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             Log.d(TAG, "user " + userID + " found");
-                            userRef.update("profilePicture", "DEFAULT_PFP");  // Todo: call default pfp method there
+                            userRef.update("profilePicture", "DEFAULT_PFP");
                             Log.d(TAG, "deleting user's avatar finished");
                         }
                         else {
@@ -385,6 +385,9 @@ public class Admin {
                         attendee.setName(documentSnapshot1.getString("name"));
                         attendee.setId(documentSnapshot1.getString("id"));
                         attendee.setCheckedIn(documentSnapshot1.getBoolean("checkedIn"));
+                        if (documentSnapshot1.get("location") != null) {
+                            attendee.setLocation(documentSnapshot1.getGeoPoint("location"));
+                        }
                         attendees.add(attendee);
                         Log.w(TAG, "attendee added in attendees");
                     }

@@ -10,20 +10,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:visibility="gone"
         android:text="Confirm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonEdit" />
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="New Info"
         android:inputType="text"
         android:visibility="gone"
-        android:hint="New Info"
-        app:layout_constraintEnd_toStartOf="@+id/buttonEdit"
         app:layout_constraintTop_toBottomOf="@+id/info_textView" />
 
     <LinearLayout
@@ -53,36 +51,10 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Share"
-            android:textColor="@android:color/black"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/shareButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="15dp"
-            android:background="@drawable/ic_share" />
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/background_imageView"
         android:layout_width="350dp"
-        android:layout_height="200dp"
+        android:layout_height="280dp"
         android:scaleType="fitXY"
         android:src="@drawable/pic_default"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,25 +78,16 @@
     <TextView
         android:id="@+id/info_textView"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_marginTop="5dp"
         android:text="Default text: As an introduction to software engineering, this course is about building software effectively.
 You will apply good practices, effective design techniques, and development tools within a team project to create an application with a graphical user interface.
-The focus is largely practical, with broad coverage in topics such as: object-oriented design, user interfaces, unit testing, design patterns, and refactoring."
+The focus is largely practical."
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_textView" />
-
-    <Button
-        android:id="@+id/buttonEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Info"
-        android:layout_marginEnd="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_textView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

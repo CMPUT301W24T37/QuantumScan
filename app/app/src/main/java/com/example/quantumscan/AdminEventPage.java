@@ -45,7 +45,7 @@ public class AdminEventPage extends AppCompatActivity {
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent detailIntent = new Intent(AdminEventPage.this, OrganizerEventInfo.class);
+                Intent detailIntent = new Intent(AdminEventPage.this, AdminEventInfo.class);
                 detailIntent.putExtra("eventID", eventID);
                 detailIntent.putExtra("eventName", eventName);
                 startActivity(detailIntent);

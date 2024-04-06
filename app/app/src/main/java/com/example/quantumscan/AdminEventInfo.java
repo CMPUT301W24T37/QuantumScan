@@ -17,14 +17,10 @@ public class AdminEventInfo extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.organizer_event_info);
+        setContentView(R.layout.admin_event_info);
         Button backButton = findViewById(R.id.returnButton);
-        Button shareButton = findViewById(R.id.shareButton);
-        Button editInfo = findViewById(R.id.buttonEdit);
         TextView titleView = findViewById(R.id.title_textView);
         TextView infoView = findViewById(R.id.info_textView);
-        EditText editText = findViewById(R.id.editText);
-        Button confirmButton = findViewById(R.id.buttonConfirm);
         ImageView imageView = findViewById(R.id.background_imageView);
 
 
@@ -42,30 +38,6 @@ public class AdminEventInfo extends AppCompatActivity {
             }
         });
 
-        editInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (confirmButton.getVisibility() == View.GONE) {
-                    confirmButton.setVisibility(View.VISIBLE); // Show the button
-                    editText.setVisibility(View.VISIBLE);
-                } else {
-                    confirmButton.setVisibility(View.GONE); // Hide the button
-                    editText.setVisibility(View.GONE);
-                }
-
-            }
-        });
-
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newInfo = editText.getText().toString(); // Get the text from EditText
-                if (!newInfo.isEmpty()) {
-                    updateInfo(eventID, newInfo);
-
-                }
-            }
-        });
     }
 
 
@@ -100,7 +72,5 @@ public class AdminEventInfo extends AppCompatActivity {
         FireStoreBridge fb_events = new FireStoreBridge("EVENT");
         fb_events.displayImage(EventID, imageView);
     }
-
-
 
 }

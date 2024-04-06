@@ -16,7 +16,7 @@
             android:id="@+id/profilePictureContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/userNameText"
+            app:layout_constraintBottom_toTopOf="@id/linearLayout4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -24,7 +24,7 @@
             android:clickable="true"
             android:focusable="true">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImage"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -39,83 +39,145 @@
                 />
         </FrameLayout>
 
-        <EditText
-            android:id="@+id/userNameText"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:hint="User Name"
-            android:textSize="26dp"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@+id/profilePictureContainer"
-            app:layout_constraintBottom_toTopOf="@+id/userUniversityText"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"
-            tools:layout_editor_absoluteX="141dp"
-            tools:layout_editor_absoluteY="348dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilePictureContainer">
 
-        <EditText
-            android:id="@+id/userUniversityText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:hint="University"
-            android:textSize="20dp"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@+id/userNameText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteX="156dp" />
 
-        <EditText
-            android:id="@+id/userPhoneNumbText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:hint="Phone Number"
-            android:textSize="20dp"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@+id/userUniversityText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteX="156dp" />
+            <EditText
+                android:id="@+id/userNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:enabled="false"
+                android:hint="User Name"
+                android:textSize="26dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/userUniversityText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profilePictureContainer"
+                tools:layout_editor_absoluteX="141dp"
+                tools:layout_editor_absoluteY="348dp" />
 
-        <EditText
-            android:id="@+id/userEmailText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:hint="email"
-            android:textSize="20dp"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@+id/userPhoneNumbText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteX="156dp" />
 
-        <EditText
-            android:id="@+id/userInfoText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:hint="user info"
-            android:textSize="20dp"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@+id/userEmailText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteX="156dp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="University: "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/userUniversityText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:enabled="false"
+                    android:hint="University"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/userNameText"
+                    tools:layout_editor_absoluteX="156dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone: "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/userPhoneNumbText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:enabled="false"
+                    android:hint="Phone Number"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/userUniversityText"
+                    tools:layout_editor_absoluteX="156dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email: "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/userEmailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:enabled="false"
+                    android:hint="email"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/userPhoneNumbText"
+                    tools:layout_editor_absoluteX="156dp" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/userInfoText"
+                android:layout_width="300dp"
+                android:layout_height="220dp"
+                android:gravity="center_horizontal"
+                android:enabled="false"
+                android:hint="user info"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userEmailText"
+                tools:layout_editor_absoluteX="156dp" />
+
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/showInfoDialogButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="Edit"
             app:layout_constraintEnd_toEndOf="parent"
 
-            app:layout_constraintTop_toBottomOf="@+id/userInfoText" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
 
 

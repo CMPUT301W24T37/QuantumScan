@@ -44,6 +44,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AdminMainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".LoginPage" />
+        <activity android:name=".LoginPageAdmin" />
+        <activity android:name=".EventFragment"/>
+        <activity android:name=".AdminEventPage"/>
+        <activity android:name=".AdminEventInfo"/>
+        <activity android:name=".AdminProfileDetail"/>
         <activity android:name=".OrganizerCreateEvent" />
         <activity android:name=".OrganizerEventPage" />
         <activity android:name=".OrganizerEventInfo" />

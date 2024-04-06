@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class CommunityFragment extends Fragment {
     private ArrayList<Announcement> announcementList;
     private ListView announcementListView;
     private CommunityFragmentAdapter announcementAdapter;
-
+    private TextView communityText;
     public CommunityFragment() {
         // Required empty public constructor
     }
@@ -69,6 +70,8 @@ public class CommunityFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_community, container, false);
+        communityText = view.findViewById(R.id.notificationTextView);
+        communityText.setVisibility(View.INVISIBLE);
         announcementList = new ArrayList<>();
         announcementListView = view.findViewById(R.id.announcementListView);
         announcementAdapter = new CommunityFragmentAdapter(this.getContext(), announcementList);
@@ -80,8 +83,19 @@ public class CommunityFragment extends Fragment {
         fb.retrieveAnnouncement(userId, new FireStoreBridge.OnRetrieveAnnouncement() {
             @Override
             public void onRetrieveAnnouncement(Announcement announcement) {
-                announcementList.add(announcement);
-                announcementListView.setAdapter(announcementAdapter);
+                if (announcement != null) {
+                    announcementListView.setVisibility(View.VISIBLE);
+                    communityText.setVisibility(View.INVISIBLE);
+                    announcementList.add(announcement);
+                    announcementListView.setAdapter(announcementAdapter);
+                    System.out.println(announcementAdapter.getSize());
+                }
+                System.out.println(announcementAdapter.getSize());
+                if (announcementAdapter.getSize() == 0){
+                    System.out.println("is empty--------");
+                    announcementListView.setVisibility(View.INVISIBLE);
+                    communityText.setVisibility(View.VISIBLE);
+                }
             }
         });
         announcementListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

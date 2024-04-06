@@ -61,113 +61,22 @@
             android:id="@+id/imageView"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/ic_organizer" />
+            android:src="@drawable/ic_administrator" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="6dp"
-            android:text="Organizer"
+            android:text="Administrator"
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonInfo"
-        android:text="Edit Information"
-
-        android:layout_width="360dp"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        android:gravity="center_vertical"
-        app:cornerRadius="16dp"
-
-        app:iconGravity="textStart"
-        android:paddingStart="30dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-
-        app:icon="@drawable/ic_info"
-        app:iconPadding="30dp"
-        app:iconSize="40dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonQRCode"
-        android:text="Edit QR code"
-
-        android:layout_width="360dp"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        android:gravity="center_vertical"
-        app:cornerRadius="16dp"
-
-        app:iconGravity="textStart"
-        android:paddingStart="30dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-
-        app:icon="@drawable/ic_qr_code"
-        app:iconPadding="30dp"
-        app:iconSize="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonInfo" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonViewAttend"
-        android:text="View Attendees"
-
-        android:layout_width="360dp"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        android:gravity="center_vertical"
-        app:cornerRadius="16dp"
-
-        app:iconGravity="textStart"
-        android:paddingStart="30dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-
-        app:icon="@drawable/ic_user"
-        app:iconPadding="30dp"
-        app:iconSize="40dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonQRCode" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonSendNote"
-        android:text="Send Notification"
-
-        android:layout_width="360dp"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        android:gravity="center_vertical"
-        app:cornerRadius="16dp"
-
-        app:iconGravity="textStart"
-        android:paddingStart="30dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-
-        app:icon="@drawable/ic_notify"
-        app:iconPadding="30dp"
-        app:iconSize="40dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonViewAttend" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonPoster"
-        android:text="Upload Poster"
-
         android:layout_width="360dp"
         android:layout_height="70dp"
         android:layout_margin="8dp"
@@ -183,14 +92,13 @@
         app:iconPadding="30dp"
         app:iconSize="40dp"
 
+        android:text="Delete Poster"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSendNote" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonInfo" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonLocation"
-        android:text="Attended Location"
-
+        android:id="@+id/buttonDelete"
         android:layout_width="360dp"
         android:layout_height="70dp"
         android:layout_margin="8dp"
@@ -202,13 +110,36 @@
         android:textSize="20sp"
         android:textStyle="bold"
 
-        app:icon="@drawable/ic_location"
+        app:icon="@drawable/ic_delete"
+        app:iconPadding="30dp"
+        app:iconSize="40dp"
+
+        android:text="Remove Event"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPoster" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonInfo"
+        android:layout_width="360dp"
+        android:layout_height="70dp"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        app:cornerRadius="16dp"
+
+        android:text="View Information"
+        app:iconGravity="textStart"
+        android:paddingStart="30dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+
+        app:icon="@drawable/ic_info"
         app:iconPadding="30dp"
         app:iconSize="40dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPoster" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

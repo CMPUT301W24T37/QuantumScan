@@ -45,20 +45,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         // authentication start
-//        String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-//        FireStoreBridge fb = new FireStoreBridge("USER");
-//        fb.retrieveUser(userID, new FireStoreBridge.OnUserRetrievedListener() {
-//            @Override
-//            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
-//                if (user != null && user.getId() != null && user.getId().trim().equals(userID)) {
-//
-//                } else {
-//                    Intent intent = new Intent(MainActivity.this, UserProfileFileActivity.class);
-//                    startActivity(intent);
-//                }
-//            }
-//
-//        });
+        String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        FireStoreBridge fb = new FireStoreBridge("USER");
+        fb.retrieveUser(userID, new FireStoreBridge.OnUserRetrievedListener() {
+            @Override
+            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+                if (user != null && user.getId() != null && user.getId().trim().equals(userID)) {
+
+                } else {
+                    Intent intent = new Intent(MainActivity.this, UserProfileFileActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+        });
         // authentication end
 
         binding.bottomNavigationView.setOnItemReselectedListener(item -> {

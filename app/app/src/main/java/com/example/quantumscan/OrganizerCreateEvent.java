@@ -6,8 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,11 +22,15 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OrganizerCreateEvent extends AppCompatActivity {
 
     private SelectImage selectImage;
     private Uri imageUri = null;
     private String userID;
+    private int eventStartTime;
     private FireStoreBridge fb  = new FireStoreBridge("EVENT");
     // FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -64,6 +71,24 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
         selectImage = new SelectImage(this, activityResultLauncher);
         buttonPickImage.setOnClickListener(v -> selectImage.pickImage());
+
+        Spinner numberSpinner = findViewById(R.id.number_spinner);
+
+        // Create a list of numbers from 0 to 31
+        List<String> numbers = new ArrayList<>();
+        for (int i = 0; i <= 31; i++) {
+            numbers.add(String.valueOf(i));
+        }
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, numbers);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        numberSpinner.setAdapter(adapter);
+
 
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +131,23 @@ public class OrganizerCreateEvent extends AppCompatActivity {
 
             }
 
+        });
+
+        numberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Your code here. For example:
+
+                eventStartTime = Integer.parseInt(numbers.get(position));
+
+                Toast.makeText(OrganizerCreateEvent.this, "Selected: " + numbers.get(position), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Your code here, if needed
+                eventStartTime = 0;
+            }
         });
 
 

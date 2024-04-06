@@ -73,11 +73,11 @@ public class OrganizerFragment extends Fragment {
         //dataList.addAll(Arrays.asList(events));
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
 
-
         FireStoreBridge fb = new FireStoreBridge("USER");
         String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        fb.retrieveUser(userId, new FireStoreBridge.OnUserRetrievedListener() {
+        fb. retrieveOrganizedEvent(getCurrentUserId(), new FireStoreBridge.OnRetrieveJoinedEvent() {
             @Override
+<<<<<<< HEAD
             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
                 eventIDList.clear();
                 if (organizerRoles != null) {
@@ -101,18 +101,22 @@ public class OrganizerFragment extends Fragment {
                                     dataList.add(event.getTitle());
                                 }
                             }
+=======
+            public void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventList) {
+                dataList.clear();
+                if(eventList != null) {
+                    for (EventFireBaseHolder event : eventList) {
+                        if (!dataList.contains(event.getId())) {
+                            dataList.add(event.getTitle());
+                            eventIDList.add(event.getId());
+
+>>>>>>> 86c1c64fe27063944ec8107d1464ef101b900b6e
                         }
-                        eventAdapter.notifyDataSetChanged();
-
                     }
-                });
-
+                }
+                eventAdapter.notifyDataSetChanged();
             }
         });
-
-
-
-
         eventListView.setAdapter(eventAdapter);
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +144,11 @@ public class OrganizerFragment extends Fragment {
 
         return view;
     }
+    private String getCurrentUserId() {
+        String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        return userId;
 
+    }
     /*
     public void convertEvent(){
         for (Event event : eventArrayList) {

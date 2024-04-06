@@ -897,7 +897,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 System.out.println(userID);
                 CollectionReference collectionEvent = getDb().collection("EVENT");
                 List<String> eventIdList = (List<String>) value.get("organizerRoles");
-                System.out.println("important size "+ eventIdList.size());
+                if (eventIdList == null) {
+                    return;
+                }
+                //System.out.println("important size "+ eventIdList.size());
                 Map<String, EventFireBaseHolder> eventMap = new HashMap<>();
                 AtomicInteger remainingEvents = new AtomicInteger(eventIdList.size());
 

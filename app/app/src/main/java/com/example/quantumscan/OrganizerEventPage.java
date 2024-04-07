@@ -93,15 +93,15 @@ public class OrganizerEventPage extends AppCompatActivity {
             }
         });
 
-        notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerNotification.class);
-                detailIntent.putExtra("eventID", eventID);
-                detailIntent.putExtra("eventName", eventName);
-                startActivity(detailIntent);
-            }
-        });
+//        notification.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerNotification.class);
+//                detailIntent.putExtra("eventID", eventID);
+//                detailIntent.putExtra("eventName", eventName);
+//                startActivity(detailIntent);
+//            }
+//        });
     }
     private void showCustomDialog(String eventId) {
 

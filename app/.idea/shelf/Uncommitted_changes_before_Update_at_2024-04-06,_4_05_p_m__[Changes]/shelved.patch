@@ -1,0 +1,198 @@
+Index: app/src/main/res/layout/organizer_create.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\">\n\n    <androidx.constraintlayout.widget.ConstraintLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\">\n\n        <LinearLayout\n            android:id=\"@+id/linearLayout3\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:orientation=\"horizontal\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toEndOf=\"@+id/linearLayout\"\n            app:layout_constraintTop_toTopOf=\"parent\">\n\n            <TextView\n                android:id=\"@+id/textView9\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginTop=\"15dp\"\n                android:text=\"Save\"\n                android:textColor=\"@android:color/black\"\n                android:textSize=\"20dp\"\n                android:textStyle=\"bold\" />\n\n            <Button\n                android:id=\"@+id/saveButton\"\n                android:layout_width=\"30dp\"\n                android:layout_height=\"30dp\"\n                android:layout_margin=\"15dp\"\n                android:background=\"@drawable/ic_create\" />\n        </LinearLayout>\n\n        <ImageView\n            android:id=\"@+id/imageView5\"\n            android:layout_width=\"350dp\"\n            android:layout_height=\"150dp\"\n            android:layout_marginStart=\"30dp\"\n            android:layout_marginTop=\"565dp\"\n            android:layout_marginEnd=\"31dp\"\n            android:layout_marginBottom=\"16dp\"\n            android:src=\"@drawable/pic_layout_white\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\" />\n\n        <TextView\n            android:id=\"@+id/textView8\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"Attendee Limit\"\n            android:textSize=\"20dp\"\n            android:textStyle=\"bold\"\n            app:layout_constraintBottom_toBottomOf=\"@+id/imageView5\"\n            app:layout_constraintEnd_toEndOf=\"@+id/imageView5\"\n            app:layout_constraintHorizontal_bias=\"0.505\"\n            app:layout_constraintStart_toStartOf=\"@+id/imageView5\"\n            app:layout_constraintTop_toTopOf=\"@+id/imageView5\"\n            app:layout_constraintVertical_bias=\"0.235\" />\n\n        <EditText\n            android:id=\"@+id/idEditText\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:ems=\"10\"\n            android:inputType=\"numberDecimal|numberSigned\"\n            android:hint=\"Limit\"\n            app:layout_constraintBottom_toBottomOf=\"@+id/imageView5\"\n            app:layout_constraintEnd_toEndOf=\"@+id/imageView5\"\n            app:layout_constraintStart_toStartOf=\"@+id/imageView5\"\n            app:layout_constraintTop_toTopOf=\"@+id/imageView5\"\n            app:layout_constraintVertical_bias=\"0.657\" />\n\n\n        <TextView\n            android:id=\"@+id/textView2\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginStart=\"72dp\"\n            android:layout_marginTop=\"1dp\"\n            android:layout_marginEnd=\"71dp\"\n            android:layout_marginBottom=\"469dp\"\n            android:text=\"Let's Create Your Event\"\n            android:textSize=\"26dp\"\n            android:textStyle=\"bold\"\n            app:layout_constraintBottom_toTopOf=\"@+id/imageView5\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/linearLayout\" />\n\n        <LinearLayout\n            android:id=\"@+id/linearLayout\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginEnd=\"186dp\"\n            android:orientation=\"horizontal\"\n            app:layout_constraintEnd_toStartOf=\"@+id/linearLayout3\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\">\n\n            <Button\n                android:id=\"@+id/returnButton\"\n                android:layout_width=\"30dp\"\n                android:layout_height=\"30dp\"\n                android:layout_margin=\"15dp\"\n                android:background=\"@drawable/ic_return\" />\n\n            <TextView\n                android:id=\"@+id/textView\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginTop=\"15dp\"\n                android:text=\"Return\"\n                android:textColor=\"@android:color/black\"\n                android:textSize=\"20dp\"\n                android:textStyle=\"bold\" />\n        </LinearLayout>\n\n    </androidx.constraintlayout.widget.ConstraintLayout>\n\n    <androidx.constraintlayout.widget.ConstraintLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\">\n\n        <ImageView\n            android:id=\"@+id/imageView4\"\n            android:layout_width=\"350dp\"\n            android:layout_height=\"150dp\"\n            android:layout_marginStart=\"30dp\"\n            android:layout_marginTop=\"402dp\"\n            android:layout_marginEnd=\"31dp\"\n            android:layout_marginBottom=\"179dp\"\n            android:src=\"@drawable/pic_layout_white\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\" />\n\n        <Button\n            android:id=\"@+id/picButton\"\n            android:layout_width=\"60dp\"\n            android:layout_height=\"60dp\"\n            android:background=\"@drawable/ic_picture\"\n            app:layout_constraintBottom_toBottomOf=\"@+id/imageView4\"\n            app:layout_constraintEnd_toEndOf=\"@+id/imageView4\"\n            app:layout_constraintHorizontal_bias=\"0.501\"\n            app:layout_constraintStart_toStartOf=\"@+id/imageView4\"\n            app:layout_constraintTop_toTopOf=\"@+id/imageView4\"\n            app:layout_constraintVertical_bias=\"0.745\" />\n\n        <TextView\n            android:id=\"@+id/textView7\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"Upload Poster of Your Event\"\n            android:textSize=\"20dp\"\n            android:textStyle=\"bold\"\n            app:layout_constraintBottom_toBottomOf=\"@+id/imageView4\"\n            app:layout_constraintEnd_toEndOf=\"@+id/imageView4\"\n            app:layout_constraintStart_toStartOf=\"@+id/imageView4\"\n            app:layout_constraintTop_toTopOf=\"@+id/imageView4\"\n            app:layout_constraintVertical_bias=\"0.268\" />\n\n    </androidx.constraintlayout.widget.ConstraintLayout>\n\n    <androidx.constraintlayout.widget.ConstraintLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\">\n\n        <ImageView\n            android:id=\"@+id/imageView3\"\n            android:layout_width=\"350dp\"\n            android:layout_height=\"150dp\"\n            android:layout_marginStart=\"30dp\"\n            android:layout_marginTop=\"251dp\"\n            android:layout_marginEnd=\"31dp\"\n            android:layout_marginBottom=\"330dp\"\n            android:src=\"@drawable/pic_layout_white\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\" />\n\n        <EditText\n            android:id=\"@+id/infoEditText\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:ems=\"10\"\n            android:inputType=\"text\"\n            android:hint=\"Info\"\n            app:layout_constraintBottom_toBottomOf=\"@+id/imageView3\"\n            app:layout_constraintEnd_toEndOf=\"@+id/imageView3\"\n            app:layout_constraintStart_toStartOf=\"@+id/imageView3\"\n            app:layout_constraintTop_toBottomOf=\"@+id/textView6\" />\n\n        <TextView\n            android:id=\"@+id/textView6\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"Information About Your Event\"\n            android:textSize=\"20dp\"\n            android:textStyle=\"bold\"\n            app:layout_constraintBottom_toBottomOf=\"@+id/imageView3\"\n            app:layout_constraintEnd_toEndOf=\"@+id/imageView3\"\n            app:layout_constraintHorizontal_bias=\"0.506\"\n            app:layout_constraintStart_toStartOf=\"@+id/imageView3\"\n            app:layout_constraintTop_toTopOf=\"@+id/imageView3\"\n            app:layout_constraintVertical_bias=\"0.26\" />\n\n    </androidx.constraintlayout.widget.ConstraintLayout>\n    <androidx.constraintlayout.widget.ConstraintLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        app:layout_constraintBottom_toBottomOf=\"parent\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        app:layout_constraintStart_toStartOf=\"parent\"\n        app:layout_constraintTop_toTopOf=\"parent\">\n\n        <ImageView\n            android:id=\"@+id/imageView2\"\n            android:layout_width=\"350dp\"\n            android:layout_height=\"150dp\"\n            android:layout_marginTop=\"106dp\"\n            android:layout_marginEnd=\"1dp\"\n            android:layout_marginBottom=\"475dp\"\n            android:src=\"@drawable/pic_layout_white\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\" />\n\n        <EditText\n            android:id=\"@+id/nameEditText\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:ems=\"10\"\n            android:inputType=\"text\"\n            android:hint=\"Name\"\n            app:layout_constraintBottom_toBottomOf=\"@+id/imageView2\"\n            app:layout_constraintEnd_toEndOf=\"@+id/imageView2\"\n            app:layout_constraintStart_toStartOf=\"@+id/imageView2\"\n            app:layout_constraintTop_toBottomOf=\"@+id/textView5\"\n            app:layout_constraintVertical_bias=\"0.42\" />\n\n        <TextView\n            android:id=\"@+id/textView5\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginTop=\"28dp\"\n            android:text=\"Name of Your Event\"\n            android:textSize=\"20dp\"\n            android:textStyle=\"bold\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintHorizontal_bias=\"0.498\"\n            app:layout_constraintStart_toStartOf=\"@+id/imageView2\"\n            app:layout_constraintTop_toTopOf=\"@+id/imageView2\" />\n    </androidx.constraintlayout.widget.ConstraintLayout>\n\n\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/organizer_create.xml b/app/src/main/res/layout/organizer_create.xml
+--- a/app/src/main/res/layout/organizer_create.xml	(revision 8d68e5680c71b669ea29ef77e702c37a757dd7ed)
++++ b/app/src/main/res/layout/organizer_create.xml	(date 1712441102092)
+@@ -36,47 +36,6 @@
+                 android:background="@drawable/ic_create" />
+         </LinearLayout>
+ 
+-        <ImageView
+-            android:id="@+id/imageView5"
+-            android:layout_width="350dp"
+-            android:layout_height="150dp"
+-            android:layout_marginStart="30dp"
+-            android:layout_marginTop="565dp"
+-            android:layout_marginEnd="31dp"
+-            android:layout_marginBottom="16dp"
+-            android:src="@drawable/pic_layout_white"
+-            app:layout_constraintBottom_toBottomOf="parent"
+-            app:layout_constraintEnd_toEndOf="parent"
+-            app:layout_constraintStart_toStartOf="parent"
+-            app:layout_constraintTop_toTopOf="parent" />
+-
+-        <TextView
+-            android:id="@+id/textView8"
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:text="Attendee Limit"
+-            android:textSize="20dp"
+-            android:textStyle="bold"
+-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+-            app:layout_constraintEnd_toEndOf="@+id/imageView5"
+-            app:layout_constraintHorizontal_bias="0.505"
+-            app:layout_constraintStart_toStartOf="@+id/imageView5"
+-            app:layout_constraintTop_toTopOf="@+id/imageView5"
+-            app:layout_constraintVertical_bias="0.235" />
+-
+-        <EditText
+-            android:id="@+id/idEditText"
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:ems="10"
+-            android:inputType="numberDecimal|numberSigned"
+-            android:hint="Limit"
+-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+-            app:layout_constraintEnd_toEndOf="@+id/imageView5"
+-            app:layout_constraintStart_toStartOf="@+id/imageView5"
+-            app:layout_constraintTop_toTopOf="@+id/imageView5"
+-            app:layout_constraintVertical_bias="0.657" />
+-
+ 
+         <TextView
+             android:id="@+id/textView2"
+@@ -214,52 +173,72 @@
+             app:layout_constraintVertical_bias="0.26" />
+ 
+     </androidx.constraintlayout.widget.ConstraintLayout>
++
+     <androidx.constraintlayout.widget.ConstraintLayout
+         android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        app:layout_constraintBottom_toBottomOf="parent"
+-        app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toTopOf="parent">
++        android:layout_height="match_parent">
++
++        <ImageView
++            android:id="@+id/imageView1"
++            android:layout_width="300dp"
++            android:layout_height="120dp"
++            android:layout_marginStart="30dp"
++            android:layout_marginTop="370dp"
++            android:layout_marginEnd="30dp"
++            android:layout_marginBottom="20dp"
++            android:src="@drawable/pic_layout_white"
++            app:layout_constraintBottom_toBottomOf="parent"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="parent" />
+ 
++    </androidx.constraintlayout.widget.ConstraintLayout>
++
++    <androidx.constraintlayout.widget.ConstraintLayout
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        tools:layout_editor_absoluteX="0dp"
++        tools:layout_editor_absoluteY="0dp">
+         <ImageView
+-            android:id="@+id/imageView2"
+-            android:layout_width="350dp"
+-            android:layout_height="150dp"
+-            android:layout_marginTop="106dp"
+-            android:layout_marginEnd="1dp"
+-            android:layout_marginBottom="475dp"
++            android:id="@+id/imageView5"
++            android:layout_width="300dp"
++            android:layout_height="120dp"
++            android:layout_marginStart="30dp"
++            android:layout_marginTop="600dp"
++            android:layout_marginEnd="30dp"
++            android:layout_marginBottom="0dp"
+             android:src="@drawable/pic_layout_white"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+-            app:layout_constraintTop_toTopOf="parent" />
++            app:layout_constraintTop_toTopOf="parent"/>
+ 
+-        <EditText
+-            android:id="@+id/nameEditText"
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:ems="10"
+-            android:inputType="text"
+-            android:hint="Name"
+-            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+-            app:layout_constraintEnd_toEndOf="@+id/imageView2"
+-            app:layout_constraintStart_toStartOf="@+id/imageView2"
+-            app:layout_constraintTop_toBottomOf="@+id/textView5"
+-            app:layout_constraintVertical_bias="0.42" />
+-
+         <TextView
+-            android:id="@+id/textView5"
++            android:id="@+id/textView8"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+-            android:layout_marginTop="28dp"
+-            android:text="Name of Your Event"
++            android:text="Attendee Limit"
+             android:textSize="20dp"
+             android:textStyle="bold"
+-            app:layout_constraintEnd_toEndOf="parent"
+-            app:layout_constraintHorizontal_bias="0.498"
+-            app:layout_constraintStart_toStartOf="@+id/imageView2"
+-            app:layout_constraintTop_toTopOf="@+id/imageView2" />
++            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
++            app:layout_constraintEnd_toEndOf="@+id/imageView5"
++            app:layout_constraintHorizontal_bias="0.505"
++            app:layout_constraintStart_toStartOf="@+id/imageView5"
++            app:layout_constraintTop_toTopOf="@+id/imageView5"
++            app:layout_constraintVertical_bias="0.235" />
++
++        <EditText
++            android:id="@+id/idEditText"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:ems="10"
++            android:inputType="numberDecimal|numberSigned"
++            android:hint="Limit"
++            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
++            app:layout_constraintEnd_toEndOf="@+id/imageView5"
++            app:layout_constraintStart_toStartOf="@+id/imageView5"
++            app:layout_constraintTop_toTopOf="@+id/imageView5"
++            app:layout_constraintVertical_bias="0.657" />
+     </androidx.constraintlayout.widget.ConstraintLayout>
+ 
+ 
+Index: .idea/deploymentTargetDropDown.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"deploymentTargetDropDown\">\n    <value>\n      <entry key=\"MapsActivity\">\n        <State />\n      </entry>\n      <entry key=\"app\">\n        <State>\n          <targetSelectedWithDropDown>\n            <Target>\n              <type value=\"QUICK_BOOT_TARGET\" />\n              <deviceKey>\n                <Key>\n                  <type value=\"VIRTUAL_DEVICE_PATH\" />\n                  <value value=\"C:\\Users\\72730\\.android\\avd\\Pixel_2_API_26.avd\" />\n                </Key>\n              </deviceKey>\n            </Target>\n          </targetSelectedWithDropDown>\n          <timeTargetWasSelectedWithDropDown value=\"2024-04-04T21:05:26.725621700Z\" />\n        </State>\n      </entry>\n    </value>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+--- a/.idea/deploymentTargetDropDown.xml	(revision 8d68e5680c71b669ea29ef77e702c37a757dd7ed)
++++ b/.idea/deploymentTargetDropDown.xml	(date 1712441009371)
+@@ -2,9 +2,6 @@
+ <project version="4">
+   <component name="deploymentTargetDropDown">
+     <value>
+-      <entry key="MapsActivity">
+-        <State />
+-      </entry>
+       <entry key="app">
+         <State>
+           <targetSelectedWithDropDown>
+@@ -13,12 +10,12 @@
+               <deviceKey>
+                 <Key>
+                   <type value="VIRTUAL_DEVICE_PATH" />
+-                  <value value="C:\Users\72730\.android\avd\Pixel_2_API_26.avd" />
++                  <value value="$USER_HOME$/.android/avd/Pixel_2_XL_API_34.avd" />
+                 </Key>
+               </deviceKey>
+             </Target>
+           </targetSelectedWithDropDown>
+-          <timeTargetWasSelectedWithDropDown value="2024-04-04T21:05:26.725621700Z" />
++          <timeTargetWasSelectedWithDropDown value="2024-04-05T07:23:07.857684Z" />
+         </State>
+       </entry>
+     </value>

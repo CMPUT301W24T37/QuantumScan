@@ -72,6 +72,7 @@ public class OrganizerFragment extends Fragment {
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
 
         FireStoreBridge fb = new FireStoreBridge("USER");
+
         String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         fb.retrieveUser(userId, new FireStoreBridge.OnUserRetrievedListener() {
             @Override

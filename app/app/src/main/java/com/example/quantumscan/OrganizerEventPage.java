@@ -20,6 +20,7 @@ public class OrganizerEventPage extends AppCompatActivity {
         Button listButton = findViewById(R.id.buttonViewAttend);
         Button posterButton = findViewById(R.id.buttonPoster);
         Button locationButton = findViewById(R.id.buttonLocation);
+        Button notification = findViewById(R.id.buttonSendNote);
 
         // Retrieve the city name passed from MainActivity
         String eventID = getIntent().getStringExtra("eventID");
@@ -74,6 +75,16 @@ public class OrganizerEventPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent detailIntent = new Intent(OrganizerEventPage.this, MapsActivity.class);
+                detailIntent.putExtra("eventID", eventID);
+                detailIntent.putExtra("eventName", eventName);
+                startActivity(detailIntent);
+            }
+        });
+
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerNotification.class);
                 detailIntent.putExtra("eventID", eventID);
                 detailIntent.putExtra("eventName", eventName);
                 startActivity(detailIntent);

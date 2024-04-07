@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,9 +33,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -323,10 +328,10 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      @param eventInfo {@link Event}
      @param organizerID {@link String}
      **/
-    public void updateEvent(Event eventInfo, String organizerID){
+    public void updateEvent(Event eventInfo, String organizerID, String startTime, String endTime){
         // get event id
         String eventId= eventInfo.getId();
-        System.out.println(eventId);
+        CollectionReference eventCollection = getDb().collection("EVENT");
 
         EventFireBaseHolder event = new EventFireBaseHolder(
                 eventInfo.getAnnouncement(),
@@ -340,12 +345,13 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 eventInfo.getCurrentTotalAttendee());
 
         this.updateEventHelper(eventId, organizerID);
-        this.collectionName.document(eventId).set(event)
+        eventCollection.document(eventId).set(event)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
 
                     @Override
                     public void onSuccess(Void aVoid) {
-                        System.out.println("event upload successfully");
+                        updateStartTime(eventId, startTime);
+                        updateEndTime(eventId, endTime);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -940,5 +946,42 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 }
             }
         });
+    }
+
+    private void updateStartTime(String eventId, String startTime){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        CollectionReference eventReference = getDb().collection("EVENT");
+        DocumentReference eventDoc = eventReference.document(eventId);
+        try {
+            Date date = sdf.parse(startTime);
+
+            Timestamp timestamp = new Timestamp(date);
+
+            eventDoc.update("startTime", timestamp)
+                    .addOnSuccessListener(aVoid -> System.out.println("Event start time updated successfully"))
+                    .addOnFailureListener(e -> System.err.println("Error updating event start time: " + e.getMessage()));
+
+        } catch (ParseException e) {
+            System.err.println("Failed to parse date: " + e.getMessage());
+        }
+
+    }
+    private void updateEndTime(String eventId, String endTime){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        CollectionReference eventReference = getDb().collection("EVENT");
+        DocumentReference eventDoc = eventReference.document(eventId);
+        try {
+            Date date = sdf.parse(endTime);
+
+            Timestamp timestamp = new Timestamp(date);
+
+            eventDoc.update("endTime", timestamp)
+                    .addOnSuccessListener(aVoid -> System.out.println("Event start time updated successfully"))
+                    .addOnFailureListener(e -> System.err.println("Error updating event start time: " + e.getMessage()));
+
+        } catch (ParseException e) {
+            System.err.println("Failed to parse date: " + e.getMessage());
+        }
     }
 }

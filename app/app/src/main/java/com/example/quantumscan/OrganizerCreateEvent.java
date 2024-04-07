@@ -1,16 +1,24 @@
 package com.example.quantumscan;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,8 +30,13 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import com.google.firebase.storage.UploadTask;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class OrganizerCreateEvent extends AppCompatActivity {
 
@@ -31,7 +44,10 @@ public class OrganizerCreateEvent extends AppCompatActivity {
     private Uri imageUri = null;
     private String userID;
     private int eventStartTime;
+    private TextView startTimeText, endTimeText;
     private FireStoreBridge fb  = new FireStoreBridge("EVENT");
+
+    private Context context;
     // FirebaseStorage storage = FirebaseStorage.getInstance();
 
     // Create an ActivityResultLauncher instance directly within the Activity
@@ -64,6 +80,9 @@ public class OrganizerCreateEvent extends AppCompatActivity {
         EditText editTextName = (EditText) findViewById(R.id.nameEditText);
         EditText editTextInfo = (EditText) findViewById(R.id.infoEditText);
         EditText editTextLimit = (EditText) findViewById(R.id.idEditText);
+        startTimeText = findViewById(R.id.startTime);
+        endTimeText = findViewById(R.id.endTime);
+        context = this;
         String nameText;
         String infoText;
 
@@ -72,22 +91,6 @@ public class OrganizerCreateEvent extends AppCompatActivity {
         selectImage = new SelectImage(this, activityResultLauncher);
         buttonPickImage.setOnClickListener(v -> selectImage.pickImage());
 
-        Spinner numberSpinner = findViewById(R.id.number_spinner);
-
-        // Create a list of numbers from 0 to 31
-        List<String> numbers = new ArrayList<>();
-        for (int i = 0; i <= 31; i++) {
-            numbers.add(String.valueOf(i));
-        }
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, numbers);
-
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        numberSpinner.setAdapter(adapter);
 
 
         buttonReturn.setOnClickListener(new View.OnClickListener() {
@@ -118,10 +121,7 @@ public class OrganizerCreateEvent extends AppCompatActivity {
                 String EventID = newEvent.getId();
 
                 fb.uploadEventImage(newEvent, EventID, imageUri);
-
-
-
-                fb.updateEvent(newEvent,userID);
+                fb.updateEvent(newEvent,userID, startTimeText.getText().toString().trim(), endTimeText.getText().toString().trim() );
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("eventID", newEvent.getId());
@@ -132,26 +132,120 @@ public class OrganizerCreateEvent extends AppCompatActivity {
             }
 
         });
-
-        numberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        startTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Your code here. For example:
+            public void onClick(View v) {
+                showStartDateTimeDialog(startTimeText);
 
-                eventStartTime = Integer.parseInt(numbers.get(position));
-
-                Toast.makeText(OrganizerCreateEvent.this, "Selected: " + numbers.get(position), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Your code here, if needed
-                eventStartTime = 0;
             }
         });
+        endTimeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startTimeText.getText().toString().isEmpty()){
+                    Toast.makeText(context, "please select a start time first!", Toast.LENGTH_SHORT).show();
+                }else{
+                    showEndDateTimeDialog(endTimeText);
+                }
+            }
+        });
+
+//        numberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                // Your code here. For example:
+//
+//                eventStartTime = Integer.parseInt(numbers.get(position));
+//
+//                Toast.makeText(OrganizerCreateEvent.this, "Selected: " + numbers.get(position), Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // Your code here, if needed
+//                eventStartTime = 0;
+//            }
+//        });
 
 
     }
 
+    private void showEndDateTimeDialog(final TextView date_time_in) {
+        // Inflate the custom layout
+        final View dialogView = LayoutInflater.from(this).inflate(R.layout.date_time_dialog, null);
+        final DatePicker datePicker = dialogView.findViewById(R.id.date_picker);
+        final TimePicker timePicker = dialogView.findViewById(R.id.time_picker);
+        timePicker.setIs24HourView(true); // Use 24 hour view or not based on your preference
+
+        // Create the dialog
+        final Dialog dateTimeDialog = new Dialog(this);
+        dateTimeDialog.setContentView(dialogView);
+        dateTimeDialog.setTitle("Select Date and Time");
+
+        // Set up the OK button
+        Button btnOk = new Button(this);
+        btnOk.setText("OK");
+        btnOk.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
+                    timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+            try {
+                Date dateTime1 = format.parse(startTimeText.getText().toString().trim());
+                Date dateTime2 = format.parse(format.format(calendar.getTime()));
+                if (dateTime2.before(dateTime1)) {
+                    Toast.makeText(context, "please select a time later than start time", Toast.LENGTH_SHORT).show();
+                    showEndDateTimeDialog(endTimeText);
+
+                }
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+            date_time_in.setText(format.format(calendar.getTime()));
+
+            dateTimeDialog.dismiss();
+        });
+
+        // Add the OK button to the dialog
+        ((ViewGroup) dialogView).addView(btnOk);
+
+        // Show the custom dialog
+        dateTimeDialog.show();
+    }
+
+    private void showStartDateTimeDialog(final TextView date_time_in) {
+        // Inflate the custom layout
+        final View dialogView = LayoutInflater.from(this).inflate(R.layout.date_time_dialog, null);
+        final DatePicker datePicker = dialogView.findViewById(R.id.date_picker);
+        final TimePicker timePicker = dialogView.findViewById(R.id.time_picker);
+        timePicker.setIs24HourView(true); // Use 24 hour view or not based on your preference
+
+        // Create the dialog
+        final Dialog dateTimeDialog = new Dialog(this);
+        dateTimeDialog.setContentView(dialogView);
+        dateTimeDialog.setTitle("Select Date and Time");
+
+        // Set up the OK button
+        Button btnOk = new Button(this);
+        btnOk.setText("OK");
+        btnOk.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
+                    timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+
+            date_time_in.setText(format.format(calendar.getTime()));
+
+            dateTimeDialog.dismiss();
+        });
+        // Add the OK button to the dialog
+        ((ViewGroup) dialogView).addView(btnOk);
+
+        // Show the custom dialog
+        dateTimeDialog.show();
+    }
 
 }

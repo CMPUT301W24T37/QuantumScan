@@ -1,0 +1,149 @@
+Index: app/src/main/java/com/example/quantumscan/AdminProfileDetail.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.quantumscan;\n\nimport android.app.Dialog;\nimport android.os.Bundle;\nimport android.provider.Settings;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.EditText;\nimport android.widget.TextView;\nimport android.widget.Toast;\n\nimport androidx.appcompat.app.AppCompatActivity;\n\nimport java.util.ArrayList;\n\npublic class AdminProfileDetail extends AppCompatActivity {\n\n    TextView userName;\n    TextView userUniversity;\n    TextView userPhoneNumb;\n    TextView userEmail;\n    TextView userInfo;\n    Button delete;\n\n    String name;\n    String university;\n    String phoneNumb;\n    String email;\n    String info;\n    Admin admin;\n    private FireStoreBridge fb = new FireStoreBridge(\"USER\");\n\n    protected void onCreate(Bundle savedInstanceState) {\n        // Inflate the layout for this fragment\n\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.admin_profile_details);\n        userName = findViewById(R.id.userNameText);\n        userUniversity = findViewById(R.id.userUniversityText);\n        userPhoneNumb = findViewById(R.id.userPhoneNumbText);\n        userEmail = findViewById(R.id.userEmailText);\n        userInfo = findViewById(R.id.userInfoText);\n        delete = findViewById(R.id.buttonDelete);\n        admin = new Admin();\n\n        String id = getIntent().getStringExtra(\"userID\");\n        String name = getIntent().getStringExtra(\"userName\");\n\n        FireStoreBridge fb1 = new FireStoreBridge(\"USER\");\n        Button backButton = findViewById(R.id.returnButton);\n        fb1.retrieveUser(id, new FireStoreBridge.OnUserRetrievedListener() {\n            @Override\n            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {\n                userName.setText(user.getName());\n                userUniversity.setText(user.getUniversity());\n                userPhoneNumb.setText(user.getPhone());\n                userEmail.setText(user.getEmail());\n                userInfo.setText(user.getId());\n\n            }\n        });\n\n\n        backButton.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                finish();\n            }\n        });\n\n        delete.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n\n                admin.deleteUserProfile(id);\n            }\n        });\n    }\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/quantumscan/AdminProfileDetail.java b/app/src/main/java/com/example/quantumscan/AdminProfileDetail.java
+--- a/app/src/main/java/com/example/quantumscan/AdminProfileDetail.java	
++++ b/app/src/main/java/com/example/quantumscan/AdminProfileDetail.java	
+@@ -6,12 +6,17 @@
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.EditText;
++import android.widget.ImageView;
+ import android.widget.TextView;
+ import android.widget.Toast;
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
++import com.google.firebase.storage.FirebaseStorage;
++import com.google.firebase.storage.StorageReference;
++
+ import java.util.ArrayList;
++import java.util.Random;
+ 
+ public class AdminProfileDetail extends AppCompatActivity {
+ 
+@@ -21,13 +26,19 @@
+     TextView userEmail;
+     TextView userInfo;
+     Button delete;
++    Button deletePfp;
+ 
+     String name;
+     String university;
+     String phoneNumb;
+     String email;
+     String info;
++
++    String profileImage;
++    String pictureName;
+     Admin admin;
++
++    ImageView imageView;
+     private FireStoreBridge fb = new FireStoreBridge("USER");
+ 
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -41,6 +52,9 @@
+         userEmail = findViewById(R.id.userEmailText);
+         userInfo = findViewById(R.id.userInfoText);
+         delete = findViewById(R.id.buttonDelete);
++        deletePfp = findViewById(R.id.buttonDeletePfp);
++        imageView = findViewById(R.id.imageView7);
++
+         admin = new Admin();
+ 
+         String id = getIntent().getStringExtra("userID");
+@@ -51,6 +65,15 @@
+         fb1.retrieveUser(id, new FireStoreBridge.OnUserRetrievedListener() {
+             @Override
+             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
++                profileImage = user.getProfilePicture();
++                if (profileImage.equals("DEFAULT_PFP")){
++                    pictureName = randomPick(user);
++                    fb1.updateProfilePhoto(user.getId(), pictureName);
++                    fb1.displayProfile(pictureName, imageView);
++                }else{
++                    fb1.displayProfile(profileImage, imageView);
++                }
++
+                 userName.setText(user.getName());
+                 userUniversity.setText(user.getUniversity());
+                 userPhoneNumb.setText(user.getPhone());
+@@ -75,7 +98,29 @@
+                 admin.deleteUserProfile(id);
+             }
+         });
++
++        deletePfp.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                FirebaseStorage storage = FirebaseStorage.getInstance();
++                admin.deleteUserAvatar(id);
++                StorageReference desertRef = storage.getReference().child("default_avatars/" + id + ".jpg");
++                desertRef.delete();
++            }
++        });
+     }
+ 
++    public String randomPick(User user){
++        String Name = user.getName().toString();
++        char firstLetter = Name.charAt(0);
++        if (!(firstLetter >= 'A' && firstLetter <= 'Z') && !(firstLetter >= 'a' && firstLetter <= 'z')) {
++            firstLetter = '?';
++        }
++        Random rand = new Random();
++        int rand_int1 = rand.nextInt(4)+1;
++        String pictureName = "" + firstLetter + rand_int1;
++        pictureName = pictureName.toUpperCase()+".png";
++        return pictureName;
++    }
+ 
+ }
+Index: app/src/main/java/com/example/quantumscan/OrganizerEventPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.quantumscan;\n\nimport android.app.Dialog;\nimport android.content.Intent;\nimport android.os.Bundle;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.TextView;\n\nimport androidx.appcompat.app.AppCompatActivity;\n\npublic class OrganizerEventPage extends AppCompatActivity {\n\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.organizer_event_homepage);\n\n        TextView eventNameView = findViewById(R.id.textView_eventName);\n        Button backButton = findViewById(R.id.returnButton);\n        Button infoButton = findViewById(R.id.buttonInfo);\n        Button listButton = findViewById(R.id.buttonViewAttend);\n        Button posterButton = findViewById(R.id.buttonPoster);\n        Button locationButton = findViewById(R.id.buttonLocation);\n        Button sendNotification = findViewById(R.id.buttonSendNote);\n\n\n        // Retrieve the city name passed from MainActivity\n        String eventID = getIntent().getStringExtra(\"eventID\");\n        String eventName = getIntent().getStringExtra(\"eventName\");\n        eventNameView.setText(eventName);\n\n        /*\n        Event eventOBJ = DataHolder.getInstance().getEvent(eventID);\n        System.out.println(\"Title:\"+ eventOBJ.getTitle());\n\n         */\n        sendNotification.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                showCustomDialog(eventID);\n            }\n        });\n\n        backButton.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                // Go back to MainActivity\n                finish();\n            }\n        });\n\n        infoButton.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerEventInfo.class);\n                detailIntent.putExtra(\"eventID\", eventID);\n                detailIntent.putExtra(\"eventName\", eventName);\n                startActivity(detailIntent);\n            }\n        });\n\n        listButton.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerViewAttendees.class);\n                detailIntent.putExtra(\"eventID\", eventID);\n                detailIntent.putExtra(\"eventName\", eventName);\n                startActivity(detailIntent);\n            }\n        });\n\n        posterButton.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerUpdatePoster.class);\n                detailIntent.putExtra(\"eventID\", eventID);\n                detailIntent.putExtra(\"eventName\", eventName);\n                startActivity(detailIntent);\n            }\n        });\n\n        locationButton.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                Intent detailIntent = new Intent(OrganizerEventPage.this, MapsActivity.class);\n                detailIntent.putExtra(\"eventID\", eventID);\n                detailIntent.putExtra(\"eventName\", eventName);\n                startActivity(detailIntent);\n            }\n        });\n    }\n    private void showCustomDialog(String eventId) {\n\n        final Dialog dialog = new Dialog(this);\n        dialog.setContentView(R.layout.send_notification_dialog);\n\n\n        TextView textViewParagraph = dialog.findViewById(R.id.organizerNotification);\n        Button closeButton = dialog.findViewById(R.id.buttonSubmit);\n\n\n        closeButton.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                FireStoreBridge fb = new FireStoreBridge(\"EVENT\");\n                fb.updateEventAnnouncement(eventId, textViewParagraph.getText().toString().trim());\n                dialog.dismiss();\n            }\n        });\n\n\n        dialog.show();\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/quantumscan/OrganizerEventPage.java b/app/src/main/java/com/example/quantumscan/OrganizerEventPage.java
+--- a/app/src/main/java/com/example/quantumscan/OrganizerEventPage.java	
++++ b/app/src/main/java/com/example/quantumscan/OrganizerEventPage.java	
+@@ -22,8 +22,12 @@
+         Button posterButton = findViewById(R.id.buttonPoster);
+         Button locationButton = findViewById(R.id.buttonLocation);
+         Button sendNotification = findViewById(R.id.buttonSendNote);
++      
++      
++        Button notification;
+ 
+ 
++
+         // Retrieve the city name passed from MainActivity
+         String eventID = getIntent().getStringExtra("eventID");
+         String eventName = getIntent().getStringExtra("eventName");
+@@ -88,7 +92,21 @@
+                 startActivity(detailIntent);
+             }
+         });
++
++        /*
++        notification.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerNotification.class);
++                detailIntent.putExtra("eventID", eventID);
++                detailIntent.putExtra("eventName", eventName);
++                startActivity(detailIntent);
++            }
++        });
++
++         */
+     }
++
+     private void showCustomDialog(String eventId) {
+ 
+         final Dialog dialog = new Dialog(this);

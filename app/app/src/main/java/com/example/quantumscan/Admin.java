@@ -21,6 +21,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -184,7 +185,10 @@ public class Admin {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             Log.d(TAG, "event " + eventID + " found");
-                            eventRef.update("posterCode", "");
+                            //eventRef.update("posterCode", "DEFAULT");
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            StorageReference desertRef = storage.getReference().child( eventID + ".jpg");
+                            desertRef.delete();
                             Log.d(TAG, "deleting event's poster finished");
                         }
                         else {

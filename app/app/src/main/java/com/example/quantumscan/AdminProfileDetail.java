@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 public class AdminProfileDetail extends AppCompatActivity {
@@ -21,6 +24,7 @@ public class AdminProfileDetail extends AppCompatActivity {
     TextView userEmail;
     TextView userInfo;
     Button delete;
+    Button deletePfp;
 
     String name;
     String university;
@@ -41,6 +45,7 @@ public class AdminProfileDetail extends AppCompatActivity {
         userEmail = findViewById(R.id.userEmailText);
         userInfo = findViewById(R.id.userInfoText);
         delete = findViewById(R.id.buttonDelete);
+        deletePfp = findViewById(R.id.buttonDeletePfp);
         admin = new Admin();
 
         String id = getIntent().getStringExtra("userID");
@@ -73,6 +78,16 @@ public class AdminProfileDetail extends AppCompatActivity {
             public void onClick(View v) {
 
                 admin.deleteUserProfile(id);
+            }
+        });
+
+        deletePfp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                admin.deleteUserAvatar(id);
+                StorageReference desertRef = storage.getReference().child("default_avatars/" + id + ".jpg");
+                desertRef.delete();
             }
         });
     }

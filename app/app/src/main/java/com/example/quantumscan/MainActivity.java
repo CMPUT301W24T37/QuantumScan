@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new OrganizerFragment());
         DataHolder.getInstance().setEvents();
 
-//        Intent intent = new Intent(MainActivity.this, LoginPage.class);
-//        startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, LoginPage.class);
+        startActivity(intent);
 
         // authentication start
         String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);

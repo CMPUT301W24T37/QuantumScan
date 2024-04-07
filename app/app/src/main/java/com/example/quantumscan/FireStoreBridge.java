@@ -321,6 +321,11 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     public void updateProfilePhoto(String userId, String profilePhoto){
         this.collectionName.document(userId).update("profilePicture", profilePhoto);
     }
+    public void deleteProfilePhoto(String userId, String profilePhoto) {
+        this.collectionName.document(userId).update("profilePicture", profilePhoto);
+        StorageReference desertRef = storage.getReference().child("default_avatars/" + userId + ".jpg");
+        desertRef.delete();
+    }
 
     /** updateEventHelper will take in a eventID and a organizerID. organizerID will be used to identify
      user in USER collection. eventID will be added into organizerRoles filed to keep track which event

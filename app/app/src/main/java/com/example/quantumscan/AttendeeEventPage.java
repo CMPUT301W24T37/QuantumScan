@@ -44,7 +44,6 @@ public class AttendeeEventPage extends AppCompatActivity {
     private Button buttonReturn;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

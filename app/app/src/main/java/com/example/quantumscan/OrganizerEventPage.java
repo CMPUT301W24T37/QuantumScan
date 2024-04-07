@@ -1,5 +1,6 @@
 package com.example.quantumscan;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,8 @@ public class OrganizerEventPage extends AppCompatActivity {
         Button listButton = findViewById(R.id.buttonViewAttend);
         Button posterButton = findViewById(R.id.buttonPoster);
         Button locationButton = findViewById(R.id.buttonLocation);
+        Button sendNotification = findViewById(R.id.buttonSendNote);
+
 
         // Retrieve the city name passed from MainActivity
         String eventID = getIntent().getStringExtra("eventID");
@@ -31,6 +34,12 @@ public class OrganizerEventPage extends AppCompatActivity {
         System.out.println("Title:"+ eventOBJ.getTitle());
 
          */
+        sendNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCustomDialog(eventID);
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +88,28 @@ public class OrganizerEventPage extends AppCompatActivity {
                 startActivity(detailIntent);
             }
         });
+    }
+    private void showCustomDialog(String eventId) {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.send_notification_dialog);
+
+
+        TextView textViewParagraph = dialog.findViewById(R.id.organizerNotification);
+        Button closeButton = dialog.findViewById(R.id.buttonSubmit);
+
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FireStoreBridge fb = new FireStoreBridge("EVENT");
+                fb.updateEventAnnouncement(eventId, textViewParagraph.getText().toString().trim());
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
     }
 
 }

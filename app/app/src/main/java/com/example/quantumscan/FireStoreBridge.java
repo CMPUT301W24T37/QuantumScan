@@ -491,6 +491,14 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
         });
     }
 
+    public void updateEventAnnouncement(String eventId,String announcement){
+        CollectionReference eventCollection = getDb().collection("EVENT");
+        DocumentReference eventDoc = eventCollection.document(eventId);
+        eventDoc.update("announcements", FieldValue.arrayUnion(announcement))
+                .addOnSuccessListener(aVoid -> System.out.println("Array updated successfully."))
+                .addOnFailureListener(e -> System.err.println("Error updating array: " + e.getMessage()));
+    }
+
     /**
      * find user in a database:
      * <p>

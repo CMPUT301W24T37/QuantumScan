@@ -24,6 +24,8 @@ public class OrganizerEventPage extends AppCompatActivity {
         Button sendNotification = findViewById(R.id.buttonSendNote);
 
 
+
+
         // Retrieve the city name passed from MainActivity
         String eventID = getIntent().getStringExtra("eventID");
         String eventName = getIntent().getStringExtra("eventName");
@@ -37,7 +39,7 @@ public class OrganizerEventPage extends AppCompatActivity {
         sendNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCustomDialog(eventID);
+                showCustomDialog(eventID, eventName);
             }
         });
 
@@ -88,8 +90,12 @@ public class OrganizerEventPage extends AppCompatActivity {
                 startActivity(detailIntent);
             }
         });
+
+
+
+
     }
-    private void showCustomDialog(String eventId) {
+    private void showCustomDialog(String eventId, String eventName) {
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.send_notification_dialog);
@@ -97,7 +103,18 @@ public class OrganizerEventPage extends AppCompatActivity {
 
         TextView textViewParagraph = dialog.findViewById(R.id.organizerNotification);
         Button closeButton = dialog.findViewById(R.id.buttonSubmit);
+        Button notification = dialog.findViewById(R.id.historyAnnouncementButton);
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerNotification.class);
+                detailIntent.putExtra("eventID", eventId);
+                detailIntent.putExtra("eventName", eventName);
+                startActivity(detailIntent);
+                dialog.dismiss();
+            }
+        });
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override

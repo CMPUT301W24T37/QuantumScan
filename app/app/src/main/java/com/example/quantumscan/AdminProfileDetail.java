@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AdminProfileDetail extends AppCompatActivity {
 
@@ -32,6 +34,11 @@ public class AdminProfileDetail extends AppCompatActivity {
     String email;
     String info;
     Admin admin;
+
+    String profileImage;
+    String pictureName;
+
+    ImageView imageView;
     private FireStoreBridge fb = new FireStoreBridge("USER");
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,7 @@ public class AdminProfileDetail extends AppCompatActivity {
         userInfo = findViewById(R.id.userInfoText);
         delete = findViewById(R.id.buttonDelete);
         deletePfp = findViewById(R.id.buttonDeletePfp);
+        imageView = findViewById(R.id.imageView7);
         admin = new Admin();
 
         String id = getIntent().getStringExtra("userID");
@@ -56,6 +64,14 @@ public class AdminProfileDetail extends AppCompatActivity {
         fb1.retrieveUser(id, new FireStoreBridge.OnUserRetrievedListener() {
             @Override
             public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+                profileImage = user.getProfilePicture();
+                if (profileImage.equals("DEFAULT_PFP")){
+                    pictureName = randomPick(user);
+                    fb1.updateProfilePhoto(user.getId(), pictureName);
+                    fb1.displayProfile(pictureName, imageView);
+                }else{
+                    fb1.displayProfile(profileImage, imageView);
+                }
                 userName.setText(user.getName());
                 userUniversity.setText(user.getUniversity());
                 userPhoneNumb.setText(user.getPhone());
@@ -90,6 +106,18 @@ public class AdminProfileDetail extends AppCompatActivity {
                 desertRef.delete();
             }
         });
+    }
+    public String randomPick(User user){
+        String Name = user.getName().toString();
+        char firstLetter = Name.charAt(0);
+        if (!(firstLetter >= 'A' && firstLetter <= 'Z') && !(firstLetter >= 'a' && firstLetter <= 'z')) {
+            firstLetter = '?';
+        }
+        Random rand = new Random();
+        int rand_int1 = rand.nextInt(4)+1;
+        String pictureName = "" + firstLetter + rand_int1;
+        pictureName = pictureName.toUpperCase()+".png";
+        return pictureName;
     }
 
 

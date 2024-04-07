@@ -1,5 +1,6 @@
 package com.example.quantumscan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,20 +23,27 @@ public class OrganizerNotification extends AppCompatActivity {
         setContentView(R.layout.organizer_notification);
         RecyclerView recyclerView = findViewById(R.id.myRecyclerView);
         Button backButton = findViewById(R.id.returnButton);
+        FireStoreBridge fb = new FireStoreBridge("EVENT");
 
-        String []messages ={"Message 1: To display a list of messages using a RecyclerView in Android Studio, you will need to create an adapter for the RecyclerView that inflates the layout for each item. Below I'll guide you through the main components you will need to set up",
-                "Message 2: This is a custom adapter that extends RecyclerView.Adapter. It will bind each message in the array to a view in the RecyclerView",
-                "Message 3: This is a custom view holder that extends RecyclerView.ViewHolder. It contains a reference to the TextView where the message will be displayed"};
-        messagesHolder.addAll(Arrays.asList(messages));
-
+        Intent intent = getIntent();
+        String eventID = intent.getStringExtra("eventID");
+        String eventName = intent.getStringExtra("eventName");
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,messagesHolder);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
         messagesAdapter = new ArrayAdapter<>(OrganizerNotification.this, R.layout.recycler_view_row, messagesHolder);
-
+        fb.retrieveEventAnnouncement(eventID, new FireStoreBridge.OnRetrieveEventAnnouncement() {
+            @Override
+            public void onRetrieveEventAnnouncement(ArrayList<String> announcements) {
+                if (announcements == null || announcements.isEmpty()) {
+                    announcements.add("No Announcement"); // Directly modify announcements if it's empty or null
+                }
+                messagesHolder.clear(); // Clear existing data
+                messagesHolder.addAll(announcements); // Add all announcements to the holder
+                adapter.notifyDataSetChanged(); // Notify the RecyclerViewAdapter of the dataset change
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

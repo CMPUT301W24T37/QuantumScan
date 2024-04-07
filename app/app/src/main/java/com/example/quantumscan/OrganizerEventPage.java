@@ -22,9 +22,7 @@ public class OrganizerEventPage extends AppCompatActivity {
         Button posterButton = findViewById(R.id.buttonPoster);
         Button locationButton = findViewById(R.id.buttonLocation);
         Button sendNotification = findViewById(R.id.buttonSendNote);
-      
-      
-        Button notification;
+
 
 
 
@@ -41,7 +39,7 @@ public class OrganizerEventPage extends AppCompatActivity {
         sendNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCustomDialog(eventID);
+                showCustomDialog(eventID, eventName);
             }
         });
 
@@ -93,20 +91,11 @@ public class OrganizerEventPage extends AppCompatActivity {
             }
         });
 
-        /*
-        notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerNotification.class);
-                detailIntent.putExtra("eventID", eventID);
-                detailIntent.putExtra("eventName", eventName);
-                startActivity(detailIntent);
-            }
-        });
 
-         */
+
+
     }
-    private void showCustomDialog(String eventId) {
+    private void showCustomDialog(String eventId, String eventName) {
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.send_notification_dialog);
@@ -114,7 +103,18 @@ public class OrganizerEventPage extends AppCompatActivity {
 
         TextView textViewParagraph = dialog.findViewById(R.id.organizerNotification);
         Button closeButton = dialog.findViewById(R.id.buttonSubmit);
+        Button notification = dialog.findViewById(R.id.historyAnnouncementButton);
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent detailIntent = new Intent(OrganizerEventPage.this, OrganizerNotification.class);
+                detailIntent.putExtra("eventID", eventId);
+                detailIntent.putExtra("eventName", eventName);
+                startActivity(detailIntent);
+                dialog.dismiss();
+            }
+        });
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override

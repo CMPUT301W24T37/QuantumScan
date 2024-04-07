@@ -16,6 +16,8 @@ public class EventFireBaseHolder {
     private long currentTotalAttendee;
 
 
+
+
     public EventFireBaseHolder() {
         this.announcements = new ArrayList<>();
         this.description = "description";

@@ -67,10 +67,8 @@ public class OrganizerFragment extends Fragment {
         buttonCreate = view.findViewById(R.id.buttonCreate);
 
 
-        //String []events ={"CMPUT 301", "Lab Team", "CMPUT 291"};
         dataList = new ArrayList<>();
         eventIDList = new ArrayList<>();
-        //dataList.addAll(Arrays.asList(events));
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
 
         FireStoreBridge fb = new FireStoreBridge("USER");
@@ -123,6 +121,11 @@ public class OrganizerFragment extends Fragment {
             }
         });
         eventListView.setAdapter(eventAdapter);
+
+
+        String []events ={"CMPUT 301", "Lab Team", "CMPUT 291"};
+        dataList.addAll(Arrays.asList(events));
+        eventAdapter.notifyDataSetChanged();
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override

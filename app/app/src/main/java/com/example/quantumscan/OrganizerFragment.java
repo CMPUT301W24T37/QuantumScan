@@ -124,9 +124,9 @@ public class OrganizerFragment extends Fragment {
         eventListView.setAdapter(eventAdapter);
 
 
-        String []events ={"CMPUT 301", "Lab Team", "CMPUT 291"};
-        dataList.addAll(Arrays.asList(events));
-        eventAdapter.notifyDataSetChanged();
+//        String []events ={"CMPUT 301", "Lab Team", "CMPUT 291"};
+//        dataList.addAll(Arrays.asList(events));
+//        eventAdapter.notifyDataSetChanged();
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override

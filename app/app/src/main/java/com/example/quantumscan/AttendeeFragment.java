@@ -75,8 +75,11 @@ public class AttendeeFragment extends Fragment {
                 });
 
         // Initialize the ActivityResultLauncher for starting the QR code scanner
+        System.out.println("RIGHT BEFORE SCAN =========================================================================");
+
         startForResult =
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    System.out.println("IDK----------------------------------------------------------------------------------");
                     IntentResult scanResult = IntentIntegrator.parseActivityResult(result.getResultCode(), result.getData());
                     if (scanResult != null) {
                         if (scanResult.getContents() == null) {
@@ -127,9 +130,6 @@ public class AttendeeFragment extends Fragment {
 
                         }
                     }
-//
-
-
                 });
 
         // Initialize your events list here

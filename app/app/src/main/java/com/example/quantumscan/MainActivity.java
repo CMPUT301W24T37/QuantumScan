@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        System.out.println(android.os.Build.VERSION.SDK_INT + "  =========================================================================================");
         replaceFragment(new OrganizerFragment());
         DataHolder.getInstance().setEvents();
 

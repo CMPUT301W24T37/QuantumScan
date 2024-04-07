@@ -46,6 +46,9 @@ public class ProfileFragment extends Fragment {
     EditText userPhoneNumb;
     EditText userEmail;
     EditText userInfo;
+    Button editPhoto;
+    Button deletePhoto;
+
 
     String name;
     String university;
@@ -65,8 +68,12 @@ public class ProfileFragment extends Fragment {
                     String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                     System.out.println(userId);
                     photoUpdate(userId, imageUri);
+                    editPhoto.setVisibility(View.GONE);
+                    deletePhoto.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(getContext(), "Please select an image", Toast.LENGTH_SHORT).show();
+                    editPhoto.setVisibility(View.GONE);
+                    deletePhoto.setVisibility(View.GONE);
                 }
             });
     String pictureName;
@@ -82,12 +89,43 @@ public class ProfileFragment extends Fragment {
         userEmail = view.findViewById(R.id.userEmailText);
         userInfo = view.findViewById(R.id.userInfoText);
         imageView = view.findViewById(R.id.profileImage);
+
         FrameLayout profilePictureContainer = view.findViewById(R.id.profilePictureContainer);
+
+        editPhoto = view.findViewById(R.id.editProfilePhoto);
+
+        deletePhoto = view.findViewById(R.id.deleteProfilePhoto);
+
         String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         FireStoreBridge fb1 = new FireStoreBridge("USER");
 
         selectImage = new SelectImage(getActivity(), activityResultLauncher);
-        profilePictureContainer.setOnClickListener(v -> selectImage.pickImage());
+        editPhoto.setOnClickListener(v -> {
+            selectImage.pickImage();
+            editPhoto.setVisibility(View.GONE);
+            deletePhoto.setVisibility(View.GONE);
+        });
+
+        profilePictureContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editPhoto.setVisibility(View.VISIBLE);
+                deletePhoto.setVisibility(View.VISIBLE);
+            }
+        });
+
+        deletePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String deleteToPhoto = userName.getText().toString();
+                pictureName = randomPickForDelete(deleteToPhoto);
+                fb1.deleteProfilePhoto(userId, pictureName);
+                fb1.displayProfile(pictureName, imageView);
+                editPhoto.setVisibility(View.GONE);
+                deletePhoto.setVisibility(View.GONE);
+            }
+        });
+
 
         fb1.retrieveUser(userId, new FireStoreBridge.OnUserRetrievedListener() {
             @Override
@@ -214,8 +252,22 @@ public class ProfileFragment extends Fragment {
         return pictureName;
     }
 
+    public String randomPickForDelete(String userName){
+        char firstLetter = userName.charAt(0);
+        if (!(firstLetter >= 'A' && firstLetter <= 'Z') && !(firstLetter >= 'a' && firstLetter <= 'z')) {
+            firstLetter = '?';
+        }
+        Random rand = new Random();
+        int rand_int1 = rand.nextInt(4)+1;
+        String pictureName = "" + firstLetter + rand_int1;
+        pictureName = pictureName.toUpperCase()+".png";
+        return pictureName;
+    }
+
+
     public void photoUpdate(String userID, Uri imageUri){
         FireStoreBridge fb_user = new FireStoreBridge("USER");
         fb_user.updatePhoto(userID, imageUri);
+
     }
 }

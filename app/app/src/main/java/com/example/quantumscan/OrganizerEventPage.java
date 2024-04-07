@@ -93,6 +93,7 @@ public class OrganizerEventPage extends AppCompatActivity {
             }
         });
 
+        /*
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +103,8 @@ public class OrganizerEventPage extends AppCompatActivity {
                 startActivity(detailIntent);
             }
         });
+
+         */
     }
     private void showCustomDialog(String eventId) {
 

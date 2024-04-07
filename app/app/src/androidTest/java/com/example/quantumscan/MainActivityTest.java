@@ -9,6 +9,7 @@ import static androidx.test.espresso.action.ViewActions.doubleClick;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.anything;
@@ -32,6 +33,12 @@ public class MainActivityTest {
     @Rule
     public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<MainActivity>(MainActivity.class);
 
+    private String userName = "Test User";
+    private String email = "test@ualberta.ca";
+    private String phone = "54321";
+    private String university = "University of Alberta";
+
+
     private void checkIfEvent001Menu() {
         // Check if we are in the Event001 menu
         onView(withText("Return")).check(matches(isDisplayed()));
@@ -43,6 +50,24 @@ public class MainActivityTest {
         // check if im in the organizer page
         onView(withText("NEW EVENT")).check(matches(isDisplayed()));
         onView(withText("Events I created")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testLoginFirstUserShowUp() {
+        SystemClock.sleep(2500);
+        onView(withHint("username")).check(matches(isDisplayed()));
+        onView(withHint("email")).check(matches(isDisplayed()));
+        onView(withHint("phone")).check(matches(isDisplayed()));
+        onView(withHint("organizer / university")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testLoginFirstUserSetupProfile() {
+        SystemClock.sleep(2500);
+        onView(withHint("username")).perform(ViewActions.typeText(userName)).perform(ViewActions.closeSoftKeyboard());
+        onView(withHint("email")).perform(ViewActions.typeText(email)).perform(ViewActions.closeSoftKeyboard());
+        onView(withHint("phone")).perform(ViewActions.typeText(phone)).perform(ViewActions.closeSoftKeyboard());
+        onView(withHint("organizer / university")).perform(ViewActions.typeText(university)).perform(ViewActions.closeSoftKeyboard());
     }
 
     @Test

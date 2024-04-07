@@ -7,10 +7,34 @@
     tools:context=".ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
+    
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/editProfilePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="editProfilePicture"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
+        </Button>
+
+        <Button
+            android:id="@+id/deleteProfilePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="deleteProfilePicture"
+            android:layout_marginRight="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
+        </Button>
 
         <FrameLayout
             android:id="@+id/profilePictureContainer"
@@ -24,7 +48,9 @@
             android:clickable="true"
             android:focusable="true">
 
+
             <de.hdodenhof.circleimageview.CircleImageView
+
                 android:id="@+id/profileImage"
                 android:layout_width="150dp"
                 android:layout_height="150dp"

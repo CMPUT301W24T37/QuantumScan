@@ -63,6 +63,7 @@ public class OrganizerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_organizer, container, false);
+        System.out.println("CREATED ======================================================================================================");
         eventListView = view.findViewById(R.id.organizerEventList);
         buttonCreate = view.findViewById(R.id.buttonCreate);
 
@@ -74,37 +75,6 @@ public class OrganizerFragment extends Fragment {
         FireStoreBridge fb = new FireStoreBridge("USER");
 
         String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        fb.retrieveUser(userId, new FireStoreBridge.OnUserRetrievedListener() {
-            @Override
-            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
-                eventIDList.clear();
-                for(String event : organizerRoles){
-                    eventIDList.add(event);
-                    System.out.println(event);
-                }
-
-                FireStoreBridge fb_events = new FireStoreBridge("EVENT");
-                fb_events.retrieveAllEvent(new FireStoreBridge.OnEventRetrievedListener() {
-                    @Override
-                    public void onEventRetrieved(ArrayList<Event> events, ArrayList<String> organizerList) {
-                        dataList.clear();
-                        for(String eventID : eventIDList){
-
-                            for(Event event: events){
-                                if(Objects.equals(eventID, event.getId())){
-                                    System.out.println("Size"+ event.getTitle());
-                                    dataList.add(event.getTitle());
-                                }
-                            }
-                        }
-                        eventAdapter.notifyDataSetChanged();
-
-                    }
-                });
-
-            }
-        });
-
         fb. retrieveOrganizedEvent(getCurrentUserId(), new FireStoreBridge.OnRetrieveJoinedEvent() {
             @Override
             public void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventList) {

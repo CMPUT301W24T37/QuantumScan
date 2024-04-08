@@ -40,6 +40,11 @@ public class AttendeeEventPage extends AppCompatActivity {
     private TextView tvEventDescription;// TextView for displaying event description
     private ImageView imageViewEventPoster;
 
+
+
+    private ListView notificationListView;// Listview for notification part
+    private TextView notificationTextView;
+
     private FireStoreBridge fireStoreBridge;
 
     private Button buttonReturn;
@@ -54,18 +59,29 @@ public class AttendeeEventPage extends AppCompatActivity {
         String eventName = getIntent().getStringExtra("eventName");
 
         TextView eventNameView = findViewById(R.id.textView_eventName);
+
+
+
+
         eventNameView.setText(eventName);
 
         fireStoreBridge = new FireStoreBridge("EVENT");
         View btnViewInfo = findViewById(R.id.btnViewInformation);//Main Activity??or main menu? View Information
         View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);//Main Activity??or main menu? ReceiveNotification
 
-        View btnScanQRCode = findViewById(R.id.btnScanQRCode);//Main Activity??or main menu? ScanQRCode
-        buttonReturn = findViewById(R.id.returnButton);
+        View
+
+                //View btnScanQRCode = findViewById(R.id.btnScanQRCode);//Main Activity??or main menu? ScanQRCode
+                buttonReturn = findViewById(R.id.returnButton);
+
+
 
         btnViewInfo.setOnClickListener(view -> switchToDetailsView());// Set up the "View Information" button
-        btnReceiveNotification.setOnClickListener(view -> switchToNotificationView());// Set up the "ReceiveNotification" button
-        btnScanQRCode.setOnClickListener(view -> switchToScanQRCode());// Set up the "btnScanQRCode" button
+
+
+        btnReceiveNotification.setOnClickListener(view -> switchToNotificationView());
+
+
 
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +90,7 @@ public class AttendeeEventPage extends AppCompatActivity {
                 finish();
             }
         });
+
 
     }
 
@@ -87,26 +104,80 @@ public class AttendeeEventPage extends AppCompatActivity {
         imageViewEventPoster = findViewById(R.id.ivEventBackground);
         Button ivReturn = findViewById(R.id.ivReturn);
         ivReturn.setOnClickListener(v -> switchToMainView()); // Switch back to the main view
-
-
         fetchEventInformation(eventId);
 
     }
-    private void switchToNotificationView() {
-        Intent detailIntent = new Intent(AttendeeEventPage.this, OrganizerNotification.class);
-        detailIntent.putExtra("eventID", eventId);
-        detailIntent.putExtra("eventName", eventName);
-        startActivity(detailIntent);
+
+    private void switchToMainView() {
+        // Switch back to the main view
+        setContentView(R.layout.activity_attendee_eventpage);//returnButton
+        // Re-bind the button since we've switched the layout
+        View btnViewInfo = findViewById(R.id.btnViewInformation);
+        btnViewInfo.setOnClickListener(view -> switchToDetailsView());
+        Button btnIDK = findViewById(R.id.btnReceiveNotification);
+        btnIDK.setOnClickListener(view -> switchToNotificationView());
+
+        Button btnHAHA = findViewById(R.id.returnButton);
+        btnHAHA.setOnClickListener(view -> finish());
+
 
     }
 
     private void fetchEventInformation(String eventID) {
         // Use FireStoreBridge to retrieve the event
+        fireStoreBridge.retrieveEvent(eventID, new FireStoreBridge.OnEventRetrievedListener() {
+            @Override
+            public void onEventRetrieved(ArrayList<Event> eventList, ArrayList<String> organizerList) {
+
+                if (!eventList.isEmpty()) {
+                    Event event = eventList.get(0);// Assuming the first item is the event we're interested in
+                    tvEventTitle = findViewById(R.id.tvEventTitle);
+                    tvEventDescription = findViewById(R.id.tvEventDescription);
+                    imageViewEventPoster = findViewById(R.id.ivEventBackground);
+
+                    tvEventTitle.setText(event.getTitle());
+                    tvEventDescription.setText(event.getDescription());
+                    imageDisplay(eventId, imageViewEventPoster);
+
+
+                } else {
+
+                    Toast.makeText(AttendeeEventPage.this, "Event not found." + eventID, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    //notification
+    private void switchToNotificationView() {
+        //setContentView(R.layout.attendee_notification);
+
+        //notificationListView = findViewById(R.id.attendee_notification_listview);
+        //notificationTextView = findViewById(R.id.notificationTextView);
+        //Button buttonReturn = findViewById(R.id.buttonReturn);
+
         Intent detailIntent = new Intent(AttendeeEventPage.this, OrganizerNotification.class);
         detailIntent.putExtra("eventID", eventId);
         detailIntent.putExtra("eventName", eventName);
         startActivity(detailIntent);
+        //buttonReturn.setOnClickListener(v -> switchToMain_notification());
+        //fetchEventInformation2(eventId);
+
     }
+    private void switchToMain_notification() {
+        // Switch back to the main view
+        setContentView(R.layout.activity_attendee_eventpage);
+        View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);
+        //btnReceiveNotification.setOnClickListener(view -> switchToNotificationView());
+    }
+
+//    private void fetchEventInformation2(String eventID) {
+//        // Use FireStoreBridge to retrieve the event
+//        Intent detailIntent = new Intent(AttendeeEventPage.this, OrganizerNotification.class);
+//        detailIntent.putExtra("eventID", eventId);
+//        detailIntent.putExtra("eventName", eventName);
+//        startActivity(detailIntent);
+//    }
 
     public void imageDisplay(String EventID, ImageView imageView){
         FireStoreBridge fb_events = new FireStoreBridge("EVENT");
@@ -114,31 +185,6 @@ public class AttendeeEventPage extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-    private void switchToScanQRCode() { //  The page of this connects to every component of theScanQRCode.xml
-
-    }
-
-    private void switchToMainView() {
-        // Switch back to the main view
-        setContentView(R.layout.activity_attendee_eventpage);
-        // Re-bind the button since we've switched the layout
-        View btnViewInfo = findViewById(R.id.btnViewInformation);
-        btnViewInfo.setOnClickListener(view -> switchToDetailsView());
-    }
-
-
-
-
-
-    private void receiveNotification() {
-        // Implementation would depend on how you handle notifications.
-        // This could involve Firestore listeners for real-time updates or Firebase Cloud Messaging.
-    }
 
     private void scanQRCodeForCheckIn() {
         IntentIntegrator integrator = new IntentIntegrator(this);

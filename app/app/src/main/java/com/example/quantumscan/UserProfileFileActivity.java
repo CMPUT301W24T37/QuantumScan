@@ -42,31 +42,28 @@ public class UserProfileFileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Retrieve trimmed text from all EditText fields, or assign default values if empty
                 String userName = userNameText.getText().toString().trim();
-                if (userName.isEmpty()) userName = "DefaultUserName"; // Default user name
-
                 String email = emailText.getText().toString().trim();
-                if (email.isEmpty()) email = "defaultemail@example.com"; // Default email
-
                 String phone = phoneText.getText().toString().trim();
-                if (phone.isEmpty()) phone = "0000000000"; // Default phone number
-
                 String university = universityText.getText().toString().trim();
-                if (university.isEmpty()) university = "Default University"; // Default university
+                if (userName.matches("")) {
+                    Toast.makeText(UserProfileFileActivity.this, "user name can not be empty. Please fill in your user name", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // Create the user with either entered data or default values
+                    UserFireBaseHolder user = new UserFireBaseHolder();
+                    user.setId(userID); // Assuming userID is previously obtained and valid
+                    user.setEmail(email);
+                    user.setPhone(phone);
+                    user.setName(userName);
+                    user.setUniversity(university);
 
-                // Create the user with either entered data or default values
-                UserFireBaseHolder user = new UserFireBaseHolder();
-                user.setId(userID); // Assuming userID is previously obtained and valid
-                user.setEmail(email);
-                user.setPhone(phone);
-                user.setName(userName);
-                user.setUniversity(university);
+                    // Create the user in Firebase
+                    fb.createUser(user);
 
-                // Create the user in Firebase
-                fb.createUser(user);
-
-                // Navigate to MainActivity
-                Intent intent = new Intent(UserProfileFileActivity.this, MainActivity.class);
-                startActivity(intent);
+                    // Navigate to MainActivity
+                    Intent intent = new Intent(UserProfileFileActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

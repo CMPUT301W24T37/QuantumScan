@@ -46,13 +46,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="Current Events"
             android:textColor="@android:color/black"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.086"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/buttonScanQR" />
 
@@ -68,6 +68,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_weight="1" />
 
+
         <TextView
             android:id="@+id/tvFutureEvents"
             android:layout_width="wrap_content"
@@ -78,12 +79,11 @@
             android:textColor="@android:color/black"
             android:textSize="34sp"
             android:textStyle="bold"
-            app:layout_constraintHorizontal_bias="0.086"
-            app:layout_constraintTop_toBottomOf="@id/attendeeEventList"
             app:layout_constraintBottom_toTopOf="@id/FutureEventList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
+            app:layout_constraintTop_toBottomOf="@id/attendeeEventList" />
 
         <ListView
             android:id="@+id/FutureEventList"

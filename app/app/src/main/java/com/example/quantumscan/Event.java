@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class Event {
     /**
-     * Int: an unique id that will not changed until the event got deleted
+     * String: an unique id that will not changed until the event got deleted
      *      default value is 0, indicating the Event has not changed the id.
      *      The place where generate or initialize a new Event should be responsible of setting the new ID!! (call CodeManger).
      */
@@ -64,12 +64,16 @@ public class Event {
      */
     private String posterCode;  // The URL of the poster
 
+    /**
+     * long: the max attendee number limit
+     */
     private long attendeeLimit;
 
-    private long currentTotalAttendee;
     /**
-     * FirebaseFirestore: used to connect to Firebase and save/restore data from it
+     * long: the current number of attendee
      */
+    private long currentTotalAttendee;
+
     // private FirebaseFirestore db;  // it could be changed using Firebase Class instead of a variable? Or do it in-place
 
     // Constructor
@@ -147,32 +151,36 @@ public class Event {
 
     // Getters and setters for the announcement
     /**
+     * Returns the current total number of attendees for the event.
      *
-     * @return
+     * @return The current count of attendees who have joined the event.
      */
     public long getCurrentTotalAttendee() {
         return currentTotalAttendee;
     }
 
     /**
+     * Sets the current total number of attendees for the event.
      *
-     * @return
+     * @param currentTotalAttendee The total number of attendees currently registered for the event.
      */
     public void setCurrentTotalAttendee(long currentTotalAttendee) {
         this.currentTotalAttendee = currentTotalAttendee;
     }
 
     /**
+     * Returns the maximum number of attendees allowed for the event.
      *
-     * @return
+     * @return The attendee limit for the event.
      */
     public long getAttendeeLimit() {
         return attendeeLimit;
     }
 
     /**
+     * Sets the maximum number of attendees allowed for the event.
      *
-     * @return
+     * @param attendeeLimit The maximum number of attendees that can attend the event.
      */
     public void setAttendeeLimit(long attendeeLimit) {
         this.attendeeLimit = attendeeLimit;

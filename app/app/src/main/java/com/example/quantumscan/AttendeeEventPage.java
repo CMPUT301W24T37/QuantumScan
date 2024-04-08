@@ -93,63 +93,19 @@ public class AttendeeEventPage extends AppCompatActivity {
 
     }
     private void switchToNotificationView() {
-        setContentView(R.layout.attendee_notification);
-        TextView textView = findViewById(R.id.notificationTextView);
-        ListView listView = findViewById(R.id.attendee_notification_listview);
-        ArrayList<String> announcementsList = new ArrayList<>();
-        NotificationAdapter adapter = new NotificationAdapter(this, announcementsList);
-        listView.setAdapter(adapter);
-        textView.setVisibility(View.INVISIBLE);
-        FireStoreBridge fb = new FireStoreBridge("EVENT");
-        fb.retrieveEventAnnouncement(eventId, new FireStoreBridge.OnRetrieveEventAnnouncement() {
-            @Override
-            public void onRetrieveEventAnnouncement(ArrayList<String> announcements) {
-                announcementsList.clear();
-
-                if (announcements.size() == 0){
-                    listView.setVisibility(View.INVISIBLE);
-                    textView.setVisibility(View.VISIBLE);
-
-                }else if (announcements.size() > 0) {
-                    listView.setVisibility(View.VISIBLE);
-                    textView.setVisibility(View.INVISIBLE);
-                    for (int i = 0; i < announcements.size(); i++) {
-                        announcementsList.add(announcements.get(i));
-
-                    }
-                }
-
-                adapter.notifyDataSetChanged();
-
-            }
-        });
-
+        Intent detailIntent = new Intent(AttendeeEventPage.this, OrganizerNotification.class);
+        detailIntent.putExtra("eventID", eventId);
+        detailIntent.putExtra("eventName", eventName);
+        startActivity(detailIntent);
 
     }
 
     private void fetchEventInformation(String eventID) {
         // Use FireStoreBridge to retrieve the event
-        fireStoreBridge.retrieveEvent(eventID, new FireStoreBridge.OnEventRetrievedListener() {
-            @Override
-            public void onEventRetrieved(ArrayList<Event> eventList, ArrayList<String> organizerList) {
-
-                if (!eventList.isEmpty()) {
-                    Event event = eventList.get(0);// Assuming the first item is the event we're interested in
-                    tvEventTitle = findViewById(R.id.tvEventTitle);
-                    tvEventDescription = findViewById(R.id.tvEventDescription);
-                    imageViewEventPoster = findViewById(R.id.ivEventBackground);
-
-                    tvEventTitle.setText(event.getTitle());
-                    tvEventDescription.setText(event.getDescription());
-                    imageDisplay(eventId, imageViewEventPoster);
-
-
-                } else {
-
-                    Toast.makeText(AttendeeEventPage.this, "Event not found." + eventID, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        Intent detailIntent = new Intent(AttendeeEventPage.this, OrganizerNotification.class);
+        detailIntent.putExtra("eventID", eventId);
+        detailIntent.putExtra("eventName", eventName);
+        startActivity(detailIntent);
     }
 
     public void imageDisplay(String EventID, ImageView imageView){

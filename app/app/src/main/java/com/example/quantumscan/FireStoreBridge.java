@@ -941,8 +941,8 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         EventFireBaseHolder event = new EventFireBaseHolder();
 
 
-                        //startTime.add(dateFormat.format(documentSnapshot.getTimestamp("startTime").toDate()));
-                       // endTime.add(dateFormat.format(documentSnapshot.getTimestamp("endTime").toDate()));
+                        startTime.add(dateFormat.format(documentSnapshot.getTimestamp("startTime").toDate()));
+                        endTime.add(dateFormat.format(documentSnapshot.getTimestamp("endTime").toDate()));
                         event.setEventCode(documentSnapshot.getString("eventCode"));
                         event.setOrganizer(documentSnapshot.getString("organizer"));
                         event.setDescription(documentSnapshot.getString("description"));

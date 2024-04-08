@@ -312,10 +312,11 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
     public void updateUser(UserFireBaseHolder user){
         String userID = user.getId();
-        this.collectionName.document(userID).update("name", user.getName());
-        this.collectionName.document(userID).update("university", user.getUniversity());
-        this.collectionName.document(userID).update("phone", user.getPhone());
-        this.collectionName.document(userID).update("email", user.getEmail());
+        CollectionReference userCollection = getDb().collection("USER");
+        userCollection.document(userID).update("name", user.getName());
+        userCollection.document(userID).update("university", user.getUniversity());
+        userCollection.document(userID).update("phone", user.getPhone());
+        userCollection.document(userID).update("email", user.getEmail());
     }
 
     public void updateProfilePhoto(String userId, String profilePhoto){
@@ -448,7 +449,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     }
 
     public void updateImage(String EventID, ImageView imageView, Uri imageUri){
-        StorageReference desertRef = storage.getReference().child(EventID+"jpg");
+        StorageReference desertRef = storage.getReference().child(EventID+".jpg");
         desertRef.delete();
         StorageReference imageRef = storage.getReference().child(EventID + ".jpg");
         imageRef.putFile(imageUri);

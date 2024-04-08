@@ -33,6 +33,7 @@ public class AttendeeEventPage extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String eventId; // This should be passed from the previous activity
+    private String eventName;
 
     private TextView tvEventTitle;// TextView for displaying event title
 
@@ -50,18 +51,29 @@ public class AttendeeEventPage extends AppCompatActivity {
         setContentView(R.layout.activity_attendee_eventpage);
 
         eventId = getIntent().getStringExtra("eventID");
+        String eventName = getIntent().getStringExtra("eventName");
+
+        TextView eventNameView = findViewById(R.id.textView_eventName);
+        eventNameView.setText(eventName);
 
         fireStoreBridge = new FireStoreBridge("EVENT");
         View btnViewInfo = findViewById(R.id.btnViewInformation);//Main Activity??or main menu? View Information
         View btnReceiveNotification = findViewById(R.id.btnReceiveNotification);//Main Activity??or main menu? ReceiveNotification
 
         View btnScanQRCode = findViewById(R.id.btnScanQRCode);//Main Activity??or main menu? ScanQRCode
-        buttonReturn = findViewById(R.id.btnReturn);
+        buttonReturn = findViewById(R.id.returnButton);
 
         btnViewInfo.setOnClickListener(view -> switchToDetailsView());// Set up the "View Information" button
         btnReceiveNotification.setOnClickListener(view -> switchToNotificationView());// Set up the "ReceiveNotification" button
         btnScanQRCode.setOnClickListener(view -> switchToScanQRCode());// Set up the "btnScanQRCode" button
-        buttonReturn.setOnClickListener(view -> finish());
+
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Go back to MainActivity
+                finish();
+            }
+        });
 
     }
 
@@ -161,8 +173,6 @@ public class AttendeeEventPage extends AppCompatActivity {
         // Re-bind the button since we've switched the layout
         View btnViewInfo = findViewById(R.id.btnViewInformation);
         btnViewInfo.setOnClickListener(view -> switchToDetailsView());
-        Button btnReturn = findViewById(R.id.btnReturn);
-        btnReturn.setOnClickListener(v -> finish());
     }
 
 

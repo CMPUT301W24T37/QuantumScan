@@ -1,46 +1,38 @@
 package com.example.quantumscan;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.Settings;
-import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.quantumscan.databinding.ActivityUserProfileFileBinding;
-
-import org.jetbrains.annotations.Contract;
 
 public class UserProfileFileActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityUserProfileFileBinding binding;
     private EditText userNameText, emailText, phoneText, universityText;
-    private Button confirmButton;
+    private Button confirmButton, skipButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityUserProfileFileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        confirmButton = findViewById(R.id.confirm_button);
+        confirmButton = findViewById(R.id.skip_button);
         userNameText = findViewById(R.id.username_edit_text);
         emailText = findViewById(R.id.email_edit_text);
         phoneText = findViewById(R.id.phone_edit_text);
         universityText = findViewById(R.id.university_edit_text);
+        skipButton = findViewById(R.id.skip_button);
         FireStoreBridge fb = new FireStoreBridge("USER");
         String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         Toast.makeText(this, "this is your first time using the app (please use the same emulator for testing)", Toast.LENGTH_LONG).show();
@@ -48,26 +40,56 @@ public class UserProfileFileActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userNameText.getText().toString().trim().length() == 0) {
-                    Toast.makeText(UserProfileFileActivity.this, "User name can not be empty", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    UserFireBaseHolder user = new UserFireBaseHolder();
-                    user.setId(userID);
-                    user.setEmail(emailText.getText().toString().trim());
-                    user.setPhone(phoneText.getText().toString().trim());
-                    user.setName(userNameText.getText().toString().trim());
-                    user.setUniversity(universityText.getText().toString().trim());
-                    fb.createUser(user);
-                    Intent intent = new Intent(UserProfileFileActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
+                // Retrieve trimmed text from all EditText fields, or assign default values if empty
+                String userName = userNameText.getText().toString().trim();
+                if (userName.isEmpty()) userName = "DefaultUserName"; // Default user name
 
+                String email = emailText.getText().toString().trim();
+                if (email.isEmpty()) email = "defaultemail@example.com"; // Default email
+
+                String phone = phoneText.getText().toString().trim();
+                if (phone.isEmpty()) phone = "0000000000"; // Default phone number
+
+                String university = universityText.getText().toString().trim();
+                if (university.isEmpty()) university = "Default University"; // Default university
+
+                // Create the user with either entered data or default values
+                UserFireBaseHolder user = new UserFireBaseHolder();
+                user.setId(userID); // Assuming userID is previously obtained and valid
+                user.setEmail(email);
+                user.setPhone(phone);
+                user.setName(userName);
+                user.setUniversity(university);
+
+                // Create the user in Firebase
+                fb.createUser(user);
+
+                // Navigate to MainActivity
+                Intent intent = new Intent(UserProfileFileActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                UserFireBaseHolder user = new UserFireBaseHolder();
+                user.setId(userID); // Assuming userID is previously obtained and valid
+                user.setEmail("email@example.com");
+                user.setPhone("*0000000000");
+                user.setName("UserName");
+                user.setUniversity("Default University");
+
+                // Create the user in Firebase
+                fb.createUser(user);
+
+                // Navigate to MainActivity
+                Intent intent = new Intent(UserProfileFileActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
-
-
-
 }

@@ -1,15 +1,22 @@
 package com.example.quantumscan;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 
 
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import android.widget.Toast;
@@ -32,6 +39,8 @@ public class EventInformationFragment extends AppCompatActivity {
     private Button buttonReturn;
     private String eventId;
     private FireStoreBridge fireStoreBridge;
+    private Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +54,7 @@ public class EventInformationFragment extends AppCompatActivity {
         buttonReturn = findViewById(R.id.buttonReturn);
         imageViewEventPoster = findViewById(R.id.imageViewEvent);
 
-
-
+        context = this;
 
 
         // Retrieve the event ID passed from AttendeeFragment
@@ -80,21 +88,36 @@ public class EventInformationFragment extends AppCompatActivity {
                     textViewEventDescription.setText(event.getDescription());
                     //
                     imageDisplay(eventId, imageViewEventPoster);
-                    }
+
                 }
+            }
 
         });
     }
 
     private void joinEvent(String eventId) {
-        // Implement the logic to handle the user joining the event.
-        // This might involve updating a Firestore collection to add the user to the event.
-        //System.out.println("Join event");
-        String currentUserId = getCurrentUserId();
-        System.out.println(currentUserId);
 
-        fireStoreBridge.updateAttendeeSignUpToEvent(getCurrentUserId(), eventId);
-        Toast.makeText(this, "You have joined the event!", Toast.LENGTH_SHORT).show();
+        String currentUserId = getCurrentUserId();
+        fireStoreBridge.retrieveUser(currentUserId, new FireStoreBridge.OnUserRetrievedListener() {
+            @Override
+            public void onUserRetrieved(User user, ArrayList<String> attendeeRoles, ArrayList<String> organizerRoles) {
+                String name = user.getName();
+                String email = user.getEmail();
+                String phone = user.getPhone();
+                String university = user.getUniversity();
+
+                if (name.equals("UserName") && phone.equals("*0000000000") && email.equals("email@example.com") && university.equals("Default University")) {
+                    showUserInputDialogue() ;
+
+                } else {
+                    fireStoreBridge.updateAttendeeSignUpToEvent(getCurrentUserId(), eventId);
+
+                }
+
+            }
+        });
+        Toast.makeText(context, "You have joined the event!", Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -110,9 +133,85 @@ public class EventInformationFragment extends AppCompatActivity {
 
     }
 
-    public void imageDisplay(String EventID, ImageView imageView){
+    public void imageDisplay(String EventID, ImageView imageView) {
         FireStoreBridge fb_events = new FireStoreBridge("EVENT");
         fb_events.displayImage(EventID, imageView);
     }
-}
 
+    private void showUserInputDialogue() {
+        // Context for creating the views
+        final Context context = this;
+
+        // Create a LinearLayout container
+        LinearLayout layout = new LinearLayout(context);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        // Create EditText fields
+        final EditText usernameEditText = new EditText(context);
+        usernameEditText.setHint("Username");
+
+        final EditText emailEditText = new EditText(context);
+        emailEditText.setHint("Email");
+
+        final EditText phoneEditText = new EditText(context);
+        phoneEditText.setHint("Phone");
+
+        final EditText universityEditText = new EditText(context);
+        universityEditText.setHint("University");
+
+        // Add EditText fields to the LinearLayout
+        layout.addView(usernameEditText);
+        layout.addView(emailEditText);
+        layout.addView(phoneEditText);
+        layout.addView(universityEditText);
+
+        // Ensure the EditTexts are properly spaced and sized
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
+            if (v instanceof EditText) {
+                EditText editText = (EditText) v;
+                editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                editText.setMinLines(1);
+                editText.setMaxLines(1);
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(50, 20, 50, 20); // Adjust margins as needed
+                editText.setLayoutParams(params);
+            }
+        }
+
+        // Create the AlertDialog and set the LinearLayout as its view
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        dialogBuilder.setView(layout);
+
+        // Configure the dialog buttons
+        dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Here, you would handle the input from the EditText fields
+                String username = usernameEditText.getText().toString().trim();
+                String email = emailEditText.getText().toString().trim();
+                String phone = phoneEditText.getText().toString().trim();
+                String university = universityEditText.getText().toString().trim();
+
+                fireStoreBridge.updateAttendeeSignUpToEvent(getCurrentUserId(), eventId);
+                UserFireBaseHolder user = new UserFireBaseHolder();
+                user.setName(username);
+                user.setEmail(email);
+                user.setPhone(phone);
+                user.setUniversity(university);
+                user.setId(getCurrentUserId());
+                fireStoreBridge.updateUser(user);
+
+            }
+        });
+
+        dialogBuilder.setNegativeButton("Cancel", null);
+
+        // Show the dialog
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+}

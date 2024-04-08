@@ -32,8 +32,9 @@ public class OrganizerUpdatePoster extends AppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     imageUri = result.getData().getData();
+                    System.out.println("imageUri: "+imageUri);
                     this.imageUpdate(eventID, imageView, imageUri);
-
+                    //imageView.setImageURI(imageUri);
                 } else {
                     Toast.makeText(OrganizerUpdatePoster.this, "Please select an image", Toast.LENGTH_SHORT).show();
                 }
@@ -83,6 +84,8 @@ public class OrganizerUpdatePoster extends AppCompatActivity {
     public void imageUpdate(String EventID, ImageView imageView, Uri imageUri){
         FireStoreBridge fb_events = new FireStoreBridge("EVENT");
         fb_events.updateImage(EventID, imageView, imageUri);
+        imageView.setImageURI(null);
+        imageView.setImageURI(imageUri);
     }
     /*
     private void openGallery() {

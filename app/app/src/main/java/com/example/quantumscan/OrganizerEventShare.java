@@ -43,6 +43,7 @@ public class OrganizerEventShare extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 //                if (ActivityCompat.checkSelfPermission(OrganizerEventShare.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 //                    ActivityCompat.requestPermissions(OrganizerEventShare.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 //                }
@@ -58,6 +59,7 @@ public class OrganizerEventShare extends AppCompatActivity {
 
                 // Create intent to show chooser
                 Intent chooser = Intent.createChooser(intent, "share QR code image");
+
 
                 // Try to invoke the intent.
                 try {

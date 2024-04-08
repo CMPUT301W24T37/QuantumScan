@@ -12,13 +12,13 @@
               <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\72730\.android\avd\Pixel_6_API_26_Testing.avd" />
+                  <type value="SERIAL_NUMBER" />
+                  <value value="R5CWA2WAP6B" />
                 </Key>
               </deviceKey>
             </Target>
           </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-08T03:23:06.765100800Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-04-08T05:28:12.653113200Z" />
         </State>
       </entry>
       <entry key="testAdminLoginPageLoginToProfile()">

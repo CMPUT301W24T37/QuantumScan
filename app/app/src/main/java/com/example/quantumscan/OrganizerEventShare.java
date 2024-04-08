@@ -50,7 +50,7 @@ public class OrganizerEventShare extends AppCompatActivity {
                 Log.d("atmeng", "you already have the write external permission!");
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 bitmapQRcode.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmapQRcode, "Title", "descr");
+                String path = MediaStore.Images.Media.insertImage(OrganizerEventShare.this.getContentResolver(), bitmapQRcode, "Title", "descr");
                 Uri image = Uri.parse(path);
                 Intent intent = new Intent(Intent.ACTION_SEND, image);
                 intent.putExtra(Intent.EXTRA_SUBJECT,"Scan this QR code to signed up or check in the event");
@@ -59,6 +59,7 @@ public class OrganizerEventShare extends AppCompatActivity {
 
                 // Create intent to show chooser
                 Intent chooser = Intent.createChooser(intent, "share QR code image");
+
 
                 // Try to invoke the intent.
                 try {

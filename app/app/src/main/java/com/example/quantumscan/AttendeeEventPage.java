@@ -129,11 +129,13 @@ public class AttendeeEventPage extends AppCompatActivity {
             @Override
             public void onEventRetrieved(ArrayList<Event> eventList, ArrayList<String> organizerList) {
 
+
                 if (!eventList.isEmpty()) {
                     Event event = eventList.get(0);// Assuming the first item is the event we're interested in
                     tvEventTitle = findViewById(R.id.tvEventTitle);
                     tvEventDescription = findViewById(R.id.tvEventDescription);
                     imageViewEventPoster = findViewById(R.id.ivEventBackground);
+
 
                     tvEventTitle.setText(event.getTitle());
                     tvEventDescription.setText(event.getDescription());

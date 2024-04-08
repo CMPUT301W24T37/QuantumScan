@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -358,6 +359,8 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     public void onSuccess(Void aVoid) {
                         updateStartTime(eventId, startTime);
                         updateEndTime(eventId, endTime);
+                        System.out.println("Create MILESTONE----------------");
+                        createMileStone(eventId);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -940,9 +943,8 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
                         EventFireBaseHolder event = new EventFireBaseHolder();
 
-
-                        startTime.add(dateFormat.format(documentSnapshot.getTimestamp("startTime").toDate()));
-                        endTime.add(dateFormat.format(documentSnapshot.getTimestamp("endTime").toDate()));
+//                        startTime.add(dateFormat.format(documentSnapshot.getTimestamp("startTime").toDate()));
+//                        endTime.add(dateFormat.format(documentSnapshot.getTimestamp("endTime").toDate()));
                         event.setEventCode(documentSnapshot.getString("eventCode"));
                         event.setOrganizer(documentSnapshot.getString("organizer"));
                         event.setDescription(documentSnapshot.getString("description"));
@@ -1012,4 +1014,73 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
             System.err.println("Failed to parse date: " + e.getMessage());
         }
     }
+
+    private void createMileStone(String eventID) {
+        System.out.println("TRIGGER CREATE MILE STONE----------------");
+        System.out.println(eventID);
+        CollectionReference mileStone = getDb().collection("MILESTONE");
+        DocumentReference event = mileStone.document(eventID);
+
+        // Use a Map to represent the fields and values you want to set
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("halfWayTime", null);
+        updates.put("finalWayTime", null);
+
+        // Set the document with the specified fields, using set() method with merge option
+        // This will create the document if it does not exist, or update it if it does
+        event.set(updates, SetOptions.merge());
+    }
+
+    public void updateMileStone(String eventID, Timestamp halfWay, Timestamp finalWay){
+        CollectionReference mileStone = getDb().collection("MILESTONE");
+        DocumentReference event = mileStone.document(eventID);
+        if(finalWay == null){
+            event.update("halfWayTime",halfWay);
+        }else if(halfWay == null){
+            event.update("finalWayTime", finalWay);
+        }else{
+            event.update("halfWayTime",halfWay);
+            event.update("finalWayTime", finalWay);
+        }
+    }
+    public interface OnRetrieveMileStone{
+        void onRetrieveMileStone(Date halfWay, Date finalWay);
+    }
+    public void retrieveAndCompareMileStone(String eventID, OnRetrieveMileStone listener) {
+        FirebaseFirestore db = getDb();
+        DocumentReference eventDocument = db.collection("MILESTONE").document(eventID);
+
+        eventDocument.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    Timestamp halfWayTime = document.getTimestamp("halfWayTime");
+                    Timestamp finalWayTime = document.getTimestamp("finalWayTime");
+
+                    // Convert Timestamp to Date (for comparison or display)
+                    Date halfWayDate = halfWayTime != null ? halfWayTime.toDate() : null;
+                    Date finalWayDate = finalWayTime != null ? finalWayTime.toDate() : null;
+
+
+                    // Example comparison
+                    if (halfWayDate != null && finalWayDate != null) {
+                        listener.onRetrieveMileStone(halfWayDate, finalWayDate);
+                    } else if(halfWayDate == null && finalWayDate != null) {
+                        listener.onRetrieveMileStone(null, finalWayDate);
+                    }else if( halfWayDate != null && finalWayDate == null){
+                        listener.onRetrieveMileStone(halfWayDate, null);
+                    }else{
+                        listener.onRetrieveMileStone(null, null);
+                    }
+                } else {
+                    Log.d(TAG, "No such document");
+                }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
+            }
+        });
+    }
+
+
+
 }

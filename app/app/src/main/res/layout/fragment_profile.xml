@@ -16,13 +16,14 @@
             android:id="@+id/editProfilePhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="editProfilePicture"
-            android:layout_marginLeft="20dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/profilePictureContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.063"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10dp"
-            android:visibility="gone">
-        </Button>
+            app:layout_constraintTop_toTopOf="parent"></Button>
 
         <Button
             android:id="@+id/deleteProfilePhoto"

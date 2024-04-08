@@ -109,13 +109,12 @@ public class EventInformationFragment extends AppCompatActivity {
                     showUserInputDialogue() ;
 
                 } else {
-                    fireStoreBridge.updateAttendeeSignUpToEvent(getCurrentUserId(), eventId);
+                    fireStoreBridge.updateAttendeeSignUpToEvent(getCurrentUserId(), eventId, context);
 
                 }
 
             }
         });
-        Toast.makeText(context, "You have joined the event!", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -194,8 +193,7 @@ public class EventInformationFragment extends AppCompatActivity {
                 String email = emailEditText.getText().toString().trim();
                 String phone = phoneEditText.getText().toString().trim();
                 String university = universityEditText.getText().toString().trim();
-
-                fireStoreBridge.updateAttendeeSignUpToEvent(getCurrentUserId(), eventId);
+                //fireStoreBridge.updateAttendeeSignUpToEvent(getCurrentUserId(), eventId);
                 UserFireBaseHolder user = new UserFireBaseHolder();
                 user.setName(username);
                 user.setEmail(email);

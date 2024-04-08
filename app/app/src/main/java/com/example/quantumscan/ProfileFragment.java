@@ -45,7 +45,6 @@ public class ProfileFragment extends Fragment {
     EditText userUniversity;
     EditText userPhoneNumb;
     EditText userEmail;
-    EditText userInfo;
     Button editPhoto;
     Button deletePhoto;
 
@@ -87,7 +86,6 @@ public class ProfileFragment extends Fragment {
         userUniversity = view.findViewById(R.id.userUniversityText);
         userPhoneNumb = view.findViewById(R.id.userPhoneNumbText);
         userEmail = view.findViewById(R.id.userEmailText);
-        userInfo = view.findViewById(R.id.userInfoText);
         imageView = view.findViewById(R.id.profileImage);
 
         FrameLayout profilePictureContainer = view.findViewById(R.id.profilePictureContainer);
@@ -144,7 +142,7 @@ public class ProfileFragment extends Fragment {
                 userUniversity.setText(user.getUniversity());
                 userPhoneNumb.setText(user.getPhone());
                 userEmail.setText(user.getEmail());
-                userInfo.setText(user.getId());
+
             }
         });
 
@@ -157,7 +155,6 @@ public class ProfileFragment extends Fragment {
                 userUniversity.setEnabled(true);
                 userPhoneNumb.setEnabled(true);
                 userEmail.setEnabled(true);
-                userInfo.setEnabled(true);
                 userName.requestFocus();
                 userName.setSelection(userName.getText().length());
                 //showUserInfoDialog();
@@ -180,7 +177,7 @@ public class ProfileFragment extends Fragment {
                 userUniversity.setEnabled(false);
                 userPhoneNumb.setEnabled(false);
                 userEmail.setEnabled(false);
-                userInfo.setEnabled(false);
+
 
                 if (userName.getText().toString().trim().length() == 0) {
                     Toast.makeText(getContext(), "User name can not be empty. Change cancelled", Toast.LENGTH_LONG).show();
@@ -263,7 +260,6 @@ public class ProfileFragment extends Fragment {
         pictureName = pictureName.toUpperCase()+".png";
         return pictureName;
     }
-
 
     public void photoUpdate(String userID, Uri imageUri, ImageView imageview){
         FireStoreBridge fb_user = new FireStoreBridge("USER");

@@ -180,19 +180,6 @@
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/userInfoText"
-                android:layout_width="300dp"
-                android:layout_height="220dp"
-                android:gravity="center_horizontal"
-                android:enabled="false"
-                android:hint="user info"
-                android:textSize="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userEmailText"
-                tools:layout_editor_absoluteX="156dp" />
-
         </LinearLayout>
 
 
@@ -200,11 +187,12 @@
             android:id="@+id/showInfoDialogButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="100dp"
+
             android:text="Edit"
             app:layout_constraintEnd_toEndOf="parent"
-
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

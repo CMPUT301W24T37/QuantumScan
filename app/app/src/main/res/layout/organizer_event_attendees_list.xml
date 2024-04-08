@@ -89,8 +89,8 @@
 
     <ListView
         android:id="@+id/attendeeList"
-        android:layout_width="408dp"
-        android:layout_height="588dp"
+        android:layout_width="407dp"
+        android:layout_height="435dp"
         android:choiceMode="singleChoice"
         android:listSelector="#999999"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -59,7 +59,7 @@ public class AttendeeFragment extends Fragment {
 
     private ArrayList<String> dataList;
     private ArrayList<String> dataListFuture;
-    private ArrayList<String> eventIDList;
+    private ArrayList<String> eventIDList, eventIDListFuture;
     private FusedLocationProviderClient fusedLocationClient;
     private Location location = null;
 
@@ -154,7 +154,7 @@ public class AttendeeFragment extends Fragment {
         dataList = new ArrayList<>();
         dataListFuture = new ArrayList<>();
         eventIDList = new ArrayList<>();
-
+        eventIDListFuture = new ArrayList<>();
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
         eventAdapterFuture = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataListFuture);
 
@@ -166,6 +166,7 @@ public class AttendeeFragment extends Fragment {
                 dataList.clear();
                 dataListFuture.clear();
                 eventIDList.clear();
+                eventIDListFuture.clear();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                 Date currentDate = new Date(); // Get current date and time
                 System.out.println(eventListCurrent.size() );
@@ -181,17 +182,18 @@ public class AttendeeFragment extends Fragment {
                                 // If the event start date is in the future
                                 if (!dataListFuture.contains(event.getTitle())) {
                                     dataListFuture.add(event.getTitle());
-                                    eventIDList.add(event.getId());
+                                    eventIDListFuture.add(event.getId());
+
                                 }
+
                             } else {
-                                // If the event is currently ongoing or has already started
                                 if (!dataList.contains(event.getTitle())) {
                                     dataList.add(event.getTitle());
                                     eventIDList.add(event.getId());
+
                                 }
                             }
                         }
-
                     } catch (ParseException e) {
                         e.printStackTrace(); // Handle the potential parsing exception
                     }
@@ -216,6 +218,19 @@ public class AttendeeFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedEventName = dataList.get(position);
                 String selectedEventID = eventIDList.get(position);
+                Intent detailIntent = new Intent(getActivity(), AttendeeEventPage.class);
+                detailIntent.putExtra("eventID", selectedEventID);
+                detailIntent.putExtra("eventName", selectedEventName);
+                startActivity(detailIntent);
+            }
+        });
+
+        eventListViewFuture.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedEventName = dataListFuture.get(position);
+                String selectedEventID = eventIDListFuture.get(position);
                 Intent detailIntent = new Intent(getActivity(), AttendeeEventPage.class);
                 detailIntent.putExtra("eventID", selectedEventID);
                 detailIntent.putExtra("eventName", selectedEventName);

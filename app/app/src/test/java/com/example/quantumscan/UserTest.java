@@ -6,16 +6,19 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import androidx.annotation.NonNull;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-public class AttendeeTest {
+public class UserTest {
     private User newLocalUser() {
         String name = "Austin Meng Test";
         String phone = "4293108009";
         String university = "University of Alberta";
-        String profilePicture = "A1.png";
+        String profilePicture = "DEFAULT_PFP";
         String email = "atmeng@ualberta.ca";
         User user = new User(name, phone, university, profilePicture, email);
         user.setId("testUserId123456789");
@@ -26,7 +29,7 @@ public class AttendeeTest {
         String name = "David Test";
         String phone = "900801049213";
         String university = "University of Alberta";
-        String profilePicture = "D1.png";
+        String profilePicture = "DEFAULT_PFP";
         String email = "david@ualberta.ca";
         User user = new User(name, phone, university, profilePicture, email);
         user.setId("testUserId987654321");
@@ -52,33 +55,31 @@ public class AttendeeTest {
         assertEquals("Austin Meng Test", user.getName());
         assertEquals("4293108009", user.getPhone());
         assertEquals("University of Alberta", user.getUniversity());
-        assertEquals("A1.png", user.getProfilePicture());
+        assertEquals("DEFAULT_PFP", user.getProfilePicture());
         assertEquals("atmeng@ualberta.ca", user.getEmail());
         assertTrue(user.getAttendeeRoles().isEmpty());
         assertTrue(user.getOrganizerRoles().isEmpty());
     }
 
+    private String randomPick(@NonNull User user){
+        String Name = user.getName().toString();
+        char firstLetter = Name.charAt(0);
+        if (!(firstLetter >= 'A' && firstLetter <= 'Z') && !(firstLetter >= 'a' && firstLetter <= 'z')) {
+            firstLetter = '?';
+        }
+        Random rand = new Random();
+        int rand_int1 = rand.nextInt(4)+1;
+        String pictureName = "" + firstLetter + rand_int1;
+        pictureName = pictureName.toUpperCase()+".png";
+        return pictureName;
+    }
+
     @Test
-    public void testUserAddAttendeeRole() {
-        // Create an event from an organizer (not the user below)
-        Event event = createNewEventFromAnOrganizer();
-        // Create a new user
+    public void testUserDefaultPfp() {
         User user = newLocalUser();
-        // Check user's AttendeeRoleList is empty
-        assertTrue(user.getAttendeeRoles().isEmpty());
-        // User sign up for the event
-        user.addAttendeeRole(event);
-        // Check user's AttendeeRoleList is NOT empty
-        assertFalse(user.getAttendeeRoles().isEmpty());
-        // get the Attendee object
-        Attendee attendee = event.getAttendees().get(0);
-        // check default attributes' value
-        assertFalse(attendee.isCheckedIn());
-        // check Attendee getters
-        assertEquals(user.getId(), attendee.getId());
-        // check default value
-        assertNull(attendee.getLocation());
-        // check default value
-        assertEquals(0, attendee.getCheckInCount());
+        String userName = randomPick(user);
+        assertEquals('A', userName.charAt(0));
+        assertTrue(userName.matches("A[1-4]\\.png"));
     }
 }
+

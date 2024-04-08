@@ -78,7 +78,7 @@ public class OrganizerFragment extends Fragment {
         String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         fb. retrieveOrganizedEvent(getCurrentUserId(), new FireStoreBridge.OnRetrieveJoinedEvent() {
             @Override
-            public void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventList) {
+            public void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventList, ArrayList<String> startTime, ArrayList<String> endTime) {
                 dataList.clear();
                 if(eventList != null) {
                     for (EventFireBaseHolder event : eventList) {

@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
                     imageUri = result.getData().getData();
                     String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                     System.out.println(userId);
-                    photoUpdate(userId, imageUri);
+                    photoUpdate(userId, imageUri, imageView);
                     editPhoto.setVisibility(View.GONE);
                     deletePhoto.setVisibility(View.GONE);
                 } else {
@@ -265,9 +265,10 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    public void photoUpdate(String userID, Uri imageUri){
+    public void photoUpdate(String userID, Uri imageUri, ImageView imageview){
         FireStoreBridge fb_user = new FireStoreBridge("USER");
         fb_user.updatePhoto(userID, imageUri);
-
+        imageview.setImageURI(null);
+        imageview.setImageURI(imageUri);
     }
 }

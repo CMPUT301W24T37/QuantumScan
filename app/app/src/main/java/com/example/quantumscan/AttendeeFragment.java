@@ -34,7 +34,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class AttendeeFragment extends Fragment {
@@ -42,17 +46,19 @@ public class AttendeeFragment extends Fragment {
     private ActivityResultLauncher<String> requestCameraPermissionLauncher;
     private ActivityResultLauncher<Intent> startForResult;
 
-    private ListView eventListView;
+    private ListView eventListView, eventListViewFuture;
     //private EventAdapter eventAdapter;
     private ArrayList<Event> events; // Placeholder for your events data
 
 
     private ArrayAdapter<String> eventAdapter;
+    private ArrayAdapter<String> eventAdapterFuture;
     private ArrayList<String> attendeeRole;
     private String id;
     private String UserID;
 
     private ArrayList<String> dataList;
+    private ArrayList<String> dataListFuture;
     private ArrayList<String> eventIDList;
     private FusedLocationProviderClient fusedLocationClient;
     private Location location = null;
@@ -144,29 +150,61 @@ public class AttendeeFragment extends Fragment {
         scanQRCodeButton.setOnClickListener(v -> startQRCodeScanner());
 
         eventListView = view.findViewById(R.id.attendeeEventList);
+        eventListViewFuture = view.findViewById(R.id.FutureEventList);
         dataList = new ArrayList<>();
+        dataListFuture = new ArrayList<>();
         eventIDList = new ArrayList<>();
 
         eventAdapter = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataList);
+        eventAdapterFuture = new ArrayAdapter<>(view.getContext(), R.layout.event_content, dataListFuture);
 
         FireStoreBridge fb = new FireStoreBridge("USER");
 
         fb.retrieveJoinedEvent(getCurrentUserId(), new FireStoreBridge.OnRetrieveJoinedEvent() {
             @Override
-            public void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventList) {
+            public void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventListCurrent, ArrayList<String> startTime, ArrayList<String> endTime) {
                 dataList.clear();
-                for(EventFireBaseHolder event: eventList){
-                    if (!dataList.contains(event.getId())) {
-                        dataList.add(event.getTitle());
-                        eventIDList.add(event.getId());
+                dataListFuture.clear();
+                eventIDList.clear();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                Date currentDate = new Date(); // Get current date and time
+                System.out.println(eventListCurrent.size() );
+                System.out.println(startTime.size());
+                System.out.println(endTime.size());
+                for (int i = 0; i < eventListCurrent.size(); i++) {
+                    EventFireBaseHolder event = eventListCurrent.get(i);
+                    String startTimeString = startTime.get(i); // Get the start time string for this event
+                    try {
+                        Date eventStartDate = dateFormat.parse(startTimeString); // Parse the start time string into a Date object
+                        if (eventStartDate != null) {
+                            if (eventStartDate.after(currentDate)) {
+                                // If the event start date is in the future
+                                if (!dataListFuture.contains(event.getTitle())) {
+                                    dataListFuture.add(event.getTitle());
+                                    eventIDList.add(event.getId());
+                                }
+                            } else {
+                                // If the event is currently ongoing or has already started
+                                if (!dataList.contains(event.getTitle())) {
+                                    dataList.add(event.getTitle());
+                                    eventIDList.add(event.getId());
+                                }
+                            }
+                        }
 
+                    } catch (ParseException e) {
+                        e.printStackTrace(); // Handle the potential parsing exception
                     }
                 }
+
                 eventAdapter.notifyDataSetChanged();
+                eventAdapterFuture.notifyDataSetChanged();
             }
         });
 
         eventListView.setAdapter(eventAdapter);
+        eventListViewFuture.setAdapter(eventAdapterFuture);
+
 
 
         /**

@@ -312,10 +312,11 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
     public void updateUser(UserFireBaseHolder user){
         String userID = user.getId();
-        this.collectionName.document(userID).update("name", user.getName());
-        this.collectionName.document(userID).update("university", user.getUniversity());
-        this.collectionName.document(userID).update("phone", user.getPhone());
-        this.collectionName.document(userID).update("email", user.getEmail());
+        CollectionReference userCollection = getDb().collection("USER");
+        userCollection.document(userID).update("name", user.getName());
+        userCollection.document(userID).update("university", user.getUniversity());
+        userCollection.document(userID).update("phone", user.getPhone());
+        userCollection.document(userID).update("email", user.getEmail());
     }
 
     public void updateProfilePhoto(String userId, String profilePhoto){
@@ -448,7 +449,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
     }
 
     public void updateImage(String EventID, ImageView imageView, Uri imageUri){
-        StorageReference desertRef = storage.getReference().child(EventID+"jpg");
+        StorageReference desertRef = storage.getReference().child(EventID+".jpg");
         desertRef.delete();
         StorageReference imageRef = storage.getReference().child(EventID + ".jpg");
         imageRef.putFile(imageUri);
@@ -830,7 +831,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
 
 
     public interface OnRetrieveJoinedEvent{
-        void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventList);
+        void onRetrieveJoinedEvent(ArrayList<EventFireBaseHolder> eventList, ArrayList<String> startTime, ArrayList<String> endTime);
     }
 
     public void retrieveJoinedEvent(String userID, OnRetrieveJoinedEvent listener) {
@@ -847,12 +848,19 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 System.out.println("important size "+ eventIdList.size());
                 Map<String, EventFireBaseHolder> eventMap = new HashMap<>();
                 AtomicInteger remainingEvents = new AtomicInteger(eventIdList.size());
+                ArrayList<String> startTime = new ArrayList<>();
+                ArrayList<String> endTime = new ArrayList<>();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
                 for (String eventId : eventIdList) {
                     collectionEvent.document(eventId).get().addOnSuccessListener(documentSnapshot -> {
 
                         EventFireBaseHolder event = new EventFireBaseHolder();
+                        System.out.println(eventId);
+                        System.out.println("_----------------------_");
 
+                        startTime.add(dateFormat.format(documentSnapshot.getTimestamp("startTime").toDate()));
+                        endTime.add(dateFormat.format(documentSnapshot.getTimestamp("endTime").toDate()));
                         event.setEventCode(documentSnapshot.getString("eventCode"));
                         event.setOrganizer(documentSnapshot.getString("organizer"));
                         event.setDescription(documentSnapshot.getString("description"));
@@ -861,6 +869,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                         event.setCurrentTotalAttendee(documentSnapshot.getLong("currentTotalAttendee"));
                         event.setPosterCode(documentSnapshot.getString("organizer")); // Should this be "posterCode" instead of "organizer"?
                         event.setId(documentSnapshot.getId()); // Use documentSnapshot.getId() to ensure the ID is accurately captured
+
 
                         synchronized (eventMap) {
                             eventMap.put(event.getId(), event);
@@ -872,13 +881,13 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                             // Convert map values to a list to match the listener's expected input
                             ArrayList<EventFireBaseHolder> uniqueEventList = new ArrayList<>(eventMap.values());
                             System.out.println("size size size size size + 2" + uniqueEventList.size());
-                            listener.onRetrieveJoinedEvent(uniqueEventList);
+                            listener.onRetrieveJoinedEvent(uniqueEventList, startTime, endTime);
                         }
                     }).addOnFailureListener(e -> {
                         Log.e(TAG, "Error fetching event document", e);
                         if (remainingEvents.decrementAndGet() == 0) {
                             ArrayList<EventFireBaseHolder> uniqueEventList = new ArrayList<>(eventMap.values());
-                            listener.onRetrieveJoinedEvent(uniqueEventList); // Or handle error accordingly
+                            listener.onRetrieveJoinedEvent(uniqueEventList, startTime, endTime); // Or handle error accordingly
                         }
                     });
                 }
@@ -915,6 +924,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 System.out.println("triggered" + " 23.5");
                 System.out.println(userID);
                 CollectionReference collectionEvent = getDb().collection("EVENT");
+
                 List<String> eventIdList = (List<String>) value.get("organizerRoles");
                 if (eventIdList == null) {
                     return;
@@ -922,12 +932,17 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                 //System.out.println("important size "+ eventIdList.size());
                 Map<String, EventFireBaseHolder> eventMap = new HashMap<>();
                 AtomicInteger remainingEvents = new AtomicInteger(eventIdList.size());
-
+                ArrayList<String> startTime = new ArrayList<>();
+                ArrayList<String> endTime = new ArrayList<>();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                 for (String eventId : eventIdList) {
                     collectionEvent.document(eventId).get().addOnSuccessListener(documentSnapshot -> {
 
                         EventFireBaseHolder event = new EventFireBaseHolder();
 
+
+                        //startTime.add(dateFormat.format(documentSnapshot.getTimestamp("startTime").toDate()));
+                       // endTime.add(dateFormat.format(documentSnapshot.getTimestamp("endTime").toDate()));
                         event.setEventCode(documentSnapshot.getString("eventCode"));
                         event.setOrganizer(documentSnapshot.getString("organizer"));
                         event.setDescription(documentSnapshot.getString("description"));
@@ -947,13 +962,13 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                             // Convert map values to a list to match the listener's expected input
                             ArrayList<EventFireBaseHolder> uniqueEventList = new ArrayList<>(eventMap.values());
                             System.out.println("size size size size size + 2" + uniqueEventList.size());
-                            listener.onRetrieveJoinedEvent(uniqueEventList);
+                            listener.onRetrieveJoinedEvent(uniqueEventList, startTime, endTime);
                         }
                     }).addOnFailureListener(e -> {
                         Log.e(TAG, "Error fetching event document", e);
                         if (remainingEvents.decrementAndGet() == 0) {
                             ArrayList<EventFireBaseHolder> uniqueEventList = new ArrayList<>(eventMap.values());
-                            listener.onRetrieveJoinedEvent(uniqueEventList); // Or handle error accordingly
+                            listener.onRetrieveJoinedEvent(uniqueEventList, startTime, endTime); // Or handle error accordingly
                         }
                     });
                 }

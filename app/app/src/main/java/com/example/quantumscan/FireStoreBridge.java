@@ -9,6 +9,8 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -525,9 +527,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
     public void updateAttendeeCheckIn(String userId, String eventId){
         CollectionReference EventCollection = getDb().collection("EVENT");
-        System.out.println("chekd in fb" + userId);
 
-        System.out.println("chekd in fb" + eventId);
 
         EventCollection.document(eventId).collection("attendeeList").document(userId).update("checkedIn", true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -667,7 +667,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
      * */
 
 
-    public void updateAttendeeSignUpToEvent(String userId, String eventId){
+    public void updateAttendeeSignUpToEvent(String userId, String eventId, Context  context){
         CollectionReference newCollection =  getDb().collection("EVENT");
         Query newQuery;
         newQuery = newCollection.whereEqualTo(FieldPath.documentId(), eventId);
@@ -678,13 +678,12 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
                     long attendeeLimit = documentSnapshot.getLong("attendeeLimit");
                     long currentTotalAttendee = documentSnapshot.getLong("currentTotalAttendee" );
                     if (currentTotalAttendee < attendeeLimit){
-                        System.out.println("before increment");
                         newCollection.document(eventId).update("currentTotalAttendee",FieldValue.increment(1));
-                        System.out.println("after incremenet");
                         updateAttendeeSignUpHelper(userId, eventId);
+                        Toast.makeText(context, "You have joined the event!", Toast.LENGTH_SHORT).show();
 
                     }else{
-                        System.out.println("you have reached limit");
+                        Toast.makeText(context, "You have reached limit", Toast.LENGTH_SHORT).show();
 
                     }
                 }

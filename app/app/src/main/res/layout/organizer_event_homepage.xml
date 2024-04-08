@@ -111,6 +111,7 @@
         android:paddingStart="30dp"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:visibility="gone"
 
         app:icon="@drawable/ic_qr_code"
         app:iconPadding="30dp"

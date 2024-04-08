@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;  // this is for permission result code
     //private boolean permissionDenied = false;
-    private static final int YOUR_REQUEST_CODE = 2;
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+        notificationPermissionRequest.launch(permission.POST_NOTIFICATIONS);
 
         // authentication end
 
@@ -79,32 +82,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // check if have location permission, if not then ask for permission, otherwise do nothing.
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
-            Log.d("atmeng", "you already have the location permission!");
-        }
+//        // check if have location permission, if not then ask for permission, otherwise do nothing.
+//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+//           // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, YOUR_REQUEST_CODE);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
+//                } else {
+//                    Log.d("PermissionDemo", "You already have the notification permission!");
+//                }
+//            }
+//        } else {
+//            Log.d("atmeng", "you already have the location permission!");
+//        }
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
 
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, YOUR_REQUEST_CODE);
-            } else {
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, YOUR_REQUEST_CODE);
-            }
-
-        } else {
-
-        }
 
     }
 
 
     private void replaceFragment(Fragment fragment){
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout,fragment);
@@ -112,36 +111,63 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // Don't delete below just in case.
-    // Register the permissions callback, which handles the user's response to the
-    // system permissions dialog. Save the return value, an instance of
-    // ActivityResultLauncher, as an instance variable.
-//    private ActivityResultLauncher<String> requestPermissionLauncher =
-//            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-//                if (isGranted) {
-//                    // Permission is granted. Continue the action or workflow in your
-//                    // app.
-//                    System.out.println("Permission is granted. Continue the action or workflow in your app");
-//                } else {
-//                    // Explain to the user that the feature is unavailable because the
-//                    // feature requires a permission that the user has denied. At the
-//                    // same time, respect the user's decision. Don't link to system
-//                    // settings in an effort to convince the user to change their
-//                    // decision.
-//                    System.out.println("Permission is NOT granted.");
-//                }
-//            });
-
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == YOUR_REQUEST_CODE) {
+//            // If request is cancelled, the result arrays are empty.
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                // Permission was granted, yay! You can now do the notification-related task you need to do.
+//            } else {
+//                // Permission denied, boo! Disable the functionality that depends on this permission.
+//            }
+//        }
+//    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == YOUR_REQUEST_CODE) {
-            // If request is cancelled, the result arrays are empty.
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            // Location permission result handling
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission was granted, yay! You can now do the notification-related task you need to do.
+                Log.d(TAG, "Location permission granted.");
             } else {
-                // Permission denied, boo! Disable the functionality that depends on this permission.
+                Log.d(TAG, "Location permission denied.");
+            }
+            // After handling location permission, check and request for notification permission
+            requestNotificationPermissionIfNeeded();
+        } else if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            // Notification permission result handling
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "Notification permission granted.");
+            } else {
+                Log.d(TAG, "Notification permission denied.");
             }
         }
     }
+
+        private void requestNotificationPermissionIfNeeded() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
+                }
+            }
+        }
+    private ActivityResultLauncher<String> locationPermissionRequest = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+        if (isGranted) {
+            // Permission is granted. Continue the action or workflow in your app.
+        } else {
+            // Explain to the user that the feature is unavailable because the feature requires a permission that the user has denied.
+        }
+        // After location permission handling, request notification permission
+        requestNotificationPermissionIfNeeded();
+    });
+    private ActivityResultLauncher<String> notificationPermissionRequest = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+        if (isGranted) {
+            // Notification permission is granted. You can now enable features that require this permission.
+            Log.d(TAG, "Notification permission granted.");
+        } else {
+            // The user denied the notification permission. Inform them about the limited functionality.
+            Log.d(TAG, "Notification permission denied.");
+        }
+    });
 }

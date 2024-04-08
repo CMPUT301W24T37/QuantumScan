@@ -120,28 +120,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnViewInformation" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnScanQRCode"
-        android:text="Scan QR code"
-
-        android:layout_width="360dp"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        android:gravity="center_vertical"
-        app:cornerRadius="16dp"
-
-        app:iconGravity="textStart"
-        android:paddingStart="30dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-
-        app:icon="@drawable/ic_qr_code"
-        app:iconPadding="30dp"
-        app:iconSize="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnReceiveNotification" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

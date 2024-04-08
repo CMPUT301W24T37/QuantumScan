@@ -102,12 +102,28 @@ public class AttendeeEventPage extends AppCompatActivity {
 
     private void fetchEventInformation(String eventID) {
         // Use FireStoreBridge to retrieve the event
-        Intent detailIntent = new Intent(AttendeeEventPage.this, OrganizerNotification.class);
-        detailIntent.putExtra("eventID", eventId);
-        detailIntent.putExtra("eventName", eventName);
-        startActivity(detailIntent);
-    }
+        fireStoreBridge.retrieveEvent(eventID, new FireStoreBridge.OnEventRetrievedListener() {
+            @Override
+            public void onEventRetrieved(ArrayList<Event> eventList, ArrayList<String> organizerList) {
 
+                if (!eventList.isEmpty()) {
+                    Event event = eventList.get(0);// Assuming the first item is the event we're interested in
+                    tvEventTitle = findViewById(R.id.tvEventTitle);
+                    tvEventDescription = findViewById(R.id.tvEventDescription);
+                    imageViewEventPoster = findViewById(R.id.ivEventBackground);
+
+                    tvEventTitle.setText(event.getTitle());
+                    tvEventDescription.setText(event.getDescription());
+                    imageDisplay(eventId, imageViewEventPoster);
+
+
+                } else {
+
+                    Toast.makeText(AttendeeEventPage.this, "Event not found." + eventID, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
     public void imageDisplay(String EventID, ImageView imageView){
         FireStoreBridge fb_events = new FireStoreBridge("EVENT");
         fb_events.displayImage(EventID, imageView);

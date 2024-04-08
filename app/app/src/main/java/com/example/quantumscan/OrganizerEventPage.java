@@ -34,8 +34,8 @@ public class OrganizerEventPage extends AppCompatActivity {
         /*
         Event eventOBJ = DataHolder.getInstance().getEvent(eventID);
         System.out.println("Title:"+ eventOBJ.getTitle());
-
          */
+
         sendNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

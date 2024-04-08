@@ -1,16 +1,28 @@
 package com.example.quantumscan;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class OrganizerViewAttendees extends AppCompatActivity {
 
@@ -24,6 +36,9 @@ public class OrganizerViewAttendees extends AppCompatActivity {
     private int mileStoneValue;
     private ToastManager toast;
     private String eventName;
+    private Context context;
+    private static final String CHANNEL_ID = "notification_new";
+    private boolean isFirstLoad = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,27 +51,26 @@ public class OrganizerViewAttendees extends AppCompatActivity {
         mileStoneProgressText = findViewById(R.id.milestoneMessageText);
         mileStoneStatement = findViewById(R.id.milestoneTextMessage);
         toast = ToastManager.getInstance();
-
+        context = this;
+        createNotificationChannel();
         String eventID = getIntent().getStringExtra("eventID");
         eventName = getIntent().getStringExtra("eventName");
         titleView.setText(eventName);
         dataList = new ArrayList<AttendeeFireBaseHolder>();
         fb = new FireStoreBridge("EVENT");
-        System.out.println("before view" + eventID);
+
         fb.retrieveAttendeeCheckIn(eventID, new FireStoreBridge.OnCheckedInListener() {
             @Override
             public void onCheckedInListener(ArrayList<AttendeeFireBaseHolder> attendeeList) {
-                if (attendeeList.isEmpty() || attendeeList == null){
-                    System.out.println("no attendee joined this event");
+                if (attendeeList.isEmpty() || attendeeList == null) {
                     mileStoneProgressBar.setMax(0);
                     mileStoneProgressBar.setProgress(0);
                     mileStoneProgressText.setText("0");
-                    mileStoneStatement.setText("Invite People to your Event!");
-                }else {
-                    refresh(attendeeList);
+                    mileStoneStatement.setText("No MileStone");
+                } else {
+                    refresh(attendeeList, eventID);
                 }
             }
-
         });
 
         //String []attendees ={"Austin", "ZhiYang", "Wei","David","Karl","Kaining"};
@@ -83,42 +97,111 @@ public class OrganizerViewAttendees extends AppCompatActivity {
         });
     }
 
-    private void refresh(ArrayList<AttendeeFireBaseHolder> attendeeList){
+    private void refresh(ArrayList<AttendeeFireBaseHolder> attendeeList, String eventID) {
         dataList = attendeeList;
         attendeeAdapter = new AttendeeContentAdapter(this, dataList);
         eventListView.setAdapter(attendeeAdapter);
-
-        int count = checkedInCount(attendeeList);
+        int checkInCount = checkedInCountProgress(attendeeList);
+        int totalCount = attendeeList.size();
         mileStoneProgressBar.setMax(dataList.size());
-        mileStoneProgressBar.setProgress(count);
-        mileStoneProgressText.setText(count + " / " + dataList.size());
-        if((int)(count/dataList.size()) == 2){
-            mileStoneStatement.setText("Half Way Reached!");
-            toast.showToast(this, "You have reached a new Mile Stone for" + eventName );
+        mileStoneProgressBar.setProgress(checkInCount);
+        mileStoneProgressText.setText(checkInCount + " / " + attendeeList.size());
+        fb.retrieveAndCompareMileStone(eventID, new FireStoreBridge.OnRetrieveMileStone() {
+            @Override
+            public void onRetrieveMileStone(Date halfWay, Date finalWay) {
+                if (finalWay == null && checkInCount == totalCount) {
+                    if (!isFirstLoad) {
+                        showNotification("Event: All User Checked In", "you have reached a new mile stone");
+                    }
+                    System.out.println("new mile stone");
+                    Timestamp currentTimestamp = Timestamp.now();
+                    fb.updateMileStone(eventID, currentTimestamp, currentTimestamp);
 
-        }else if(count == dataList.size()){
-            mileStoneStatement.setText("Next: Half Way Mile Stone...");
+                } else if(finalWay != null && checkInCount == totalCount){
+                    if (!isFirstLoad) {
+                        showNotification("Since Event Start: ", "All New Joined User Have Checked IN");
+                    }
+                }else if (finalWay == null && checkInCount != totalCount) {
 
+                }
+            }
+        });
 
-        }else if ((int)(count/dataList.size()) > 2){
-            mileStoneStatement.setText("Next: Final Mile Stone...");
+    }
 
+    private int checkedInCount(ArrayList<AttendeeFireBaseHolder> attendeeList) {
+        int count = 0;
+        int countRepeat = 0;
+        for (int i = 0; i < attendeeList.size(); i++) {
+            if (attendeeList.get(i).getCheckInCount() >= 1) {
+                count++;
+            }
+            if(attendeeList.get(i).getCheckInCount() > 1){
+                countRepeat++;
+            }
+        }
+        return count-countRepeat;
+    }
+    private int checkedInCountProgress(ArrayList<AttendeeFireBaseHolder> attendeeList) {
+        int count = 0;
+        int countRepeat = 0;
+        for (int i = 0; i < attendeeList.size(); i++) {
+            if (attendeeList.get(i).getCheckInCount() >= 1) {
+                count++;
+            }
 
-        }else{
-            mileStoneStatement.setText("Final Mile Stone Reached!");
-            toast.showToast(this, "You have reached a new Mile Stone for "+eventName);
+        }
+        return count;
+    }
+
+    private void createNotificationChannel() {
+        // Check if the Android version is greater than or equal to Android 8 (Oreo)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "notification new"; // Channel name for the user
+            String description = "notification new"; // Channel description for the user
+            int importance = NotificationManager.IMPORTANCE_HIGH; // Set the importance level
+            NotificationChannel channel = new NotificationChannel("notification new", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
 
         }
     }
 
-    private int checkedInCount(ArrayList<AttendeeFireBaseHolder> attendeeList){
-        int count = 0;
-        for(int i = 0; i < attendeeList.size(); i++){
-            if(attendeeList.get(i).getCheckInCount() >= 1){
-                count++;
-            }
+    private void showNotification(String message1, String message2) {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // Build the notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notification new")
+                .setSmallIcon(R.drawable.ic_message) // Set the icon
+                .setContentTitle(message1) // Set the title of the notification
+                .setContentText(message2) // Set the text
+                .setPriority(NotificationCompat.PRIORITY_HIGH); // Set the priority
+
+        // Show the notification
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
         }
-        return count;
+        notificationManager.notify(1, builder.build()); // The first parameter is a unique ID for the notification
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Consider if you need to reset isFirstLoad here based on your app's logic
+        // isFirstLoad = true;
+        System.out.println("resum,e");
+        isFirstLoad = true;
+    }
+
+    @Override
+    public void onStop() {
+
+        super.onStop();
+        System.out.println("stopped");
+        isFirstLoad = false;
     }
 
 }

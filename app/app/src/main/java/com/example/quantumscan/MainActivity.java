@@ -9,6 +9,7 @@ import android.location.Location;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;  // this is for permission result code
     //private boolean permissionDenied = false;
-
+    private static final int YOUR_REQUEST_CODE = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, LoginPage.class);
         startActivity(intent);
 
-        // authentication start
+
 
         String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         FireStoreBridge fb = new FireStoreBridge("USER");
@@ -84,6 +85,21 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("atmeng", "you already have the location permission!");
         }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, YOUR_REQUEST_CODE);
+            } else {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, YOUR_REQUEST_CODE);
+            }
+
+        } else {
+
+        }
+
     }
 
 
@@ -116,5 +132,16 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            });
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == YOUR_REQUEST_CODE) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted, yay! You can now do the notification-related task you need to do.
+            } else {
+                // Permission denied, boo! Disable the functionality that depends on this permission.
+            }
+        }
+    }
 }

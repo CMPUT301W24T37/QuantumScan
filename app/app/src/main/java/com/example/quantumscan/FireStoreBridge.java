@@ -483,6 +483,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
+                Log.w(TAG, "display image failed");
             }
         });
 
@@ -502,6 +503,7 @@ public class FireStoreBridge implements OrganizerCreateEvent.imageUrlUploadListe
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
+                Log.w(TAG, "display profile image failed");
             }
         });
     }

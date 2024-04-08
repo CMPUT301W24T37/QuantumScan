@@ -93,37 +93,10 @@ public class AttendeeEventPage extends AppCompatActivity {
 
     }
     private void switchToNotificationView() {
-        setContentView(R.layout.attendee_notification);
-        TextView textView = findViewById(R.id.notificationTextView);
-        ListView listView = findViewById(R.id.attendee_notification_listview);
-        ArrayList<String> announcementsList = new ArrayList<>();
-        NotificationAdapter adapter = new NotificationAdapter(this, announcementsList);
-        listView.setAdapter(adapter);
-        textView.setVisibility(View.INVISIBLE);
-        FireStoreBridge fb = new FireStoreBridge("EVENT");
-        fb.retrieveEventAnnouncement(eventId, new FireStoreBridge.OnRetrieveEventAnnouncement() {
-            @Override
-            public void onRetrieveEventAnnouncement(ArrayList<String> announcements) {
-                announcementsList.clear();
-
-                if (announcements.size() == 0){
-                    listView.setVisibility(View.INVISIBLE);
-                    textView.setVisibility(View.VISIBLE);
-
-                }else if (announcements.size() > 0) {
-                    listView.setVisibility(View.VISIBLE);
-                    textView.setVisibility(View.INVISIBLE);
-                    for (int i = 0; i < announcements.size(); i++) {
-                        announcementsList.add(announcements.get(i));
-
-                    }
-                }
-
-                adapter.notifyDataSetChanged();
-
-            }
-        });
-
+        Intent detailIntent = new Intent(AttendeeEventPage.this, OrganizerNotification.class);
+        detailIntent.putExtra("eventID", eventId);
+        detailIntent.putExtra("eventName", eventName);
+        startActivity(detailIntent);
 
     }
 

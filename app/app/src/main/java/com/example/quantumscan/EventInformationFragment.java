@@ -53,7 +53,6 @@ public class EventInformationFragment extends AppCompatActivity {
         buttonJoinEvent = findViewById(R.id.buttonJoinEvent);
         buttonReturn = findViewById(R.id.buttonReturn);
         imageViewEventPoster = findViewById(R.id.imageViewEvent);
-
         context = this;
 
 

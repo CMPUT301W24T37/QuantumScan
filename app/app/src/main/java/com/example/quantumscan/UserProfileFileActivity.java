@@ -27,7 +27,7 @@ public class UserProfileFileActivity extends AppCompatActivity {
 
         binding = ActivityUserProfileFileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        confirmButton = findViewById(R.id.skip_button);
+        confirmButton = findViewById(R.id.buttonConfirm);
         userNameText = findViewById(R.id.username_edit_text);
         emailText = findViewById(R.id.email_edit_text);
         phoneText = findViewById(R.id.phone_edit_text);

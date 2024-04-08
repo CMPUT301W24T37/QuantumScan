@@ -2,6 +2,9 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="MainActivityTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <runningDeviceTargetSelectedWithDropDown>
@@ -17,6 +20,31 @@
           </runningDeviceTargetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-04-08T06:08:16.200871800Z" />
         </State>
+      </entry>
+      <entry key="testAdminLoginPageLoginToProfile()">
+        <State />
+      </entry>
+      <entry key="testClickIntoProfilePage()">
+        <State />
+      </entry>
+      <entry key="testFirstPage()">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\72730\.android\avd\Pixel_6_API_26.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-04-08T03:12:46.034040700Z" />
+        </State>
+      </entry>
+      <entry key="testLoginFirstUserSetupProfile()">
+        <State />
       </entry>
     </value>
   </component>

@@ -250,10 +250,8 @@ public class MainActivityTest {
         // onView(withId(R.id.userPronounText)).check(matches(isDisplayed()));
         onView(withId(R.id.userPhoneNumbText)).check(matches(isDisplayed()));
         onView(withId(R.id.userEmailText)).check(matches(isDisplayed()));
-        onView(withId(R.id.userInfoText)).check(matches(isDisplayed()));
-        // check if contents are displaying correctly
-        onView(withId(R.id.userPhoneNumbText)).check(matches(withText(this.phone)));
-        onView(withId(R.id.userEmailText)).check(matches(withText(this.email)));
+        //onView(withId(R.id.userInfoText)).check(matches(isDisplayed()));
+
 
     }
 

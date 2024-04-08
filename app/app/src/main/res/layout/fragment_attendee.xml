@@ -40,15 +40,21 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
 
+
         <TextView
             android:id="@+id/tvCurrentEvents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_marginTop="12dp"
             android:text="Current Events"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintTop_toBottomOf="@id/buttonScanQR"
+            android:textColor="@android:color/black"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.086"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/buttonScanQR" />
 
         <ListView
             android:id="@+id/attendeeEventList"
@@ -66,12 +72,18 @@
             android:id="@+id/tvFutureEvents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_marginTop="12dp"
             android:text="Future Events"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/black"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.086"
             app:layout_constraintTop_toBottomOf="@id/attendeeEventList"
             app:layout_constraintBottom_toTopOf="@id/FutureEventList"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
 
         <ListView
             android:id="@+id/FutureEventList"

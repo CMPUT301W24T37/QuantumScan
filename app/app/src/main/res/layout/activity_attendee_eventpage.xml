@@ -1,80 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- Header section with Return and Logout buttons -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="186dp"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/btnReturn"
+            android:id="@+id/returnButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/ic_return" />
+
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:layout_marginTop="15dp"
+            android:text="Return"
             android:textColor="@android:color/black"
-            android:text="Return" />
-
-
-        <!-- Placeholder for the event title -->
-        <TextView
-            android:id="@+id/btnEventTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
-
+            android:textSize="20dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Button for viewing information -->
 
-    <!-- Button for sending notification -->
+    <TextView
+        android:id="@+id/textView_eventName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginBottom="469dp"
+        android:text="Event Name"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <Button
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="15dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_eventName">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_attendee" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Attendee"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnViewInformation"
-        android:layout_width="375dp"
-        android:layout_height="91dp"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/information"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="@string/View_Information"
-        android:textAllCaps="false"
-        android:textColor="@android:color/black" />
+        android:text="View Information"
 
-    <Button
+        android:layout_width="360dp"
+        android:layout_height="70dp"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        app:cornerRadius="16dp"
+
+        app:iconGravity="textStart"
+        android:paddingStart="30dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+
+        app:icon="@drawable/ic_info"
+        app:iconPadding="30dp"
+        app:iconSize="40dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnReceiveNotification"
-        android:layout_width="375dp"
-        android:layout_height="91dp"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/notify"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="@string/send_notification"
-        android:textColor="@android:color/black"
-        android:textAllCaps="false" />
+        android:text="Receive Notification"
 
+        android:layout_width="360dp"
+        android:layout_height="70dp"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        app:cornerRadius="16dp"
 
-    <!-- Button for scanning QR code -->
-    <Button
+        app:iconGravity="textStart"
+        android:paddingStart="30dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+
+        app:icon="@drawable/ic_message"
+        app:iconPadding="30dp"
+        app:iconSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnViewInformation" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnScanQRCode"
-        android:layout_width="375dp"
-        android:layout_height="91dp"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/img"
-        android:gravity="center"
-        android:text="@string/scan_qr_code"
-        android:textAllCaps="false"
-        android:textColor="@android:color/black" />
+        android:text="Scan QR code"
+
+        android:layout_width="360dp"
+        android:layout_height="70dp"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        app:cornerRadius="16dp"
+
+        app:iconGravity="textStart"
+        android:paddingStart="30dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+
+        app:icon="@drawable/ic_qr_code"
+        app:iconPadding="30dp"
+        app:iconSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnReceiveNotification" />
 
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,10 @@
         android:title="ATTENDEE"
         android:id="@+id/attendee"/>
     <item
+        android:icon="@drawable/ic_event"
+        android:title="EVENT"
+        android:id="@+id/events"/>
+    <item
         android:icon="@drawable/ic_community"
         android:title="COMMUNITY"
         android:id="@+id/community"/>

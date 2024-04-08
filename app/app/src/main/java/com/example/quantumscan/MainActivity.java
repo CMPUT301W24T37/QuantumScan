@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         // authentication start
+
         String userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         FireStoreBridge fb = new FireStoreBridge("USER");
         fb.retrieveUser(userID, new FireStoreBridge.OnUserRetrievedListener() {
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new CommunityFragment());
             }else if(item.getItemId() == R.id.profile){
                 replaceFragment(new ProfileFragment());
+            }else if(item.getItemId() == R.id.events) {
+                replaceFragment(new UserEventFragment());
             }
         });
 

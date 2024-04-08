@@ -74,6 +74,7 @@ public class OrganizerFragment extends Fragment {
 
         FireStoreBridge fb = new FireStoreBridge("USER");
 
+
         String userId = Settings.Secure.getString(this.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         fb. retrieveOrganizedEvent(getCurrentUserId(), new FireStoreBridge.OnRetrieveJoinedEvent() {
             @Override

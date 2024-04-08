@@ -191,6 +191,7 @@ public class AttendeeFragment extends Fragment {
                                 }
                             }
                         }
+
                     } catch (ParseException e) {
                         e.printStackTrace(); // Handle the potential parsing exception
                     }

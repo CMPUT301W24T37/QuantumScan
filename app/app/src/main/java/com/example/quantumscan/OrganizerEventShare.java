@@ -43,29 +43,30 @@ public class OrganizerEventShare extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(OrganizerEventShare.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(OrganizerEventShare.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                } else {
-                    Log.d("atmeng", "you already have the write external permission!");
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    bitmapQRcode.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                    String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmapQRcode, "Title", "descr");
-                    Uri image = Uri.parse(path);
-                    Intent intent = new Intent(Intent.ACTION_SEND, image);
-                    intent.putExtra(Intent.EXTRA_SUBJECT,"Scan this QR code to signed up or check in the event");
-                    intent.putExtra(Intent.EXTRA_STREAM, image);
-                    intent.putExtra(Intent.EXTRA_EMAIL, "");
 
-                    // Create intent to show chooser
-                    Intent chooser = Intent.createChooser(intent, "share QR code image");
+//                if (ActivityCompat.checkSelfPermission(OrganizerEventShare.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(OrganizerEventShare.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//                }
+                Log.d("atmeng", "you already have the write external permission!");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bitmapQRcode.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmapQRcode, "Title", "descr");
+                Uri image = Uri.parse(path);
+                Intent intent = new Intent(Intent.ACTION_SEND, image);
+                intent.putExtra(Intent.EXTRA_SUBJECT,"Scan this QR code to signed up or check in the event");
+                intent.putExtra(Intent.EXTRA_STREAM, image);
+                intent.putExtra(Intent.EXTRA_EMAIL, "");
 
-                    // Try to invoke the intent.
-                    try {
-                        startActivity(chooser);
-                    } catch (ActivityNotFoundException e) {
-                        // Define what your app should do if no activity can handle the intent.
-                    }
+                // Create intent to show chooser
+                Intent chooser = Intent.createChooser(intent, "share QR code image");
+
+                // Try to invoke the intent.
+                try {
+                    startActivity(chooser);
+                } catch (ActivityNotFoundException e) {
+                    // Define what your app should do if no activity can handle the intent.
                 }
+
 
             }
         });

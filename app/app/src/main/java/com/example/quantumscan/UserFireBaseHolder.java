@@ -2,17 +2,28 @@ package com.example.quantumscan;
 
 import java.util.ArrayList;
 
+/**
+ * Represent one single user.
+ * @author Wei
+ * @see Attendee
+ * @see Organizer
+ * @version 0.0.00001
+ */
 public class UserFireBaseHolder {
     /**
      * {@link String} - The user id
      */
     private String id;
     /**
-     * {@link ArrayList <Attendee>} - The ArrayList that contain Attendee objects, representing a user signed up as an Attendee of one Event
+     * {@link ArrayList<String>} - The ArrayList that contain events id, representing a user signed up as an Attendee of one Event
      */
     private ArrayList<String> attendeeRoles;
 
+    /**
+     * {@link ArrayList<String>} - The ArrayList that contain the ids of the Event, representing a user host a new Event as an Organizer
+     */
     private ArrayList<String> organizerRoles;
+
     /**
      * {@link String} - The user name
      */

@@ -57,33 +57,29 @@ public class EventInformationFragment extends AppCompatActivity {
         buttonJoinEvent.setOnClickListener(v -> joinEvent(eventId));
         fireStoreBridge = new FireStoreBridge("EVENT");
 
-        // 使用事件ID从Firestore检索事件信息
+        //
         fetchEventInformation(eventId);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // 关闭当前活动，返回上一个活动
+                finish(); //
             }
         });
     }
 
     private void fetchEventInformation(String eventId) {
-        // 使用FireStoreBridge检索事件信息
+        //
         fireStoreBridge.retrieveEvent(eventId, new FireStoreBridge.OnEventRetrievedListener() {
             @Override
             public void onEventRetrieved(ArrayList<Event> eventList, ArrayList<String> organizerList) {
 
                 if (!eventList.isEmpty()) {
-                    // 假设我们只对第一个结果感兴趣
+                    //
                     Event event = eventList.get(0);
                     textViewEventTitle.setText(event.getTitle());
                     textViewEventDescription.setText(event.getDescription());
-
-                    // 如果事件有海报图像，使用posterCode作为图像ID来显示图像
+                    //
                     imageDisplay(eventId, imageViewEventPoster);
-
-
-
                     }
                 }
 
